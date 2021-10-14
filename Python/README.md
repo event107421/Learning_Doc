@@ -1,0 +1,2 @@
+# Python
+Learning_Doc是基於個人學習Python的紀錄文件
