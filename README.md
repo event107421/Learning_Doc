@@ -1,0 +1,2 @@
+# Learning_Doc
+Learning_Doc是基於個人學習程式語言或資料庫的紀錄文件
