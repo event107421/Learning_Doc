@@ -1,0 +1,176 @@
+<!-- HTML語意化標籤介紹： =================================================== -->
+<!--
+基本上，網站就是由許多標籤所建立的文件架構。在HTML5中新增了語意化標籤(Semantic Elements)，目的是為了讓標籤(Tag)更具意義，以加強文件的結構化，讓搜尋引擎更清楚了解。
+在HTML5之前只能通通用<div>標籤表示，但HTML新增了語意化標籤像是<header>、<main>、<footer>等，可以更清楚表現網頁中每個區塊的設計目的。
+使用HTML5語意化標籤的優點如下：
+1.可以快速抓到網頁架構和每個區塊的位置
+2.對於SEO優化有幫助
+
+取代div的HTML5區塊標籤：
+https://miro.medium.com/max/1066/0*i41IHEsHvvP9xOXK.gif
+
+1.頁首標籤<header>：
+<header>標籤如果是在<body>內，它可以表示網頁的頁首，但如果位於<article>或<section>內，則可以表示文章或區塊內的首要區塊(但不要和title和heading混淆)。
+
+2.導覽列<nav>：
+只要是在網站內的導航區塊，都適合使用<nav>標籤，像是主選單、頁尾選單等。
+
+3.主要區塊<main>：
+用來放置頁面主要資訊的區塊，展現頁面內容的獨特性。每個頁面只能有一個<main>標籤，且理想狀態下，不能被放在<nav>、<article>、<aside>、<footer>和<header>內。
+
+4.區塊或文章區塊<article><section>：
+過去需要建立一個區塊通常會使用<div>，HTML5語意化標籤出現後，可以使用<section>搭配<h1~h6>的標題來呈現內容，而<section>內一些無明顯含義的區塊或為了排版目的的區塊則使用<div>來包，<div>這時可以視作一個無意義的容器。<article>標籤近似<section>標籤，但<article>主要用於包覆文章。
+要注意的是，<article>可以有很多個<section>，也可以是<section>有很多<article>，取決於內容。
+
+5.側欄<aside>：
+<aside>語意算是跟主要區塊內容無關的區塊，也就是額外資訊，像是側邊欄、廣告、其他連結、推薦文章等都蠻適合使用的，不一定是側邊位置才能使用。
+
+6.頁尾<footer>：
+表示頁尾或表尾部分，使用方式同<header>。
+
+其他語義化標籤：
+1.<time>：表示日期時間
+2.<mark>：如黃色螢光筆的方式畫出重點，強調一小塊內容
+3.<details>：描述文章的細節
+4.<figure>、<figcaption>：<figure>用於圖像，<figcaption>用於圖像標題
+5.<hgroup>：當內容有主標題及次標題等多個標題的狀況下使用。
+6.<cite>：引用其他文獻或作品(例如書籍、歌曲、電影、繪畫、雕塑等）的標題
+-->
+
+<!-- 頁面頂部元素：<header>標籤 ================================================ -->
+<!-- header標籤可以當作整個網站的開頭，主要會放置在網站上端或是左邊 -->
+<!--
+其中，<head>與<header>是不一樣的標籤，<head>只能在HTML文件內使用一次，其中會置入<title>或<meta>等網頁文件資訊，是不會實際顯示在網頁畫面上的內容
+而<header>標籤則可以在一個文件裡多次使用，網站Logo獲選單等實際文件內容都可以放進去，如下
+-->
+<!DOCTYPE html>
+<html>
+<!-- 紀錄文件資訊的head部分 -->
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <!-- 網站開頭header部分，可以多次使用 -->
+  <header>
+    <h1>第一個開頭部分</h1>
+  </header>
+  <br/>
+  <header>
+    <h2>第二個開頭部分</h2>
+  </header>
+  <header>
+    <h3>第三個開頭部分</h3>
+    <!-- 其中我們還可以使用<hgroup>標籤，可以將標題和其相關的副標題進行組合的群組功能，這樣在製作網站頁面整體架構時，就可以輕鬆掌握文件內的重要骨架是什麼 -->
+    <hgroup>
+      <h4>第三部分副標題一</h4>
+      <h5>第三部分副標題二</h5>
+    </hgroup>
+  </header>
+</body>
+</html>
+
+
+<!-- 導航連結：<nav>標籤 ================================================= -->
+<!-- <nav>標籤是表現文件裡或是和其他文件進行連結時的導航連結，可以包含在多個標籤裡，也可以獨立使用，不會因為位置而受到影響 -->
+<!DOCTYPE html>
+<html>
+<!-- 紀錄文件資訊的head部分 -->
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <!-- 網站開頭header部分，可以多次使用 -->
+  <header>
+    <h1>第一個開頭部分</h1>
+    <nav class="top-nav">
+      <ul>
+        <li><a href="https://www.google.com/">Google</a>
+        <li><a href="https://tw.yahoo.com/?p=us">Yahoo</a>
+        <li><a href="https://www.facebook.com/">Facebook</a>
+      </ul>
+    </nav>
+  </header>
+</body>
+</html>
+
+
+<!-- 網頁上主要內容：<article>標籤 ============================================ -->
+<!-- <article>標籤是指網頁上主要的內容，而其內容也可以從網頁移動到其他地方 -->
+<!DOCTYPE html>
+<html>
+<!-- 紀錄文件資訊的head部分 -->
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <article class="blog-content">
+    <h3><a href="https://www.google.com/" title="google搜尋引擎">Google</a></h3>
+    <time datetime="2021-08-06T19:29:05+00:00" class="data">6th August 2021</time>
+    <p>Google搜尋是由Google公司推出的一個網際網路搜尋引擎，它是網際網路上最大、影響最廣泛的搜尋引擎</p>
+  </article>
+</body>
+</html>
+
+
+<!-- 把內容組成群組：<section>標籤 ============================================ -->
+<!-- <section>標籤是指網頁上把專題性內容群組話，例如如果是網站的開始頁面，可區分為網站介紹、新聞、聯絡情報等section，也可以使用在網頁重新分配時指定不使用的內容 -->
+<!-- 但一般來說，不建議只是未將內容群組話就使用<section>標籤，如果只是要套用樣式或使用腳本，其實用<div>標籤即可 -->
+<!DOCTYPE html>
+<html>
+<!-- 紀錄文件資訊的head部分 -->
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <section class="section main content">
+    <li><a href="https://www.google.com/">Google</a>
+    <li><a href="https://tw.yahoo.com/?p=us">Yahoo</a>
+    <li><a href="https://www.facebook.com/">Facebook</a>
+  </section>
+</body>
+</html>
+
+
+<!-- 標示本文以外的內容：<aside>標籤 ============================================ -->
+<!-- <aside>標籤是指網頁上側欄這部分，因為側欄不是必須標籤，當不需要時也可以不在畫面上標示 -->
+<!DOCTYPE html>
+<html>
+<!-- 紀錄文件資訊的head部分 -->
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <p>Salamanders are a group of amphibians with a lizard-like appearance, including short legs and a tail in both larval and adult forms.</p>
+  <aside>
+      <p>The Rough-skinned Newt defends itself with a deadly neurotoxin.</p>
+  </aside>
+  <p>Several species of salamander inhabit the temperate rainforest of the Pacific Northwest, including the Ensatina, the Northwestern Salamander and the Rough-skinned Newt. Most salamanders are nocturnal, and hunt for insects, worms and other small creatures.</p>
+</body>
+</html>
+
+
+<!-- 結尾/頁尾區塊：<footer>標籤 ================================================ -->
+<!-- <footer> 標籤 (tag) 用來定義一個頁尾或結尾區塊，常見的 footer 是網頁最下面的頁尾區塊會包含作者、版權、聯絡方式等資訊。 -->
+<!DOCTYPE html>
+<html>
+<!-- 紀錄文件資訊的head部分 -->
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <p>Salamanders are a group of amphibians with a lizard-like appearance, including short legs and a tail in both larval and adult forms.</p>
+  <aside>
+      <p>The Rough-skinned Newt defends itself with a deadly neurotoxin.</p>
+  </aside>
+  <p>Several species of salamander inhabit the temperate rainforest of the Pacific Northwest, including the Ensatina, the Northwestern Salamander and the Rough-skinned Newt. Most salamanders are nocturnal, and hunt for insects, worms and other small creatures.</p>
+</body>
+<footer>
+  <p>© 2020 Fooish</p>
+</footer>
+</html>

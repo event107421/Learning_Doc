@@ -1,0 +1,770 @@
+<!--
+針對行動裝置設計的網頁：
+因現在行動裝置越來越普及，越來越多的企業、組織設計網站時，都會考慮讓行動裝置的使用者在瀏覽網頁時，也能享有和使用桌上電腦瀏覽網頁時的便利
+更進一步，就是針對行動裝置的特性，打造行動裝置專屬網站/網頁，像目前一般行動裝置都具備相機、感測器等一桌上電腦沒有的硬體裝置，可利用JavaScript取得這些硬體資訊做相關應用
+另一方面則可使用像jQuery Mobile這類的framework，完全針對行動裝置設計網頁版面、內容
+-->
+
+<!--
+利用超連結在手機上寄mail、打電話、傳簡訊：
+在a元素的herf屬性中使用"http://網站URL"的方式建立網頁超連結，其中，"http:"稱為URI Scheme
+在herf屬性還可以使用許多不同的URI Scheme來啟動不同類型的應用程式，如下：
+mailto：建立啟動電子郵件的超連結，直接將信箱地址放在冒號後面即可，範例如下：
+  <a herf="mailto: service@flag.com.tw"></a>
+
+tel：建立撥電話的連結，直接將電話放在冒號後面即可，國際電話表示法要在前面加"+"符號，此外號碼之間可依需要加上括弧、連字號(-)或空白字元，範例如下：
+  <a herf="tel:0912-123-456">打行動電話給XXX</a>
+  <a herf="tel:+(886)2-1234 5678">打室內電話給XXX</a>
+
+sms：建立發送簡訊的連結，同樣將發送對象的電話放在冒號後面即可，此外，還可再電話號碼後面用"?body=簡訊內容"的語法，指定要發送的簡訊文字，範例如下：
+  <a href="sms:0912-563-708?body=你好">發簡訊給XXX</a>
+
+上述的三個URI Scheme，也可不指定對象(收件信箱、電話號碼)，此時該連結仍可開啟對應的程式
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h3><a href="mailto:">新郵件</a></h3>
+    <h3><a href="mailto:service@flag.com.tw">發信給XXX</a></h3>
+    <hr>
+    <h3><a href="tel:">打電話</a></h3>
+    <h3><a href="tel:+(886)2-2396 3257">打市內電話給XXX</a></h3>
+    <h3><a href="tel:0912-563-708">打行動電話給XXX</a></h3>
+    <!-- 這部分的文字，若是用行動裝置的瀏覽器開啟，且觸碰此段文字的話，也會開啟撥電話的形式，主要是因為目前手機瀏覽器預設會自動辨識網頁中的數字（有時會誤判），若是電話號碼形式，觸碰後就會進入打電話的畫面 -->
+    <h3>XXX的電話:<em>(02)2396 3257</em></h3>
+    <hr>
+    <h3><a href="sms:">發簡訊</a></h3>
+    <h3><a href="sms:0912-563-708?body=你好%20我想買書">發簡訊給XXX</a></h3>
+</body>
+</html>
+
+<!--
+使用定位功能：
+行動裝置多會配備GPS（Global Positioning System，全球定位系統），此外也可透過行動網路、wifi無線網路進行定位，藉此提供裝置所在的位置資訊（經緯度）
+W3C已通過Geolocation API規格，因此只要系統支援定位功能，就可以利用JavaScript存取內建navigator.geolocation物件，可呼叫下列方法取得各種定位資訊：
+getCurrentPosition()：取得目前的位置資訊，參數為成功取得時的處理函式(callback)，函式參數為位置資訊物件，其中包含coords（座標）物件
+  navigator.geolocation.getCurrentPosition(
+    function(pos){
+      console.log("經度:" + pos.coords.longituge);
+      console.log("緯度:" + pos.coords.latitude);
+      console.log("精確度:" + pos.coords.accuracy + "公尺");
+  });
+
+watchPosition()："watch"的意思是持續監看位置，此函式同樣是註冊一個callback函式(參數同getCurrentPosition())，只要GPS等裝置偵測到位置變動，系統就會呼叫參數所指的callback函式，回報最新的位置資訊
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://maps.googleapis.com/maps/api/js"></script>
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script>
+    $(function(){
+      if(navigator.geolocation)
+        navigator.geolocation.getCurrentPosition(success);
+      
+      else
+        $('#mymap').text('您的裝置不支援地圖服務!');
+    });
+    
+    // 定位成功時呼叫的函式
+    function success(pos){
+      // 將參數中的資訊顯示在網頁中
+      $('#lat').text(pos.coords.latitude);
+      $('#lng').text(pos.coords.longitude);
+      $('#acc').text(pos.coords.accuracy);
+      
+      // 以參數中的經緯度建立經緯度物件
+      var myLatlng = {lat: pos.coords.latitude,
+                     lng: pos.coords.longitude};
+      
+      // 建立地圖物件
+      var mymap=new google.maps.Map($('#mymap').get(0), {
+           zoom: 15,
+           center: myLatlng 
+      });
+      
+      // 定義一個新標記
+      new google.maps.Marker({
+              // 標記的位置
+              position: myLatlng,
+              // 標記要放的地圖
+              map: mymap,
+              // 使用旗子圖示
+              icon: 'http://maps.google.com/mapfiles/kml/shapes/flag.png'});
+    }
+  </script>
+</head>
+<body>
+  <p>
+    緯度:<b><span id="lat">?????</span></b>
+    經度:<b><span id="lng">?????</span></b><br>
+    精確度:<b><span id="acc">?????</span>公尺</b>
+  </p>
+  <div id="mymap" style="width:100%;height:300px"></div>
+</body>
+</html>
+
+<!--
+存取手機感測器：
+除了GPS外，手機上也多會配備加速度計(Accelerometer)、電子羅盤之類的感測器，可提供手機的動作資訊，此時可以利用Web API中定義的事件，即可取得手機的感測器資訊
+window.DeviceOrientationEvent：此物件為裝置方向事件，只要註冊此事件的處理函式，即可在處理函式中取得手機的方向(系統會持續回報感測結果，因此事件處理函式一秒可被呼叫多達數十次)：
+// 若系統支援方向事件，即註冊事件處理函式
+if(window.DeviceOrientationEvent){
+  window.addEventListener("deviceorientation", function(e){
+    // 透過參數e取得方向資訊
+    ...
+  })
+}
+
+上述的語法中，參數e（可自行命名）是一個物件，夠過下列屬性即可取得手機方向（翻轉動作的資訊）：
+alpha：此項表示手機相對於與螢幕垂直的z軸，做順時針方向轉動的角度（當手機頂端指向正北時為0度）
+beta：此項表示手機相對於與螢幕水平平行的x軸的旋轉角度（當手機平放時為0度，向後翻螢幕轉向自己時，角度為正，向前翻角度為負）
+gamma：此項表示手機相對於與螢幕上下平行的y軸做左右翻轉的角度（當手機平放為0度，螢幕轉向右手邊(右翻)為正，做左翻為負）
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script>
+      $(function(){
+      // 若支援方向事件, 即註冊事件處理函式
+      if(window.DeviceOrientationEvent){
+        window.addEventListener('deviceorientation', function(e){
+          /* 
+            若有支援方向感測才做以下的事情
+            主要是因為有些裝置雖然允許註冊"deviceorientation"事件處理函式
+            但實際上它只會呼叫callback函式1次，而且不會提供方向參數，所以才會需要用if語法判斷此種狀況
+          */
+          if(e.alpha!=null) {
+            // ----------顯示感測值，列出各方向的轉動角度----------
+            // 用toFixed(2)表示只顯示到小數點後第 2 位
+            $('#alpha').text(e.alpha.toFixed(2));
+            $('#beta').text(e.beta.toFixed(2));
+            $('#gamma').text(e.gamma.toFixed(2));
+            
+            // ----------設定 div 方向----------
+            // 先建立旋轉樣式屬性的屬性值字串，依alpha的角度來旋轉div區塊
+            // 用 Math.round() 將小數4捨5入成整數
+            degree = 'rotate(' + Math.round(e.alpha)+ 'deg)';
+            
+            // 用屬性值字串設定 div 的 transform 樣式屬性
+            $('#box').css('-webkit-transform', degree).
+                      css('-moz-transform', degree).
+                      css('transform', degree);
+            
+            // ----------設定 div 位置----------
+            // 轉22.5度就會移動"一格" 
+            posX=Math.round(e.gamma/22.5)+2;
+            posY=Math.round(e.beta/22.5)+2;
+            
+            // 若位置超出畫面範圍, 則移回畫面範圍內
+            if(posX>4) posX=4;else if(posX<0) posX=0;
+            if(posY>4) posY=4;else if(posY<0) posY=0;
+            
+            // 設定 div 的 left,top 樣式屬性 (調整位置)
+            // toString() 方法會傳回數值的『字串』
+            $('#box').css('left',(posX*20).toString()+'%')
+                     .css('top',(posY*20).toString()+'%');
+          }
+          // 有些裝置雖支援註冊事件, 實際上抓不到感測值，此時顯示 '不支援' 訊息
+          else       
+              $('#alpha').text('不支援 deviceorientation');
+        });
+      }
+      // 若不支援註冊事件, 則顯示訊息
+      else
+        $('#alpha').text('不支援 deviceorientation');
+      });
+  </script>
+  <style>
+      #box {
+          position: fixed;   /* 使用絕對定位 */
+          color: red;
+          font-size: 1.2em;
+          }
+  </style>
+</head>
+<body>
+    <div id="box">
+      Alpha:<span id="alpha"></span><br>
+      Beta:<span id="beta"></span><br>
+      Gamma:<span id="gamma"></span>
+    </div>
+</body>
+</html>
+
+<!--
+DeviceMotionEvent移動事件：
+註冊此項事件的處理函式，即可在callback函式參數物件取得移動和轉動的相關參數，如下：
+// 若系統支援移動事件，即註冊事件處理函式
+if(window.DeviceMotionEvent){
+  window.addEventListener("devicemotion", function(e){
+    // 透過參數e取得各項感測值
+    ...
+  })
+}
+
+在"devicemotion"事件處理函式參數中，有多個屬性物件，但不同裝置支援的項目也不盡相同，所以這邊只介紹大多裝置都支援的加速度感測器(Acceleromrter)的部分，如下：
+acceleratonIncludingGravity.z：表示手機在z軸方向的加速度，單位為(m/s^2)，向上為正，向下為負
+acceleratonIncludingGravity.y：表示手機在y軸方向的加速度，單位為(m/s^2)，向前為正，向後為負
+acceleratonIncludingGravity.x：表示手機在x軸方向的加速度，單位為(m/s^2)，向右為正，向左為負
+
+其中，物件名稱中的IncludingGravity，表示數值"包含"重力加速度(Gravity)的部分，例如手機螢幕朝上，平放在桌上，雖然是靜止的，但由於有地心引力
+所以z軸包含重力加速度的結果就是-9.8 m/s^2（重力加速度向下，所以為負值），換句話說，將取得的數值扣除重力加速度的部分，就是裝置本身的加速度
+
+另外這邊也要注意，不同的行動裝置所配備的加速度感測器不同，可感測的加速度值範圍、感測的結果亦不同
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script>
+      // 計時器物件
+      var timer;
+      // 記錄最大值
+      var accMax=0;
+      $(function(){
+        // 若支援方向事件, 即註冊事件處理函式
+        if(window.DeviceMotionEvent){
+          window.addEventListener('devicemotion', function(e){
+            if(e.accelerationIncludingGravity.x == null) {
+              $('#msg').text('不支援 accelerationIncludingGravity');
+            }
+            else {
+              // 將傳入的感測值存到變數中
+              x = e.accelerationIncludingGravity.x;
+              y = e.accelerationIncludingGravity.y;
+              z = e.accelerationIncludingGravity.z;
+              
+              // ----------顯示感測值----------
+              // 用toFixed(2)表示只顯示到小數點後第 2 位，並即時顯示目前3軸的加速度值
+              $('#x').text(x.toFixed(2));
+              $('#y').text(y.toFixed(2));
+              $('#z').text(z.toFixed(2));
+              
+              // ----------計算總加速度----------
+              // x,y,z 平方相加後開根號，算出總加速度
+              acc = Math.sqrt(x*x+y*y+z*z);
+              $('#acc').text(acc.toFixed(2));
+              
+              // -------判斷是安打或全壘打-------
+              // 若總加速度值大於 '最大值'
+              if(acc>accMax) {
+                // 記錄最大值
+                accMax = acc;
+                if(acc>20)  {
+                  if(acc>24)  
+                    $('#msg').text('全壘打! ' + acc.toFixed(2) );
+                  else 
+                    $('#msg').text('安打! ' + acc.toFixed(2));
+                  
+                  // 若已啟動計時器, 則清除之
+                  if(timer) clearTimeout(timer);
+                  
+                  // 設定 3 秒後重新顯示 '請揮棒!'，也就是剛進入網頁或是揮棒3秒後會顯示"請揮棒!"的訊息
+                  timer = setTimeout(function(){
+                    $('#msg').text('請揮棒!');
+                    // 重設最大值
+                    accMax=0;
+                    }, 3000);
+                }  // end of if(acc>20)
+              }
+            } // end of else
+          });
+        }
+        // 若不支援註冊事件, 則顯示訊息
+        else  {
+          $('#msg').text('裝置不支援 DeviceMotionEvent');
+        }
+      });
+  </script>
+  <style>
+      #msg { color: green; }
+  </style>
+</head>
+<body>
+    <h2>X:<span id="x"></span></h2>
+    <h2>Y:<span id="y"></span></h2>
+    <h2>Z:<span id="z"></span></h2>
+    <h2>總加速度:<span id="acc"></span></h2>
+    <h2><span id="msg">請揮棒!</span></h2>
+</body>
+</html>
+
+<!--
+使用jQuery Mobile建立行動網頁：
+Bootstrap是適於設計RWD網頁的Framework，可設計在桌上電腦、行動裝置都適用的網頁，而jQuery Mobile則是專為開發行動裝置網頁所設計的Framework
+而使用jQuery Mobile時和使用Bootstrap類似，除了需載入jQuery函式庫外，也需載入jQuery Mobile的JavaScript程式及CSS樣式表，官方的CDN網址如下：
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+jQuery Mobile網頁文件結構：
+一般來說，設計的HTML網頁，原則上都會完整呈現在瀏覽器中，若內容超出視窗範圍，則可捲動視窗瀏覽不同的部分
+但jQuery Mobile Framework設計手機網頁時，則是讓網頁像手機app一樣，例如一個遊戲app可能有歡迎、遊戲、設定3個畫面，而用jQuery Mobile設計網頁時，也可讓網頁包含多個畫面讓使用者切換
+在jQuery Mobile的網頁中，是用Page(頁面)構成畫面，而每個畫面則有頁首、內容、頁尾三個部分
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <style>
+      img {width:30%; float:left; margin:0 5px}
+      @media screen and (max-device-width: 480px) {
+        img {width:50%; float:left; margin:0 5px}
+      }
+  </style>
+</head>
+<body>
+    <!--
+      通常頁面、頁首、內容、頁尾等，都是利用div元素建立，而div元素的角色則是透過data-role屬性來設定
+      像這樣利用data-role="page"（頁面）、data-role="header"（頁首）、data-role="content"（內容）、data-role="footer"（頁尾）四個部分就可以簡單建構行動版的網頁
+    -->
+    <div data-role="page">
+      <!-- 若header標題過長，放不下的文字會自動取代成"..." -->
+      <div data-role="header">
+        <h1>Apple Watch 酷樂誌</h1>
+      </div>
+      <div data-role="content">
+        <img src="https://www.flag.com.tw/images/cover/middle/F5186.gif">
+        <p>發揮 Apple Watch 120 % 功能, 與 iPhone 完美互動, 成為生活、工作最佳助手！</p>    
+      </div>
+      <div data-role="footer">
+        <em>&nbsp; &copy; www.flag.com.tw</em>
+      </div>
+    </div>
+</body>
+</html>
+
+<!--
+建立多個頁面及頁面連結：
+一般來說，每個HTML文件中可有多個page頁面，此時除了在文件中加入多個data-role="page"的div區塊，至少要再加入以下兩項內容：
+1.需替每個頁面的div設定id屬性，如下：
+  /* 替頁面設定id屬性 */
+  <div data-role="page" id="page1">...</div>
+  <div data-role="page" id="page2">...</div>
+
+2.在頁面中加入指向其他頁面id的連結，例如加在頁尾中：
+  /* 加入指向其他頁的連結 */
+  <div data-role="footer">
+    <a href="#page2">下一頁</a>
+  </div>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <style>
+    a {margin-left:70%}
+  
+    img {width:30%; float:left; margin:0 5px}
+    @media screen and (max-device-width: 480px) {
+      img {width:50%; float:left; margin:0 5px}
+    }
+  </style>
+</head>
+<body>
+    <!------------ 第 1 頁 ------------>
+    <div id="page1" data-role="page">
+      <div data-role="header"><h1>Apple Watch 酷樂誌</h1></div>
+      <div data-role="content">
+        <img src="https://www.flag.com.tw/images/cover/middle/F5186.gif">    
+        <p>發揮 Apple Watch 120 % 功能, 與 iPhone 完美互動, 成為生活、工作最佳助手！</p>    
+      </div>
+      <div data-role="footer">
+        <!-- a元素預設會套用jQuery Mobile的按鈕樣式 -->
+        <a href="#page2" style="margin-left:70%">下一頁</a>
+      </div>
+    </div>
+    <!------------ 第 2 頁 ------------>
+    <div id="page2" data-role="page">
+      <div data-role="header"><h2>
+      完全詳解! Android App 活用事典</h2></div>
+      <div data-role="content">
+        <img src="https://www.flag.com.tw/images/cover/middle/F5191.gif">
+        <p>精選 App + 深入活用教學, 讓手機成為工作、生活完美助手！</p>
+      </div>
+      <div data-role="footer">
+        <a href="#page1" style="margin-left:5%">上一頁</a>
+      </div>
+    </div>
+</body>
+</html>
+
+<!--
+使用巡覽列：
+另外，也可利用data-role="navbar"的div區塊建立巡覽列（Navigator bar），在巡覽列中可用ul、li元素建立巡覽列中的項目
+並用a元素建立指向個頁面的超連結，如下：
+<div data-role="navbar">
+    <ul>
+        <li><a href="#page1" class="ui-btn-active">新書介紹1</a></li>
+        <li><a href="#page2">新書介紹2</a></li>
+        <li><a href="#about">關於我們</a></li>
+    </ul>
+</div>
+
+這邊要注意，若是每個頁面都要顯示巡覽列，就必須每個頁面都有navbar的div區塊
+但每個頁面要加入重複的navbar實在不方便，有一種做法是將navbar的內容存成獨立的html檔，再利用jQuery內load()函式，即可將navbar的內容載入到各個頁面中
+但同時也必須另外撰寫程式，以處理個頁面中不同的巡覽列內容（例如加上"ui-btn-active"等設定）
+
+另外，也可以為巡覽列加上圖示，可在a元素內加入data-icon屬性，屬性值可以是jQuery Mobile內建的圖示名稱，如下：
+data-icon="home"
+在官網可看到這些圖示及名稱，網址如下：http://api.jquerymobile.com/icons/
+因圖示預設會顯示在文字上方（top），如果想更改圖示顯示的位置，則可再加上data-iconpos屬性，可設定的值如下：
+left（左）、right（右）、bottom（下）、notext（不顯示文字）
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  
+  <style>
+    img {width:30%; float:left; margin:0 5px}
+    a {margin-left:70%}
+    
+    @media screen and (max-device-width: 480px) {
+      img {width:50%; float:left; margin:0 5px}
+    }
+  </style>
+</head>
+<body>
+    <!----- 第 1 頁 ----->
+    <div id="page1" data-role="page">
+      <div data-role="header">
+        <h1>Apple Watch 酷樂誌</h1>
+      </div>
+      <div data-role="content">
+        <img src="https://www.flag.com.tw/images/cover/middle/F5186.gif">    
+        <p>發揮 Apple Watch 120 % 功能, 與 iPhone 完美互動, 成為生活、工作最佳助手！</p>    
+      </div>
+      <div data-role="footer" data-position="fixed">
+        <div data-role="navbar">
+          <ul>
+            <!--
+              class="ui-btn-active ui-state-persist"
+              ui-btn-active：此項類別是可以讓項目呈現被選取的樣式
+              ui-state-persist：此項類別是讓jQuery Mobile在使用者切會頁面時，記住巡覽列內項目的選取狀態
+            -->
+            <li><a href="#page1" data-icon="home" class="ui-btn-active ui-state-persist">新書介紹1</a></li>
+            <li><a href="#page2" data-icon="heart">新書介紹2</a></li>
+            <li><a href="#about" data-icon="info">關於我們</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>  
+    <!----- 第 2 頁 ----->
+    <div id="page2" data-role="page">
+      <div data-role="header">
+        <h1>完全詳解! Android App 活用事典</h1>
+      </div>
+      <div data-role="content">
+        <img src="https://www.flag.com.tw/images/cover/middle/F5191.gif">
+        <p>精選 App + 深入活用教學, 讓手機成為工作、生活完美助手！</p>
+      </div>
+      <div data-role="footer" data-position="fixed">
+        <div data-role="navbar">
+          <ul>
+            <li><a href="#page1" data-icon="home">新書介紹1</a></li>
+            <!-- 不同的巡覽列內，設定class="ui-btn-active"的項目不同（也就是此類別要放在目前顯示的頁面a元素內） -->
+            <li><a href="#page2" data-icon="heart" class="ui-btn-active ui-state-persist">新書介紹2</a></li>
+            <li><a href="#about" data-icon="info">關於我們</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="about" data-role="page">
+      <div data-role="header">
+        <h1>關於我們</h1>
+      </div>
+      <div data-role="content">
+        電腦資訊科技日新月益,<br>
+        我們將提供精準、易懂的電腦書籍,<br>
+        與社會一同邁入新的文明、新的世界。
+      </div>
+      <div data-role="footer" data-position="fixed">
+        <div data-role="navbar">
+          <ul>
+            <li><a href="#page1" data-icon="home">新書介紹1</a></li>
+            <li><a href="#page2" data-icon="heart">新書介紹2</a></li>
+            <li><a href="#about" data-icon="info" class="ui-btn-active ui-state-persist">關於我們</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+</body>
+</html>
+
+<!--
+使用交談窗即可摺疊內容（Collapsible Content）：
+要在jQuery Mobile內使用交談窗，只要建立data-role="dialog"的div區塊，當使用者點選指向該區塊的連結時，就會用交談窗顯示，如下
+// 按下連結文字就會開啟交談窗
+<a href="#about">...</a>
+...
+<div id="about" data-role="dialog">...</div>
+
+若要在jQuery Mobile內使用可摺疊內容，可建立data-role="collapsible"屬性的div區塊
+此外還可以用data-collapsed屬性指定預設為展開（屬性值為false）或收起（屬性值為true，預設值）
+
+另外，一般來說，可折疊div區塊可以個別展開、收起，所以也可以將全部的div區塊展開，那如果要只留下一個展開，此時就要再把其他的可摺疊div區塊收起
+所以，如果想讓可摺疊的div區塊會自動維持"每次僅能展開一個"（例如開啟A區塊即自動收起B區塊），就可以單獨建立一個data-role="collapsible-set"的div區塊，並將所有的可摺疊div區塊放於同個區塊，此種元件稱為Accordion，如下：
+// 建立Accordion元件
+<div data-role="collapsible-set">
+  <div data-role="collapsible" data-collapsed="false">...</div>
+    <div data-role="collapsible" data-collapsed="true">...</div>
+</div>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  
+  <style>
+    img {width:30%; float:left; margin:0 5px}
+    a {margin-left:70%}
+    
+    @media screen and (max-device-width: 480px) {
+      img {width:50%; float:left; margin:0 5px}
+    }
+  </style>
+</head>
+<body>
+    <div id="page1" data-role="page">
+      <div data-role="header">
+        <h1>Apple Watch 酷樂誌</h1>
+      </div>
+      <div data-role="content">
+        <img src="https://www.flag.com.tw/images/cover/middle/F5186.gif">        
+        <!-- 可摺疊內容，將摺疊預設改為"false"（展開） -->
+        <div data-role="collapsible" data-collapsed="false">
+          <h1>簡介</h1>
+          <p>發揮 Apple Watch 120 % 功能, 與 iPhone 完美互動, 成為生活、工作最佳助手！</p>    
+        </div>
+        <!-- 可摺疊內容，將摺疊預設改為"true"（收起） -->
+        <div data-role="collapsible" data-collapsed="true">
+          <h1>詳細資料</h1>
+          <p>Apple Watch 酷樂誌<br>
+            作者：柏青哥著<br>
+            書號：F5186<br>
+            建議售價：299 元<br>
+            色彩：全彩</p>    
+        </div>
+      </div>
+      <div data-role="footer" data-position="fixed">
+        <div data-role="navbar">
+          <ul>
+            <li><a href="#page1" class="ui-btn-active ui-state-persist">新書介紹1</a></li>
+            <li><a href="#page2">新書介紹2</a></li>
+            <li><a href="#about">關於</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>  
+    <div id="page2" data-role="page">
+      <div data-role="header">
+        <h1>完全詳解! Android App 活用事典</h1>
+      </div>
+      <div data-role="content">
+        <img src="https://www.flag.com.tw/images/cover/middle/F5191.gif">
+        <p>精選 App + 深入活用教學, 讓手機成為工作、生活完美助手！</p>
+      </div>
+      <div data-role="footer" data-position="fixed">
+        <div data-role="navbar">
+          <ul>
+            <li><a href="#page1">新書介紹1</a></li>
+            <li><a href="#page2" class="ui-btn-active ui-state-persist">新書介紹2</a></li>
+            <li><a href="#about">關於</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- 『關於我』交談窗區塊 -->
+    <div id="about" data-role="dialog">
+      <div data-role="header">
+        <h1>關於我</h1>
+      </div>
+      <div data-role="content">
+      <p>版本：0.0.1</p>
+      <p>電話：(02)2396-3257</p>
+      <em>&nbsp; &copy; www.flag.com.tw</em>
+      </div>
+    </div>
+</body>
+</html>
+
+<!--
+使用jQuery Mobile事件與函式：在JavaScript的部分，jQuery Mobile提供了與行動裝置特性相關的事件與函式，以下介紹一些實用的事件
+螢幕畫面方向改變事件（範例一）：
+一般來說，要偵測手機螢幕方向改變（直向或橫向），可使用windows物件註冊orientationchange事件處理callback函式
+在函式中，可由參數物件的orientation屬性取得目前方向，其值若為"landscape"表示是橫向、"portrait"為直向
+
+行動裝置手勢事件（範例二）：
+手勢(Gesture)事件指的是手指在觸控螢幕上的動作，透過jQuery Mobile提供的手勢事件，即可捕捉使用者的手勢動作，可設定的事件如下：
+swipe：左右滑的事件
+swipeleft：向左滑動事件
+swiperight：向右滑動事件
+tap：觸碰事件
+taphold：長按事件（觸碰不放開超過0.75秒）
+-->
+
+<!-- 範例一 -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <script>
+    $(function(){
+      // 註冊方向改變事件，其中，on(事件, 處理函式)是jQuery註冊事件處理函式的語法
+      $(window).on("orientationchange", function(e) {
+        // 若為橫向，圖片佔的寬度比例改為30%
+        if (e.orientation=="landscape") {
+          $('img').css('width','30%');
+        } 
+        // 若為直向，圖片佔的寬度比例改為60%
+        else {
+          $('img').css('width','60%');
+        }
+      });
+      
+      // 文件載入時即觸發一次方向改變事件
+      $(window).orientationchange();
+    });
+  </script>
+  <style>
+    img {float:left; margin:0 5px}
+  </style>
+</head>
+<body>
+    <div data-role="page">
+      <div data-role="header">
+        <h1>Apple Watch 酷樂誌</h1>
+      </div>
+      <div data-role="content">
+        <img src="https://www.flag.com.tw/images/cover/middle/F5186.gif">
+        <p>發揮 Apple Watch 120 % 功能, 與 iPhone 完美互動, 成為生活、工作最佳助手！</p>
+      </div>
+      <div data-role="footer">
+        <em>&nbsp; &copy; www.flag.com.tw</em>
+      </div>
+    </div>
+</body>
+</html>
+
+<!-- 範例二 -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <script>
+    $(function(){
+      // 註冊向左滑事件，切換至第二頁
+      $( "#page1" ).on("swipeleft", function() {
+        // 這邊使用的$.mobile.changePage()，$.mobile是jQuery Mobile的物件，用以呼叫其提供的API，此函式主要用來切換頁面函式，除了可設定為頁面的id外，也可設為其他網頁的URL
+        // 呼叫 jQuery Mobile 的 changePage() 方法變更頁面至 #page2
+        $.mobile.changePage('#page2');
+      });
+      
+      // 註冊向右滑事件，切換至第一頁
+      $( "#page2" ).on("swiperight", function() {
+        // 呼叫 jQuery Mobile 的 changePage() 方法變更頁面至 #page1
+        $.mobile.changePage('#page1');
+      });
+      
+      // 註冊長按事件，跳出交談窗
+      $( "#page1, #page2" ).on("taphold", function() {
+        // 開啟交談窗
+        $.mobile.changePage('#about');
+      });
+    });
+  </script>
+  <style>
+    img {width:30%; float:left; margin:0 5px}
+    a {margin-left:70%}
+    
+    @media screen and (max-device-width: 480px) {
+      img {width:50%; float:left; margin:0 5px}
+    }
+  </style>
+</head>
+<body>
+  <div id="page1" data-role="page">
+    <div data-role="header">
+      <h1>Apple Watch 酷樂誌</h1>
+    </div>
+    <div data-role="content">
+      <img src="https://www.flag.com.tw/images/cover/middle/F5186.gif">    
+      <p>發揮 Apple Watch 120 % 功能, 與 iPhone 完美互動, 成為生活、工作最佳助手！</p>    
+    </div>
+    <div data-role="footer" data-position="fixed">
+      <div data-role="navbar">
+        <ul>
+          <li><a href="#page1" class="ui-btn-active ui-state-persist">新書介紹1</a></li>
+          <li><a href="#page2">新書介紹2</a></li>
+          <li><a href="#about">關於我們</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>  
+  <div id="page2" data-role="page">
+    <div data-role="header">
+      <h1>完全詳解! Android App 活用事典</h1>
+    </div>
+    <div data-role="content">
+      <img src="https://www.flag.com.tw/images/cover/middle/F5191.gif">
+      <p>精選 App + 深入活用教學, 讓手機成為工作、生活完美助手！</p>
+    </div>
+    <div data-role="footer" data-position="fixed">
+      <div data-role="navbar">
+        <ul>
+          <li><a href="#page1">新書介紹1</a></li>
+          <li><a href="#page2" class="ui-btn-active ui-state-persist">新書介紹2</a></li>
+          <li><a href="#about">關於我們</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div id="about" data-role="dialog">
+    <div data-role="header">
+      <h1>關於我們</h1>
+    </div>
+    <div data-role="content">
+      電腦資訊科技日新月益,<br>
+      我們將提供精準、易懂的電腦書籍,<br>
+      與社會一同邁入新的文明、新的世界。
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,570 @@
+<!--
+jQuery UI基本介紹：
+功能大致分為互動類（Interactions）、UI元件類（Widgets）、特效類（Effects），分別提供不同的使用者介面設計上的需求
+若是要在網頁中使用jQuery UI，必須載入以下CDN：jQuery、jQuery UI函式庫檔、jQuery UI的佈景主題樣式表，如下：
+<script src="http://code.jquery.com/jquery-2.1.4.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+但這邊要注意一點，jQuery UI的版本編號並未與jQuery同步
+另外，jQuery UI的佈景主題樣式表，這邊用的是smoothness佈景主題，網址：<link rel="stylesheet" href=".../themes/smoothness/jquery-ui.css">
+可以至官網去瀏覽個主題的效果，挑自己喜歡的做更改，例如：
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/redmond/jquery-ui.css">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/ui-lightness/jquery-ui.css">
+-->
+
+<!--
+設計功能表（Menu）：
+jQuery UI元件的基本用法，就是先利用HTML在文件中定義出元件的內容（結構、文字、項目等），接著再呼叫$(元素).元件方法()，如下：
+// 以功能表元件而言，先用ul、li元素定義好功能表內容、結構後，再呼叫menu()方法即可，把id="menu"的列表修改為功能表
+$('#menu').menu()
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Ch12-01</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-2.1.4.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <style>
+      /* 設定功能表寬度 */
+      .ui-menu {width:200px}
+    </style>
+</head>
+<body>
+    <!-- 用 ul 定義功能表內容 -->
+    <ul id="menu">
+      <!-- 用 li 定義功能表命令 -->
+      <li>課程總覽</li>
+      <!-- 用 li 項目中包含的 ul/li 會變成子功能表定義功能表命令 --> 
+      <li>網頁設計課程
+        <ul>
+          <li><a href="http://www.w3.org/html/" target="_blank">HTML5</a></li>
+          <li><a href="http://www.w3.org/Style/CSS/" target="_blank">CSS</a></li>
+          <!-- 用 2 個減號定義功能表項目中的分隔符號 --> 
+          <li>--
+          <li>JavaScript
+              <ul>
+                <li>ECMA/JavaScript
+                <li>jQuery
+              </ul>  
+          </li>
+        </ul>  
+      </li>
+      <li>手機程式設計課程
+        <ul>
+          <li>iPhone
+          <li>Android
+          <li>HTML手機程式
+      </ul>
+    </ul>
+    <script>
+      // 將清單id="#menu"變成功能表
+      $('#menu').menu();
+    </script>
+</body>
+</html>
+
+
+<!--
+設定元件選項（Options）：
+若要設定功能表（Menu）的外觀、行為等，則需再呼叫menu()方法時，如下進行初始化：
+// 可以用物件（大括號）的語法設定多個屬性
+$('#menu').menu({
+  選項名稱: 屬性值,
+  選項名稱: 屬性值,
+  ...
+})
+
+// 當以呼叫過menu()方法建立、初始化功能表後，仍可再次呼叫menu()方法來修改或讀取選項的設定值
+// 修改單一選項
+$('#menu').menu("option", "選項名稱", 設定值)
+// 讀取單一設定值
+$('#menu').menu("option", "選項名稱")
+// 讀取所有設定值
+$('#menu').menu("option")
+
+以下是幾個可以控制選單外觀的選項設定：
+1.icons：可指定代表子功能表的圖示名稱，例如：$('#menu').menu("option", "icons", {submenu: "圖示名稱"});
+         圖示名稱可參見官網 http://api.jqueryui.com/theming/icons上的清單，預設使用的是"ui-icon-carat-1-e"
+2.position：設定子功能表出現的位置，其表示方法為{my: "left top", at: "right top"}，其中my屬性代表要從子功能的什麼位置對奇
+            at屬性則是指對其上層元素的什麼位置
+            而my、at只是定位功能(position)的屬性之一，其他定位屬性可以看官網的說明：http://api.jqueryui.com/position/
+3.menu：定義功能表的HTML元素，預設值為ul
+-->
+<!-- 以下範例在menu()方法中初始化icons和positions，並利用簡單的CSS樣式設定，將原本縱向的功能表改成橫向 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-2.1.4.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <style>
+      h2 {background:wheat;
+          margin:0;
+          padding:10px
+         }
+      /* 利用float: left屬性讓li項目將最上層的功能表項目變成由左至右排列 */
+      #menu li {float:left;
+                padding-left:0.5em;}
+    </style>
+</head>
+<body>
+    <h2>橫向功能表</h2>
+    <ul id="menu">
+      <li>&nbsp;本班介紹&nbsp;
+        <ul>
+          <li>上課需知
+          <li>聯絡我們
+        </ul>
+      </li>
+      <li>網頁設計課程
+        <ul>
+          <li><a href="http://www.w3.org/html/" target="_blank">HTML5</a></li>
+          <li><a href="http://www.w3.org/Style/CSS/" target="_blank">CSS</a></li>
+          <li>--
+          <li>JavaScript
+              <ul>
+              <li>ECMA/JavaScript
+              <li>jQuery
+              </ul>  
+          </li>
+        </ul>  
+      </li>
+      <li>手機程式設計課程
+        <ul>
+        <li>iPhone
+        <li>Android
+        <li>HTML手機程式
+        </ul>
+    </ul>
+    <script>
+      $('#menu').menu({
+                      // 將子功能的圖示(icons)改成向下的三角形
+                      icons: {submenu: 'ui-icon-triangle-1-s' },
+                      // 將子功能的左上角(my: 'left top')，水平對齊上層元素左邊+10%、垂直對齊上層元素的下緣(at: 'left+10% bottom')
+                      position: { my:'left top', at: 'left+10% bottom'}
+                      });  
+    </script>
+</body>
+</html>
+
+<!--
+日期選擇器（DatePicker）：DatePicker元件是用於建立月曆式的介面，可以用來建立日期輸入欄位或是單純當成顯示月曆介面，如下：
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-2.1.4.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+</head>
+<body>
+    <table border="1">
+      <tr>
+      <td>
+        <!-- 固定顯示的月曆 -->
+        <div id="calendar"></div>
+      <td>
+        <!-- 用來幫助輸入日期的月曆 -->
+        <p>請選擇日期：<input id="popup_date"></p>
+      </tr>
+    </table>
+    <script type="text/javascript">
+      $('#calendar').datepicker();
+      $('#popup_date').datepicker({'dateFormat':'y-m-o'});
+    </script>
+</body>
+</html>
+
+<!--
+調整日期選擇器選項：可以對datepicker()方法進行日期選擇器選項的設定，以datepicker({屬性: 值, ...})的形式設定，可設定的屬性如下：
+firstDay：設定每週的第一天是星期幾，預設值為0表示星期天；設定為1的話表示每週由星期一開始，以此類推
+changeMonth：若設為true，則月曆上的月份欄會變成下拉選單，可直接選取同一年的其他月份，預設值為false
+changeYear：若設為true，則月曆上的年份欄會變成下拉選單，可直接選取前後十年，預設為false
+numberOfMonths：設定每次顯示幾個月的內容，預設值為1
+showOtherMonths：設定是否顯示月曆上不同月份的日期，預設值為false不顯示，一般來說月曆當月份都會參雜上個月、下個月的某幾個日期，設為true則會顯示其他月份的日期
+selectOtherMonths：如上個屬性，一般來說月曆當月份都會參雜上個月、下個月的某幾個日期，通常不會讓使用者選取，設為true則變成可讓使用者選取
+showAnim：設定在input欄位，按滑鼠鈕時會顯示月曆的動作有動畫效果，例如設定"fadeIn"有淡入的效果；"slideDown"為下拉效果
+duration：設定上述動畫效果播放時間，可設為"slow"、"normal"、"fast"或以毫秒為單位的時間長度
+
+除了上述的選擇器外，也有提供修改顯示的星期文字等選項，可直接在HTML文件中加入另一個script標籤，載入專為國際化日期選擇器而設的JavaScript程式：
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/i18n/jquery-ui-i18n.min.js"></script>
+加入上述的JavaScript程式後，程式就會自動偵測語系，並顯示對應的月份、星期名稱，若想自行指定其他語系，則可以加入下方語法：
+$("選擇器").datepicker($datepicker.reginal["de"])，語系縮寫：en(英文)、de(德文)、fr(法文)、ja(日文)...
+
+除了個語系預設的日期格式外，也可以用dateFormat選項指定輸入日期格式，如下：
+dateFormat: "y-m-d"
+可用的格式字串相當多，可以至下列網址查看文件說明：
+http://api.jqueryui.com/datepicker/#utility-formatDate
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Ch12-04</title>
+    <link rel="stylesheet"
+      href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-2.1.4.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+</head>
+<body>
+    <p>請選擇日期：<input id="mydate"></p>
+    <!-- 載入國際化支援程式 -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/i18n/jquery-ui-i18n.min.js"></script>
+    <script type="text/javascript">
+      $('#mydate').datepicker({
+                    firstDay: 1,              // 以週一為每週首日  
+                    numberOfMonths: 2,        // 顯示的月數
+                    showOtherMonths: true,    // 顯示其它月份日期
+                    selectOtherMonths: true,  // 可選其它月份日期
+                    changeMonth: true,        // 月份選單        
+                    changeYear: true,         // 年份選單 
+                    showAnim: 'fadeIn',       // 淡入效果
+                    duration: 750             // showAnim動畫播放時間
+      });
+    </script>
+</body>
+</html>
+
+<!--
+標籤頁（Tabs）：使用jQuery UI建立標籤頁，在程式方面只需用標籤頁的div元素物件呼叫tabs()即可
+但如果是HTML就要花功夫設計，除了最外層代表標籤頁的div元素外，必須用ul、li、a元素定義每一個標籤的內容，再用div建立個別頁面內容
+
+而tabs()可以利用各項屬性來調整標籤頁，可設定的值如下：
+collapsible：表示標籤頁的內容是否可以收起，或者稱可折疊，預設值為false；若設為true，只要在標籤上按一下，即可收起或展開標籤的內容
+event：設定觸發切換頁次的事件，預設為"click"，表示要在標籤上按一下才能換頁；若是設定"mouseover"表示只要滑鼠指到標籤，就會自動切換到該頁次
+heightStyle：設定各頁面高度格式，可設為下列3種：
+  auto：以高度最高（內容最多）的那一頁為準，來去設定標籤頁的高度
+  fill：以外部的div高度為準設定高度，若頁面內容太多，會自動出現捲軸以便捲動內容
+  content：此為預設值，每一頁的高度會依各自的內容多寡自動調整
+hide：設定切換頁面時，被隱藏頁面的特效，可設定數字或字串，設為數字時表示使用淡出的特效，數字為特效時間(毫秒)；字串可使用如下的特效名稱：
+  bounce：頁面內容彈跳後移出（或移入）
+  puff：頁面內容放大並飛出（或飛入）
+  slideUp：向上移出
+  詳細可設定的可參見官網：http://api.jqueryui.com/category/effects/
+show：設定切換頁面時，被選取頁面顯示時的特效，設定方式同hide
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <style> 
+      .author {text-align:right; margin:0;} 
+      /* 設定標籤頁元件的高度 */
+      #my_tabs{height:16em;}
+    </style>
+</head>
+<body>
+    <!-- 利用 div 建立標籤頁元件 -->
+    <div id="my_tabs">
+      <!-- 利用 ul, li 建立換頁標籤, 以 a 建立各頁內容的 id -->
+      <ul>
+        <li><a href="#poem1"><span>秋夕</span></a></li>
+        <li><a href="#poem2"><span>天淨沙</span></a></li>
+        <li><a href="#poem3"><span>飲酒詩</span></a></li>
+      </ul>
+      
+      <!-- 用 div 建立頁面內容, id 屬性需與上列 href 屬性對應 -->
+      <!-- 第 1 頁的內容 -->
+      <div id="poem1">
+        <h5 class="author">杜牧</h5>
+    　　<p>銀燭秋光冷畫屏，輕羅小扇撲流螢。</p>
+    　　<p>天階夜色涼如水，坐看牽牛織女星。</p>
+      </div>               
+      
+      <!-- 第 2 頁的內容 -->
+      <div id="poem2">
+        <h5 class="author">馬致遠</h5>
+        <h3>枯藤老樹昏鴉，</h3><h3>小橋流水人家，</h3>
+        <h3>古道西風瘦馬。</h3><h3>夕陽西下，</h3>
+        <h3>斷腸人在天涯。</h3> 
+      </div>
+      
+      <!-- 第 3 頁的內容 -->
+      <div id="poem3">
+        <h5 class="author">陶淵明</h5>
+        <h4>結廬在人境，而無車馬喧；<h4>
+        <h4>問君何能爾？心遠地自偏。<h4>
+        <h4>採菊東籬下，悠然見南山；<h4>
+        <h4>山氣日夕佳，飛鳥相與還。</h4>
+        <h4>此中有真意，欲辯已忘言。</h4>
+      </div>
+    </div>
+    <script>
+        $('#my_tabs').tabs({event:'mouseover',   // 滑鼠移到標籤上即換頁
+                            heightStyle:'fill',  // 頁面高度以最高的頁面為準
+                            show:'slideDown'});  // 顯示時有下拉的特效
+    </script>
+</body>
+</html>
+
+
+<!--
+進度棒（ProgressBar）：進度棒元件是以視覺化的方式表示某項工作執行的進度
+進度棒元件與前面的元件定義內容不太一樣，若是單單定義一個進度棒的位置，接著呼叫進度棒元件初始化設定，那只會建立一個不會動的進度棒
+所以若是要讓進度棒顯示的進度會動態變化，必須自行以程式控制要顯示的進度狀態，選項及設定進度的方式如下：
+1.value：代表進度值的選項，預設範圍為0~100(%)，像是{value: 10}表示一開始的進度就有10%，讀值時可直接呼叫progressbar("value")來讀取目前的進度值
+2.max：設定進度最大值，預設為100，若是想用來代表下載的資料量，像是500(MB)就可以設定{max: 500}
+3.change：用來設定進度棒change事件的處理函式，也就是進度值(value)改變時，就會呼叫指定的函式
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-2.1.4.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <style>
+      /*設定進度棒寬度*/
+      #progbar  {width:250px}
+      #progmsg  {width:250px; text-align:center} 
+    </style>
+</head>
+<body>
+    <!-- 用p、span元素顯示數字進度 -->
+    <p id="progmsg">進度：<span id="prognum"></span>%</p>
+    <!-- 放置進度條的位置 -->
+    <div id="progbar"></div>
+    <script>
+        $('#progbar').progressbar({
+                        // 設定初始進度
+                        value : 10,
+                        // 當進度改變時, 即更新顯示的數字
+                        change: function() {
+                                    $('#prognum').text(
+                                      // 這邊讀進度值直接呼叫this物件的progressbar('value')即可
+                                      $(this).progressbar('value'));
+                                } 
+                      });
+
+        // 利用setInterval()定時器模擬進行中工作
+        var timer = setInterval(
+                      function(){
+                        // 設定barValue變數，每0.05秒進度值就加1
+                        var barValue = $('#progbar').progressbar('value') + 1;
+                        // 接著將更新過的barValue變數值設定給進度條
+                        $('#progbar').progressbar('value', barValue);
+                        // 已達 100 時, 即取消計時器
+                        if(barValue == 100){clearInterval(timer);}
+                      }, 50);  // 每 0.05 秒呼叫一次 
+    </script>
+</body>
+</html>
+
+
+<!--
+滑桿元件（Slider）：滑桿元件和進度棒在某些行為很類似，都是利用元件的橫向變化表示數值的變化，不過進度棒是顯示資訊的元件，而滑桿則是讓使用者操作的輸入元件
+滑桿元件和進度棒元件可設定之值相似，如下：
+1.value：代表滑桿之值的選項，讀值時可直接呼叫slider("value")來讀取目前的進度值
+2.max：設定進度最大值，預設為100
+3.change：用來設定滑桿元件change事件的處理函式，也就是進度值(value)改變時，就會呼叫指定的函式
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <style>
+      #selection {margin:15px} 
+      .colorSlider {width:255px}
+      h3, p {
+        /* fit-content表示讓元素寬度恰好是足夠放入其內容大小 */
+        width: fit-content;
+        background-color:white
+      }
+    </style>
+</head>
+<body>
+    <p>自選背景色：</p>
+    <!-- span元素用來顯示調整滑桿位置時，會更新為新的顏色數值 -->
+    <p>RED: <span id="rval" class="colorVal">255</span></p>
+    <!-- 用 div 定義紅色的滑桿 -->
+    <div class="colorSlider"></div>
+    
+    <p>GREEN: <span id="gval" class="colorVal">255</span></p>
+    <!-- 用 div 定義綠色的滑桿 --> 
+    <div class="colorSlider"></div>
+    
+    <p>BLUE: <span id="bval" class="colorVal">255</span></p>
+    <!-- 用 div 定義藍色的滑桿 --> 
+    <div class="colorSlider"></div> 
+    
+    <script>
+        // 3 個滑桿共用的 change 事件處理函式
+        function onchange(){
+            // 依序取得紅綠藍 3 色滑桿數值，其中eq()方法表示尋找指定元素組的第幾個元素，需給定索引值
+            var red   = $('.colorSlider:eq(0)').slider('value');
+            var green = $('.colorSlider:eq(1)').slider('value');
+            var blue  = $('.colorSlider:eq(2)').slider('value');
+            
+            // 將更新的滑桿值顯示在對應的 span 元素
+            $('.colorVal:eq(0)').text(red);
+            $('.colorVal:eq(1)').text(green);
+            $('.colorVal:eq(2)').text(blue);
+            
+            // 利用css()方法，更新 body 的背景顏色（backgroundColor）
+            $('body').css('backgroundColor',
+                     // 以字串組合的方式, 將滑桿值組成 'rgb(r,g,b)' 字串
+                     'rgb('+ red   + ',' + 
+                             green + ',' +
+                             blue  + ')' );
+        }
+        
+        // 將所有class="colorSlider"的元素變成滑桿元件，當滑桿被使用者拖動，有更新滑桿值時就會執行change參數內的onchange函式
+        $('.colorSlider').slider({
+                            max: 255,          // 最大值 255
+                            value: 255,        // 初始值 255 
+                            change: onchange   // 設定事件處理函式
+                          });
+    </script>
+</body>
+</html>
+
+
+<!--
+設計交談窗（Dialog）：在JavaScript中，可以使用alert()函式顯示交談窗，在jQuery UI則可以用dialog()方法來自行利用HTML元素定義交談窗內容
+以下介紹幾個基本的選項設定：
+autoOpen：設定是否再呼叫dialog()方法時，即自動開啟交談窗，預設值為true，若設為false就不會自動開啟，而必須在想顯示交談窗時，另外呼叫dialog('open')開啟交談窗
+title：設定交談窗標題文字，預設值為null(表示使用div元素中用title屬性設定的標題)
+closeOnEscape：預設值為true，表示當使用者按下esc鍵時可關閉交談窗；若設為false，就只能透過交談窗的按鈕來關閉
+modal：表示當交談窗開啟時，就不能操作背景網頁，預設值為false，表示交談窗開啟時，仍可操作網頁內容
+resizable：表示可否手動調整交談窗大小，預設為true；設為false的話就表示不允許用滑鼠調整交談窗大小
+width：交談窗寬度，預設值為300(單位為px)
+height：交談窗高度，預設值為"auto"，表示由jQuery UI依交談窗內容自行調整；若要自行設定，指定以px為單位的數值即可
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+</head>
+<body>
+    <button id="but">顯示交談窗</button>
+    <div id="myDialog" title="jQuery 交談窗">
+      <p>使用jQuery UI, 要先載入 jQuery 函式庫 JavaScript 程式, 
+         也要載入 jQuery UI 函式庫 JavaScript 程式和佈景主題 CSS。</p>
+    </div>
+    <script type="text/javascript">
+      // 建立交談窗, 並做初始設定
+      $('#myDialog').dialog({autoOpen:false,
+                             draggable:false,
+                             // 交談窗開啟時，網頁會呈現灰色(不能再按按鈕)；但關閉交談窗後，仍可再按按鈕開啟交談窗
+                             modal:true,
+                             // 設定交談窗不能調整大小
+                             resizable:false,
+                             width: 360});
+      
+      // 設定按鈕事件, 按下時開啟交談窗
+      $('#but').click(function(){
+        $('#myDialog').dialog('open');
+      });
+    </script>
+</body>
+</html>
+
+
+<!--
+交談窗按鈕與事件：jQuery UI的交談窗也可以進行按鈕設定及事件處理，要在交談窗中加入按鈕，就必須使用button屬性
+每個按鈕本身可能會有一個或多個屬性需要以物件語法指定，因此在指定button屬性值是需要用陣列(array)語法，如下：
+$('#myDialog').dialog('option', 'button', [
+{...按鈕1的物件（可以只有一個或多個屬性）...},
+{...按鈕2的物件...},
+{...按鈕3的物件...},
+]);
+
+上述的按鈕物件中，可用以下屬性設定：
+text：設定按鈕出現的文字
+icons：設定出現在按鈕左、右兩邊的圖示，左邊的圖示屬性設定值為"primary"，右邊的圖示屬性為"secondary"，可依實際需要選擇是否設定
+      屬性值可使用的圖示名稱可參見官網的清單，網址如下：http://api.jqueryui.com/theming/icons
+click：設定按鈕被按下時要執行的函式
+
+加上上述的按鈕物件，建立一個按鈕事件，範例如下：
+$('#myDialog').dialog('option', 'button', [{
+text: '關閉',
+icons: {
+        // 第一個加上關閉按鈕的打叉圖示
+        primary: 'ui-icon-closethick',
+        // 第二個加上關閉按鈕的返回圖示
+        secondary: 'ui-icon-arrowreturnthick-1-w'
+        },
+// 設定按下按鈕後會關閉交談窗
+click: function(){$(this).dialog('close');}
+}]);
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <style>
+      /* 交談窗元件內建 X 關閉鈕的類別名稱 */
+      .ui-dialog-titlebar-close { display:none} /* 設定不顯示關閉鈕 */
+    </style>
+</head>
+<body>
+  <p id="msg"><span id="usrName"></span>會員, 您好！</p>
+  <div id="myDialog" title="會員登入">
+    帳號:<input id="usr" type="text"><br>
+    密碼:<input id="pss" type="password">
+  </div>
+  <script type="text/javascript">
+    // 建立含帳號名稱的陣列
+    var arrUser = ['foo@flag.com.tw', 'bar@flag.com.tw'];
+    // 建立含密碼文字的陣列
+    var arrPass = ['foo123', 'bar456']; 
+    
+    // 先將網頁中id="msg"的p元素隱藏，登入成功才顯示
+    $('#msg').hide();
+    // 建立交談窗, 並做初始設定
+    $('#myDialog').dialog({autoOpen:false,
+                           draggable:false, 
+                           modal:true,
+                           resizable:false,
+                           buttons: [
+                            {
+                             text: '登入',
+                             click: function() {
+                               /*
+                                陣列.indexOf(變數值)表示在陣列中尋找是否存在與變數值相等的元素
+                                若有相等的元素，就回傳該元素的索引值；若沒有則傳回-1
+                                所以以下語法為找使用者名稱在 usr 陣列中的索引
+                              */
+                               var i = arrUser.indexOf($('#usr').val());
+                               
+                               // 比對剛剛查找到的使用者名稱索引i，其對應的密碼是否與使用者輸入的相同
+                               if(arrPass[i] == $('#pss').val()){
+                                // 若密碼比對相符，表示登入成功，關閉交談窗
+                                $(this).dialog('close');
+                                // 將登入的帳號顯示在網頁中
+                                $('#usrName').text(arrUser[i]);
+                                // 顯示先前被隱藏的p元素
+                                $('#msg').show();
+                               }
+                             }
+                            },
+                            {
+                             text: '取消',
+                             click: function() {
+                               window.open('http://google.com','_self');
+                             }
+                            }
+                           ]
+                           });
+    
+    $('#myDialog').dialog('open');
+  </script>
+</body>
+</html>

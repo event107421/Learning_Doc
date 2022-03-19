@@ -1,0 +1,796 @@
+<!--
+RWD（Responsive Web Design，適應性網頁設計）：RWD就是指設計在不同裝置（電腦、手機、平板等）上都能正常瀏覽、檢視，且能取得相同資訊的網頁
+之所以譯為適應性網頁設計，表示網頁會依瀏覽的裝置，自行調整成適合瀏覽的版面、大小等等
+之所以會需要RWD，是因為行動裝置上網是近幾年才開始流行，且手機、平板畫面尺寸明顯與電腦螢幕不同，解析度也相差很多，所以若是單純用手機瀏覽依電腦設計的網頁
+就會有網頁被縮小至不容易閱讀的情形
+-->
+
+<!--
+瀏覽器中用來顯示網頁的部分，稱為Viewport，使用者就是透過Viewport的區域來瀏覽網頁
+在電腦上可調整瀏覽器的視窗大小來改變Viewport；在手機上Viewport相當於整個網頁，無法任意縮放
+所以若是要控制手機瀏覽器的縮放動作，可以利用HTML進行基本的RWD設計，在網頁內加入含viewport參數的<meta>標籤，一般來說電腦上的瀏覽器都會忽略此標籤，如下：
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+content：所有要設定的都放在這個屬性內
+width=device-width：設定Viewport的寬度等於裝置的寬度
+initial-scale：只是初始縮放比例為1，也就是100%
+
+viewport的content可設定的選項與參數如下：
+1.width：表示viewport的寬度，可設為數值（表示多少px），或如範例設為device-width表示裝置螢幕寬度
+2.height：表示viewport的高度，可設為數值（表示多少px），或如範例設為device-width表示裝置螢幕高度，但這邊要注意，當手機橫放時，此時螢幕高度就會變成裝置畫面的寬度
+3.initial-scale：顯示網頁的縮放比例可設為0~10.0之間的數值，數值小於1時，表示將網頁縮小顯示；大於1時則是放大顯示
+4.maximum-scale：上述比例直視一開始顯示網頁時的比例，使用者仍能觸控裝置螢幕改變縮放比例，此時可利用此設定限制使用者最大可放大到多大
+5.minimum-scale：與上一項類似，可利用此設定限制使用者最小可小縮到多小
+6.user-scalable：設定是否允許使用者縮放網頁，預設為yes表示允許縮放；若設為no則不可縮放
+
+另外，若是想測試網頁在手機上的效果，可利用瀏覽器的開發人員工具進行測試，進入開發人員工具後，可以按工具列上的手機圖示，即可模擬手機瀏覽的情形
+若是實際想用行動裝置開啟網頁，正常的做法是架設網站或租用網站空間，將網頁上傳到伺服器後，在於行動裝置瀏覽伺服器上的網頁
+或者也可以利用手機做測試，步驟如下：
+1.手機先用USB傳輸線連接電腦
+2.將網頁及網頁中用到的圖片等檔案複製到手機內部儲存空間中，例如將上述檔案複製到手機內部的Download資料夾中
+3.接著在手機瀏覽器的網址列輸入"file:///sdcard/路徑/檔名"格式的URL，這樣就能開啟儲存在手機內部的網頁
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" 
+          content="width=device-width,
+                   initial-scale=1.0,
+                   maximum-scale=2.4,
+                   minimum-scale=0.6">
+    <meta charset="utf-8">
+    <style>
+      *             {margin: 0; padding: 0;}
+      header,footer {padding: 10px 0 15px 15px;}
+      
+      article       {font-size  : 1.2em;}
+      aside {       
+          width  : 240px;
+          float  : right;
+          padding: 0 0 0 15px;
+      }
+      
+      nav ul li {
+          display     : inline-block;
+          margin-right: 25px;
+      } 
+      section p {padding: 15px 0;}
+      
+      h3        {margin: 2px 0px}
+      
+      #content { width:860px;
+                 padding: 10px 20px 0 0;  
+      }
+      
+      .tour_box { margin-bottom:20px; }
+      .clear    { clear: both; }
+    </style>
+</head>
+<body>
+    <header> <img class="logo" src="media/logo.jpg" width="346" height="84" alt=""/>
+      <nav>
+        <ul id="menu">
+          <li class="about"><a href="about.html"><span>ABOUT US</span></a></li>
+          <li class="tour"><a href="tour.html"><span>TOUR</span></a></li>
+          <li class="photo"><a href="photo.html"><span>PHOTOGRAPHY</span></a></li>
+        </ul>
+      </nav>
+    </header>
+      
+    <div id="content">
+      <aside>
+        <img src="media/maintopic1.jpg" width="220" alt=""/>
+          <div class="tour_box">
+            <div class="thumbnail"><img src="media/thumbnail_pic1.jpg" alt="Ducks">
+              <div class="caption">
+                <h3>北部賞鳥團</h3>
+                <p class="tourdate">2019/5/25 - 2019/5/28<br>
+                <a href="#">詳細內容</a>
+                <a href="#">線上報名</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="tour_box">
+            <div class="thumbnail"><img src="media/thumbnail_pic2.jpg" alt="Liberty">
+              <div class="caption">
+                <h3>夜拍團</h3>
+                <p class="tourdate">2020/2/3 - 2020/2/4<br>
+                <a href="#">詳細內容</a>
+                <a href="#">線上報名</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="tour_box">
+            <div class="thumbnail"><img src="media/thumbnail_pic3.jpg" alt="Sakura">
+              <div class="caption">
+                <h3>東京賞櫻團</h3>
+                <p class="tourdate">2020/3/27 - 2020/4/9<br>
+                <a href="#">詳細內容</a>
+                <a href="#">線上報名</a></p>
+              </div>
+            </div>
+          </div>
+        </aside>
+        
+        <article id="mainContent">    
+             <section>
+               <div class="topictitle"><img src="media/maintopic2.jpg" width="334" alt=""/></div>
+               <p>自有攝影以來，從未有一個時代會像當代如此，竟然有這麼為數眾多的人擁有單眼相機；當然，這都要歸功於進入了數位時代。但是進入的門檻變低了，可是要拍出好照片的難度，並沒有變簡單多少，依然需要謙虛的學習、仔細的觀察、準確的設定、獨到的美感、豐富的經驗、…等。 </p>
+               <p>然而，在我們的教學經驗中，我們發覺有不少攝影者，雖然已懂得一些基礎設定及技巧，但很可惜的並未繼續深究下去，致使在實拍的過程中挫折不斷，反而折損了自己的自信心。有太多的人以為有技巧就能拍出好照片，孰不知真正重要的，是相機機背後面的那顆『腦袋』 ── 必須去思考要拍些什麼？要如何拍？攝影是在詮釋您所看到的場景，在腦海中到底是何模樣？
+                 
+                 所以說，每張照片到底好不好看，是否會令人讚嘆，早在按下快門前，在腦袋裡就已決定好了，而技巧主要的目的，是要來表達出您腦海中的創意想像力！</p>
+               <p>為了激發熱愛攝影的人心中的創造力，PhotoTour 旅遊攝影網創作了本站，希望能將本團隊多年來的經驗，分享給眾多的攝影及旅遊愛好者。我們不僅希望自己能拍的更好，也期望參與的人能拍的比我們還好，讓美麗的影像充滿我們的每一天！</p>
+             </section>
+             <hr>
+             <section>
+               <p><img src="media/wallpaper_pic1.jpg" width="600" alt=""/></p>
+               <h4>春櫻</h4>
+               <p>攝影／PhotoTour</p>
+             </section>
+        </article>
+          
+        <div class="clear"></div>
+      </div>
+      <footer>PhotoTour 旅遊攝影網　   100 台北市中正區杭州南路一段15-1號19樓　  TEL: 02-2396-3257<br />
+        Copyright  ©  PhotoTour. All rights reserved.</footer>
+</body>
+</html>
+
+
+<!--
+CSS Media Query（媒體查詢）機制：
+設定viewport只是讓網頁在手機上瀏覽時，不會因為文字、圖片太小而難以閱讀，但這種算是消極的做法，若要真的處理網頁在手機上的瀏覽問題
+就需要進一步利用CSS Media Query機制，替不同的裝置設計各自適合的版面，其中，媒體(media)指的是顯示網頁的媒介（包含電腦螢幕、手機、印表機等等）
+CSS Media Query就是在樣式表中使用@media規則，定義在不同媒體類型或尺寸所使用的樣式表內容，其基本語法如下：
+
+@media(width: 1920px){body {font-size: 16px}}
+
+(width: 1920px)：代表指定媒體種類的名稱，或以小括號括住指定的媒體特徵，媒體種類如下：
+  1.all：表示適用於所有裝置
+  2.print：表示適用於印表機，在瀏覽器列印網頁，就會看到以print設定的樣式
+  3.screen：表示電腦螢幕
+  4.(媒體特徵)：可在小括號中列出媒體的特性，最常用的就是以width、height指定適用的媒體寬高，也可在前面加上max-、min-，表示適用此樣式的做大寬高或最小寬高
+
+{body {font-size: 16px}}：可以在大括號內加入指定媒體所使用的各個CSS樣式規則，這邊代表把body元素內的字型改為16px
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" 
+       content="width=device-width, initial-scale=1.0
+                maximum-scale=2.4, minimum-scale=0.6">
+    <meta charset="utf-8">
+    <title>Ch13-03</title>
+    <style>
+      * { margin: 0;  padding: 0;}
+      header,footer   { padding: 10px 0 15px 15px; }
+      article  { font-size  : 1.2em;   }
+       /* 側邊欄的樣式 */ 
+      aside {  
+          width  : 240px;
+          float  : right;
+          padding: 0 0 0 15px;
+      }
+      h3        { margin : 2px 0px    }
+      section p { padding: 15px 0;    }
+      nav ul li {
+          display: inline-block;
+          margin-right: 25px;
+      } 
+      
+      .tour_box { margin-bottom:20px; }
+      .clear    { clear: both;        }
+      
+      #content { width  : 860px;
+                 padding: 10px 20px 0 0;  
+      }
+      /**** 上面是原本的樣式表內容 ****/
+      
+      /* 設定畫面寬度小於 600px 的樣式*/
+      @media (max-width:600px) {   
+        #content, section img { 
+            /* 用百分比指定寬度 */
+            width:96%;
+        }
+        /* 當畫面寬度小於設定的600px時，將側邊欄改成橫列在畫面上 */ 
+        aside {  
+            width:100%;
+            float: none;
+            padding: 0;
+        }          
+        /* 當畫面寬度小於設定的600px時，將側邊欄中的 div 區塊縮小 */ 
+        .tour_box {
+            float:left;
+            width:30%;
+            margin-left:2%;
+        }         
+        /* 當畫面寬度小於設定的600px時，將側邊欄中的圖片縮小 */   
+        .thumbnail img{ width:75%; }      
+      }
+    </style>
+</head>
+<body>
+    <header> 
+      <img class="logo" src="media/logo.jpg" width="346" height="84" alt=""/>
+      <nav>
+        <ul id="menu">
+          <li class="about"><a href="about.html"><span>ABOUT US</span></a></li>
+          <li class="tour"><a href="tour.html"><span>TOUR</span></a></li>
+          <li class="photo"><a href="photo.html"><span>PHOTOGRAPHY</span></a></li>
+        </ul>
+      </nav>
+    </header>
+  
+    <div id="content">
+      <aside>
+        <div class="clear"><img src="media/maintopic1.jpg" width="220" alt=""/></div>
+        <div class="tour_box">
+          <div class="thumbnail"><img src="media/thumbnail_pic1.jpg" alt="Ducks">
+            <div class="caption">
+              <h3>北部賞鳥團</h3>
+              <p class="tourdate">2019/5/25 - 2019/5/28<br>
+              <a href="#">詳細內容</a>
+              <a href="#">線上報名</a></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tour_box">
+          <div class="thumbnail"><img src="media/thumbnail_pic2.jpg" alt="Liberty">
+            <div class="caption">
+              <h3>夜拍團</h3>
+              <p class="tourdate">2020/2/3 - 2020/2/4<br>
+              <a href="#">詳細內容</a>
+              <a href="#">線上報名</a></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tour_box">
+          <div class="thumbnail"><img src="media/thumbnail_pic3.jpg" alt="Sakura">
+            <div class="caption">
+              <h3>東京賞櫻團</h3>
+              <p class="tourdate">2020/3/27 - 2020/4/9<br>
+              <a href="#">詳細內容</a>
+              <a href="#">線上報名</a></p>
+            </div>
+          </div>
+        </div>
+      </aside>
+        
+      <article id="mainContent">    
+            <section>
+              <div class="topictitle"><img src="media/maintopic2.jpg" width="334" alt=""/></div>
+              <p>自有攝影以來，從未有一個時代會像當代如此，竟然有這麼為數眾多的人擁有單眼相機；當然，這都要歸功於進入了數位時代。但是進入的門檻變低了，可是要拍出好照片的難度，並沒有變簡單多少，依然需要謙虛的學習、仔細的觀察、準確的設定、獨到的美感、豐富的經驗、…等。 </p>
+              <p>然而，在我們的教學經驗中，我們發覺有不少攝影者，雖然已懂得一些基礎設定及技巧，但很可惜的並未繼續深究下去，致使在實拍的過程中挫折不斷，反而折損了自己的自信心。有太多的人以為有技巧就能拍出好照片，孰不知真正重要的，是相機機背後面的那顆『腦袋』 ── 必須去思考要拍些什麼？要如何拍？攝影是在詮釋您所看到的場景，在腦海中到底是何模樣？
+                 所以說，每張照片到底好不好看，是否會令人讚嘆，早在按下快門前，在腦袋裡就已決定好了，而技巧主要的目的，是要來表達出您腦海中的創意想像力！</p>
+              <p>為了激發熱愛攝影的人心中的創造力，PhotoTour 旅遊攝影網創作了本站，希望能將本團隊多年來的經驗，分享給眾多的攝影及旅遊愛好者。我們不僅希望自己能拍的更好，也期望參與的人能拍的比我們還好，讓美麗的影像充滿我們的每一天！</p>
+            </section>
+            <hr>
+            <section>
+              <p><img src="media/wallpaper_pic1.jpg" width="600" alt=""/></p>
+              <h4>春櫻</h4>
+              <p>攝影／PhotoTour</p>
+            </section>
+      </article>
+      <div class="clear"></div>
+    </div>
+    <footer>PhotoTour 旅遊攝影網　   100 台北市中正區杭州南路一段15-1號19樓　  TEL: 02-2396-3257<br/>
+      Copyright  ©  PhotoTour. All rights reserved.</footer>
+</body>
+</html>
+
+<!--
+但是用CSS Media Query（媒體查詢）機制這種方法可能會發生一個問題，當網站的內容、設計不同，有時為了要讓網頁能適用於多種不同裝置，可能需要設計好幾套的@media規則
+這時候就可利用一些工具來協助完成RWD的設計，像是可以使用Bootstrap自動調整網頁版面
+而Bootstrap是一套建構於jQuery之上的網頁設計框架（Framework），可利用它快速完成RWD
+
+這邊稍微解釋一下框架與函式庫的意思，函式庫是一群特定功能函式的集合，例如jQuery函式庫提供了各種與網頁處理相關的函式
+而框架則是包含特定的設計方法，使用者必須遵循其設計方法，在已架構好的框架下完成所要的工作
+如果用勞作來比喻，函式庫就像是工具像，可以用各個工具去完成不同的作品和設計；而框架則類似買套件，基本上已經具備一定雛形，但製作者仍可發揮創意來完成個人作品
+
+使用Bootstrap和使用jQuery UI類似，網頁中除了需引入jQuery函式庫外，也必須加入Bootstrap的CSS和JavaScript程式，如下：
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+也可以至官網（http://getbootstrap.com/getting-started/）下載Bootstrap的檔案到自己的網站使用，這邊下載的是一個壓縮黨，包含程式檔、CSS樣式表檔、字型檔
+
+另外，因Bootstrap設計時即以考量行動裝置設定，所以使用Bootstrap的網頁head元素中，除了加入前述的link、scrpt元素外，也必須在開頭加入以下meta標籤，如下：
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+第一項http-equiv="X-UA-Compatible"是為了IE瀏覽器而設的，此項目用來指定要以什麼IE版本的相容模式來顯示網頁
+
+Bootstrap還提供許多樣式類別，有些是方便做出類似的HTML元素樣式或是製作出手機上常見元件的外觀，這些類別的用法及範例可參見以下網址：http://getbootstrap.com/css/
+
+
+Bootstrap格狀版面：為了方便製作RWD網頁，Bootstrap已定義好一套CSS樣式，是採用格狀系統(Grid system)來規劃版面，將畫面依寬度平分為12等份，以這12等份的格子來劃分版面
+例如想利用2個div製作1:1雙欄版面，就是將每一欄div設為佔6格的空間；而要製作1:3:2的3欄版面，就是讓各欄div分別佔2、6、4格的空間
+// 1:1的雙欄，採large版面
+<div class="col-lg-6">...</div>
+<div class="col-lg-6">...</div>
+
+// 1:3:2的三欄版面，採small版面
+<div class="col-sm-2">...</div>
+<div class="col-sm-6">...</div>
+<div class="col-sm-4">...</div>
+
+要設定div區塊寬度，只需指定類別(class)名稱即可，類別名稱格式如下：
+<div class="col-xs-4">，中間的文字(xs)表示畫面寬度等級；最後的數字表示佔12格中的幾格，如這邊是4代表佔4格，也就是總畫面的1/3
+而畫面寬度等級有下表所列四種：
+xs(Extra small)：每一格的寬度是"依手機畫面寬度調整"；容器寬度是依"手機畫面寬度"；適用畫面的寬度是"<768px"
+sm(Small)：每一格的寬度是"~62px"；容器寬度是依"750px"；適用畫面的寬度是">=768"
+md(Medium)：每一格的寬度是"~81px"；容器寬度是依"970px"；適用畫面的寬度是">=992"
+lg(Large)：每一格的寬度是"~97px"；容器寬度是依"1170px"；適用畫面的寬度是">=1200px"
+
+使用多個區塊寬度類別時，套用xs、sm、md、lg的分界分別是768px、992px、1200px
+
+而上述所提到的容器(Container)，就是包含格狀系統的區塊，容器div的類別有以下可設定的值：
+container：採用固定版面寬度(如上述所示)，若螢幕、瀏覽器視窗寬度大於容器寬度，畫面兩側會出現空白
+container-fluid：以畫面寬為容器寬度的流動性版面
+row：代表橫列的第2層容器，例如上面舉例的1:1雙欄版面，就要將2個div欄位都放在類別為row的容器中，而row則是放在container或container-fluid
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <style>
+      div {font-size:1.1em}
+      /* :nth-child()是用來表示特定位置子元素的虛擬選擇器，此處用odd、even分別表示第奇數個子元素、第偶數個子元素 */
+      div div div:nth-child(even) {background: #FCF}
+      div div div:nth-child(odd)  {background: #CFC}
+    </style>
+</head>
+<body>
+    <p>container</p>
+    <!-- 當畫面夠寬時，container容器的兩邊會有margin空白 -->
+    <div class="container">
+      <div class="row">
+        <!-- md容器寬度為970，視窗寬度過小時，會自動調整成流動性版面 -->
+        <div class="col-md-3">春眠不覺曉，</div>
+        <div class="col-md-3">處處聞啼鳥。</div>
+        <div class="col-md-3">夜來風雨聲，</div>
+        <div class="col-md-3">花落知多少。</div>
+      </div>
+    </div>
+
+    <p>container-fluid</p>
+    <!-- container-fluid容器會填滿畫面寬度 -->
+    <div class="container-fluid">
+      <div class="row">
+        <!-- 若故意讓格數超過 12: 2+3+4+4=13，此時因為隔數超過12，所以最後一個div區塊就會被移到下面，右邊就會出現3格寬的空白 -->
+        <!-- xs容器會隨視窗寬度自動調整 -->
+        <div class="col-xs-2">空山不見人，</div>
+        <div class="col-xs-3">但聞人語響。</div>
+        <div class="col-xs-4">返景入深林，</div>
+        <div class="col-xs-3">復照青苔上。</div>
+      </div>
+    </div>
+
+    <p>container多個區塊類別</p>
+    <div class="container">
+      <div class="row">
+        <!-- 區塊類別可合併使用，例如下面範例class="col-sm-3 col-xs-6"，此時Bootstrap會根據畫面寬度，選擇合適的排版 -->
+        <!-- 畫面寬在大於等於768px時，會採用"col-sm-3"，也就是分成4欄；當畫面寬在小於768px時，就會變成使用"col-xs-6"，分成2欄 -->
+        <div class="col-sm-3 col-xs-6">春眠不覺曉，</div>
+        <div class="col-sm-3 col-xs-6">處處聞啼鳥。</div>
+        <div class="col-sm-3 col-xs-6">夜來風雨聲，</div>
+        <div class="col-sm-3 col-xs-6">花落知多少。</div>
+    </div>
+</div>
+</body>
+</html>
+
+<!--
+利用Bootstrap設定圖片版面：
+若要讓網頁中的圖片會隨版面調整大小，需在img元素設定為Bootstrap的img-responsive類別，並可搭配下面3個類別來製作圖片效果：
+1.img-circle：將圖片裁成圓形
+2.img-rounded：將圖片4個角設為圓角
+3.img-thumbnail：將圖片加上外框
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+          <div class="col-xs-4">
+            <!-- 先在class加上img-responsive類別，讓網頁上的圖片會隨版面調整大小，接著加上img-circle把圖片裁成圓形 -->
+            <img src="media/thumbnail_pic1.jpg" alt="Ducks" class="img-responsive img-circle" >
+            <div class="caption">
+              <h3>北部賞鳥團</h3>
+              <p class="tourdate">2019/5/25 - 2019/5/28<br>
+              <a href="#">詳細內容</a>
+              <a href="#">線上報名</a></p>
+            </div>
+          </div>
+          <div class="col-xs-4">
+            <!-- 先在class加上img-responsive類別，讓網頁上的圖片會隨版面調整大小，接著加上img-rounded把圖片改成圓角 -->
+            <img src="media/thumbnail_pic2.jpg" alt="Liberty" class="img-responsive img-rounded" >
+            <div class="caption">
+              <h3>夜拍團</h3>
+              <p class="tourdate">2020/2/3 - 2020/2/4<br>
+              <a href="#">詳細內容</a>
+              <a href="#">線上報名</a></p>
+            </div>
+          </div>
+          <div class="col-xs-4">
+            <!-- 先在class加上img-responsive類別，讓網頁上的圖片會隨版面調整大小，接著加上img-thumbnail將圖片加上外框 -->
+            <img src="media/thumbnail_pic3.jpg" alt="Sakura" class="img-responsive img-thumbnail" >
+            <div class="caption">
+              <h3>東京賞櫻團</h3>
+              <p class="tourdate">2020/3/27 - 2020/4/9<br>
+              <a href="#">詳細內容</a>
+              <a href="#">線上報名</a></p>
+            </div>
+          </div>
+        </div>
+    </div>
+    <img src="media/wallpaper_pic1.jpg" class="center-block img-responsive" alt=""/>
+</body>
+</html>
+
+<!--
+利用Bootstrap建構表格樣式：
+為方便在RWD網頁中加入便於瀏覽的表格，Bootstrap提供下列建構表格的語法：
+<div class="table-responsive">
+  <table class="table table-hover">
+    ...
+  </table>
+</div>
+
+table-responsive：設定表格區塊的類別，當畫面寬度不足時，使用者可用捲動的方式檢視表格內容
+table：此類別是用來套用Bootstrap設定的CSS表格樣式
+table-hover：設定表格樣式的類別，提供滑鼠指向的效果，也就是滑鼠所指的那一列會有灰色背景
+table-striped：含水平格線的簡易表格樣式
+table-bordered：含水平加垂直格線的表格樣式
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <p class="h3">Bootstrap 表格測試</p>
+    <!-- 畫面寬度變小時，表格的部分可獨立橫向捲動（網頁部會捲動，只有表格可以左右捲動） -->
+    <div class="table-responsive">
+      <!-- 加上table-hover類別，在電腦上檢視時，滑鼠所指的橫列會有灰色的強調效果 -->
+      <table class="table table-hover">
+        <tr>
+          <!-- 空白欄 -->
+          <td>
+          <td><img src="media/thumbnail_pic1.jpg" alt="Ducks" class="img-responsive img-circle" >
+          <td><img src="media/thumbnail_pic2.jpg" alt="Liberty" class="img-responsive img-rounded" >
+          <td><img src="media/thumbnail_pic3.jpg" alt="Sakura" class="img-responsive img-thumbnail" >
+        <tr>
+          <th>團名
+          <td>北部賞鳥團
+          <td>夜拍團
+          <td>東京賞櫻團
+        <tr>
+          <th>出發日期
+          <td>2019/5/25 - 2019/5/28
+          <td>2020/2/3 - 2020/2/4
+          <td>2020/3/27 - 2020/4/9
+      </table>
+    </div>
+</body>
+</html>
+
+<!--
+使用Bootstrap製作手機網頁巡覽列：
+利用navbar製作巡覽列元件：因為navbar元素的架構較複雜，需要用到多個HTML元素以及Bootstrap的內建類別和客制的元素屬性，以下分段說明：
+1.建立文字巡覽列（範例一）：navbar元件中的選單是定義在div區塊中，接著在div區塊中再用ul、li清單元素來定義，在div元素中需定義id屬性，並設定Boostrap內建的類別：
+  <div id="mynav" class="collapse navbar-collapse"></div>
+  id="mynav"：在navbar元件表頭中會用到，可自訂名稱
+  collapse：navbar選單列的樣式類別
+  navbar-collapse：設定選單會在寬度小於768px時被隱藏
+
+2.加入圖示、下拉功能表（範例二）：在Bootstrap圖示一般都是用span元素來設定，接著將span元素放在要顯示圖示的位置，並加上圖示類別，如下：
+  <span class="glyphicon glyphicon-home"></span>
+  glyphicon：代表插入圖示
+  glyphicon-home：代表圖示的名稱
+Bootstrap的Glyphicon圖示，是利用字型的方式提供，完整的圖示可至以下網址查看：http://getbootstrap.com/components/
+
+3.加入表頭以及在手機畫面會摺疊（Collapse）成按鈕的效果（範例三）：在第一個建立文字巡覽列，因為設定了collapse類別，所以當畫面寬度小於768px時就會被隱藏，此時若要在手機畫面上顯示手機版選單鈕，就必須在navbar元件建立表頭區塊，如下：
+<div class="navbar-header"></div>
+class="navbar-header"：代表表頭區的類別名稱
+-->
+
+<!-- 範例一 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <p class="h3">Bootstrap Navbar元件：選單區塊</p>
+    <!-- 巡覽列, navbar-default 表示白底黑字樣式 -->
+    <nav class="navbar navbar-default">
+      <!-- 選單，navbar-collapse為設定選單在寬度小於768px時被隱藏；collapse是會將選單摺疊成按鈕 -->
+      <div id="mynav" class="navbar-collapse collapse">
+        <!-- 在ul、li清單中，可以用a元素定義指向網站中各網頁的連結，下面連結先用"#"做代替 -->
+        <!-- navbar-nav是navbar元件選單樣式類別；nav是額外的選單樣式類別 -->
+        <ul class="navbar-nav nav">
+          <!-- 選單項目 1 -->
+          <li><a href="#">Home</a></li>
+          <!-- 選單項目 2 -->
+          <li><a href="#">TOUR</a></li>
+          <!-- 選單項目 3 -->
+          <li><a href="#">PHOTOGRAPHY</a></li>
+        </ul>
+      </div>
+    </nav>
+</body>
+</html>
+
+<!-- 範例二 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <p class="h2">Bootstrap Navbar元件：選單+圖示+下拉子選單</p>
+    <!-- 巡覽列, navbar-default 表示白底黑字樣式 -->
+    <nav class="navbar navbar-default">
+      <!-- 選單 -->
+      <div id="mynav" class="navbar-collapse collapse">
+        <ul class="navbar-nav nav">
+          <!-- 選單項目 1，利用glyphicon插入圖示 -->
+          <li><a href="#"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+          <!-- 選單項目 2 -->
+          <li><a href="#"><span class="glyphicon glyphicon-heart"></span> TOUR</a></li>
+          <!-- 選單項目 3 -->
+          <li><a href="#"><span class="glyphicon glyphicon-picture"></span> PHOTOGRAPHY</a></li>
+          <!-- 在Bootstrap元件中，經常利用data-toggle屬性來設定使用者操作的動作，這邊的data-toggle="dropdown"屬性值，表示當使用者按下會"展開"或"收起"下拉功能表 -->
+          <!-- 在HTML5中，允許網頁設計者自訂以"data-"為開頭的屬性名稱，目前許多JavaScript函式庫/Framework都會利用"data-"屬性來設計各種功能 -->
+          <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <!-- 選單項目 4：下拉子選單，其中<b class="caret"></b>代表有子功能的小圖示 -->
+              <span class="glyphicon glyphicon-info-sign"></span> ABOUT US<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+              <li><a href="#"><span class="glyphicon glyphicon-plane"> 經營團隊</a></li>
+              <li><a href="#"><span class="glyphicon glyphicon-user"> 創意總監</a></li>
+              <!-- 分隔線 -->
+               <li class="divider"></li>
+               <li><a href="#"><span class="glyphicon glyphicon-envelope"> 加入我們</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+</body>
+</html>
+
+<!-- 範例三 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <p class="h2">Bootstrap Navbar元件</p>
+    <!-- 巡覽列, navbar-default 表示白底黑字樣式 -->
+    <nav class="navbar navbar-default">
+      <!-- 選單表頭區塊 -->
+      <div class="navbar-header">
+        <!-- class="navbar-brand"代表表頭文字類別名稱 -->
+        <span href="#" class="navbar-brand">PhotoTour 旅遊攝影網</span>
+        <!-- 當畫面縮小至768px以下時，就顯示選單按鈕；class="navbar-toggle"代表切換按鈕的樣式類別；data-toggle="collapse"代表切換動作為摺疊 -->
+        <!-- 因為這邊是將data-target屬性值設為功能選單div的id值，以表示此按鈕對應到下面的選單區塊，所以這邊需注意因使用到id值做對應，所以這邊就要加上"#" -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynav">
+            <!--
+              用下面三條橫線語法畫出選單按鈕的圖示，以三條橫線表現的選單按鈕幾乎是必備的使用者介面要素（因為三條粗線像是漢堡，所以也稱為漢堡按鈕-Hamburger button）
+              雖然Bootstrap Glyphicon字型中也有漢堡按鈕的圖示，不過因其外觀與常見的樣式稍有不同，所以都會用下面語法來建立漢堡按鈕的圖示
+            -->
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+      </div>
+      
+      <!-- 選單 -->
+      <div id="mynav" class="navbar-collapse collapse">
+        <ul class="navbar-nav nav">
+          <!-- 選單項目 1 -->
+          <li><a href="#"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+          <!-- 選單項目 2 -->
+          <li><a href="#"><span class="glyphicon glyphicon-heart"></span> TOUR</a></li>
+          <!-- 選單項目 3 -->
+          <li><a href="#"><span class="glyphicon glyphicon-picture"></span> PHOTOGRAPHY</a></li>
+          <!-- 選單項目 4：下拉子選單 -->
+          <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-info-sign"></span> ABOUT US<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#"><span class="glyphicon glyphicon-plane"> 經營團隊</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-user"> 創意總監</a></li>
+                <!-- 分隔線 -->
+                <li class="divider"></li>
+                <li><a href="#"><span class="glyphicon glyphicon-envelope"> 加入我們</a></li>
+              </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+</body>
+</html>
+
+<!--
+使用Bootstrap建立首頁相片輪播元件：首頁上的相片輪播也是現代網站常見的設計，利用Bootstrap提供的Carousel元件可快速做出相片輪播功能
+而Carousel元件和Navbar元件類似，要用多個HTML元素及Bootstrap提供的類別和屬性，組出個部分的內容及功能
+相片輪播元件是以class="carousel slide"的容器區塊來定義，而在這個區塊內我們可以設定以下內容：
+data-ride="carousel"：代表立即啟用輪播功能
+data-interval="3000"：代表輪播速率，這邊設定的意思為每3000毫秒就換下一張（預設值為5000）
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <!-- 建立相片輪播元件，需用class="carousel slide"來定義，另外也可以設定data-ride="carousel"來立即啟用輪播功能 -->
+    <div id="photoCarousel" class="carousel slide" data-ride="carousel">
+      <!-- 相片選擇鈕：出現在輪播元件上，用以選取要檢視項目的元件，稱為Indicators，也就是相片下方的小圓圈，按圓圈時會跳到特定的相片 --> 
+      <ol class="carousel-indicators" style="margin-top:50px">
+        <!-- data-target：主要是用來對應相片輪播元件的id；data-slide-to：表示指定此圓圈代表第幾張相片(由0起算)；class="active"是配合下面語法將第一個相片設為active -->
+        <li data-target="#photoCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#photoCarousel" data-slide-to="1"></li>
+        <li data-target="#photoCarousel" data-slide-to="2"></li>
+      </ol>
+      
+      <!-- 建立相片清單時，使用類別名稱為"carousel-inner"的div區塊來建立 -->
+      <div class="carousel-inner">
+        <!-- 有active類別的是第一張輪播的相片，item項目中至少要有一個相片需加上active類別，表示由此張相片開始播放 -->
+        <div class="item active">
+          <img src="media/carousel_pic1.jpg">
+        </div>
+        <div class="item">
+          <img src="media/carousel_pic2.jpg">
+        </div>
+        <div class="item">
+          <img src="media/carousel_pic3.jpg">
+        </div>
+      </div>
+
+      <!-- 相片瀏覽鈕：指定顯示在輪播元件的兩側，用來切換上一張、下一張的按鈕造型 -->
+      <!-- 相片瀏覽鈕元件事用a元素加上left/right carousel-control類別；href屬性要設為輪播元件的id；data-slide：表示按此項目時，是要播上一張("prev")或是下一張("next") -->
+      <!-- 向左鈕(上一張) -->
+      <a class="left carousel-control" href="#photoCarousel" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+      <!-- 向右鈕(下一張) -->
+      <a class="right carousel-control" href="#photoCarousel" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+      </a>
+    </div>
+
+    <!-- 巡覽列, navbar-default 表示白底黑字樣式 -->
+    <nav class="navbar navbar-default">
+      <!-- 選單表頭區塊 -->
+      <div class="navbar-header">
+        <span href="#" class="navbar-brand">PhotoTour 旅遊攝影網</span>
+        <!-- 按鈕 -->
+        <button type="button" class="navbar-toggle" 
+                data-toggle="collapse" data-target="#mynav">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+      </div>
+      
+      <!-- 選單 -->
+      <div id="mynav" class="navbar-collapse collapse">
+        <ul class="navbar-nav nav">
+          
+          <li><a href="#"><!-- 選單項目 1 --><span class="glyphicon glyphicon-home"></span> Home</a></li>
+          <li><a href="#"><!-- 選單項目 2 --><span class="glyphicon glyphicon-heart"></span> TOUR</a></li>
+          <li><a href="#"><!-- 選單項目 3 --><span class="glyphicon glyphicon-picture"></span> PHOTOGRAPHY</a></li>
+          <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">  <!-- 選單項目 4：下拉子選單 -->
+                <span class="glyphicon glyphicon-info-sign"></span> ABOUT US<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+               <li><a href="#"><span class="glyphicon glyphicon-plane"> 經營團隊</a></li>
+               <li><a href="#"><span class="glyphicon glyphicon-user"> 創意總監</a></li>
+               <li class="divider"></li>    <!-- 分隔線 -->
+               <li><a href="#"><span class="glyphicon glyphicon-envelope"> 加入我們</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+          <div class="col-xs-4">
+            <img src="media/thumbnail_pic1.jpg" alt="Ducks"
+                 class="img-responsive img-circle" >
+            <div class="caption">
+              <h3>北部賞鳥團</h3>
+              <p class="tourdate">2019/5/25 - 2019/5/28<br>
+              <a href="#">詳細內容</a>
+              <a href="#">線上報名</a></p>
+            </div>
+          </div>
+          <div class="col-xs-4">
+            <img src="media/thumbnail_pic2.jpg" alt="Liberty"
+                 class="img-responsive img-rounded" >
+            <div class="caption">
+              <h3>夜拍團</h3>
+              <p class="tourdate">2020/2/3 - 2020/2/4<br>
+              <a href="#">詳細內容</a>
+              <a href="#">線上報名</a></p>
+            </div>
+          </div>
+          <div class="col-xs-4">
+            <img src="media/thumbnail_pic3.jpg" alt="Sakura"
+                 class="img-responsive img-thumbnail" >
+            <div class="caption">
+              <h3>東京賞櫻團</h3>
+              <p class="tourdate">2020/3/27 - 2020/4/9<br>
+              <a href="#">詳細內容</a>
+              <a href="#">線上報名</a></p>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">   
+        <div class="col-xs-12">
+           <img src="media/maintopic2.jpg" class="left-block img-responsive">
+       </div>
+       </div>
+       <div class="row">    
+       <div class="col-xs-12 col-sm-7">
+            <p>自有攝影以來，從未有一個時代會像當代如此，竟然有這麼為數眾多的人擁有單眼相機；當然，這都要歸功於進入了數位時代。但是進入的門檻變低了，可是要拍出好照片的難度，並沒有變簡單多少，依然需要謙虛的學習、仔細的觀察、準確的設定、獨到的美感、豐富的經驗、…等。 </p>
+            <p>然而，在我們的教學經驗中，我們發覺有不少攝影者，雖然已懂得一些基礎設定及技巧，但很可惜的並未繼續深究下去，致使在實拍的過程中挫折不斷，反而折損了自己的自信心。有太多的人以為有技巧就能拍出好照片，孰不知真正重要的，是相機機背後面的那顆『腦袋』 ── 必須去思考要拍些什麼？要如何拍？攝影是在詮釋您所看到的場景，在腦海中到底是何模樣？
+               所以說，每張照片到底好不好看，是否會令人讚嘆，早在按下快門前，在腦袋裡就已決定好了，而技巧主要的目的，是要來表達出您腦海中的創意想像力！</p>
+            <p>為了激發熱愛攝影的人心中的創造力，PhotoTour 旅遊攝影網創作了本站，希望能將本團隊多年來的經驗，分享給眾多的攝影及旅遊愛好者。我們不僅希望自己能拍的更好，也期望參與的人能拍的比我們還好，讓美麗的影像充滿我們的每一天！</p>
+        </div>
+        <div class="col-xs-12 col-sm-5">
+             <img src="media/wallpaper_pic1.jpg" class="center-block img-responsive">
+             <h4>春櫻</h4>
+             <p>攝影／PhotoTour</p>       
+        </div>
+      </div>          
+    </div>
+    <footer class="col-xs-12 text-info">
+      <p>PhotoTour 旅遊攝影網　   100 台北市中正區杭州南路一段15-1號19樓　  TEL: 02-2396-3257<br/>
+        Copyright  ©  PhotoTour. All rights reserved.<p>
+    </footer>
+</body>
+</html>

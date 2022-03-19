@@ -1,0 +1,680 @@
+<!--
+CSS BOX模型（BOX Model）：
+網頁文件呈現在瀏覽器時，每個元素的內容都是呈現在一個矩形的方塊中，這邊指的矩形方塊與表格不相同
+而這個方塊的大小、框線等，就由CSS樣式規則決定（若網頁沒有指定CSS，則聯覽器會使用其內建的CSS樣式表去指定這個方塊內容）
+例如：可以不建置表格，也可以將框線樣式套用在這邊說的元素矩形方塊
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        body{font-size: 1.2em; }
+        /* 如下，我們也可以對HTML內的元素加上框線樣式 */
+        body, img{border: dashed black 2px;}
+        p, h2{border: solid blue 2px;}
+        span{border: dotted red 2px;}
+    </style>
+</head>
+<body>
+    <img src="https://www.flag.com.tw/images/cover/middle/F5251.gif">
+    <h2>鹽檸檬食譜</h2>
+    <p>只靠<span>鹽檸檬</span>的調味, 就可以變化出一道道清爽健康的新風味料理。
+       這邊介紹的搭配以<span>西洋料理</span>為主, 不論是以沙拉為主的蔬食料理, 
+       或是醋醃&香煎的海鮮、肉類、義大利麵、各式麵食、麵包、飯食、湯品甚至甜點, 
+       都能做搭配。</p>
+</body>
+</html>
+
+<!--
+這邊來說明元素的BOX，可以透過瀏覽器上的開發人員工具來查看（按F12 -> 點擊上面的Elements -> 隨便點一個元素 -> 點擊右邊視窗的Computed）
+此時可以看到一個矩形的方塊，這個就是CSS BOX模型（BOX Model）
+元素的BOX由內到外包含四個部分：
+margin：最外圈的部分，也就是邊界，此屬性僅能設定寬度，不能設定顏色、樣式
+border：框線
+padding：內距，是元素內容（例如文字）與框線間的留白部分，此屬性僅能設定寬度，不能設定顏色、樣式
+content area（內容區）：元素內容的文字或圖片
+
+其中，margin、border、padding可加上"-top"、"-left"...等關鍵字獨立設定單邊的屬性值
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        img, h2, p, span {
+            border: dotted black 1px;
+            /* 上下較高，左右較窄 */
+            margin: 15px 5px;
+            /* 上下較矮，左右較寬 */
+            padding: 5px 15px;
+        }
+        h2, span {background: #EEE;}
+        
+        /* 若要明確指定內容Box大小，可以用width、height兩個屬性來設定，此屬性預設值為auto，表示由瀏覽器自行計算大小 */
+        /* 圖片會依指定大小顯示 */
+        img {width:240px; height:320px;}
+        /* 這邊設定的值會隨父元素body寬度調整，使用者若將視窗拉寬，h2、p寬度也會增加 */
+        h2, p{width:50%;}
+    </style>
+</head>
+<body>
+    <!-- 在某些情況下，相鄰元素的邊界會有重疊的效果（margin-collapsing），如下面的h2元素跟p元素，兩個元素的margin區域重疊 -->
+    <h2>鹽檸檬食譜</h2>
+    <!--
+    另外，雖然span元素有設定邊界、內距的樣式，但由於span屬於行內（inline）元素，會受到同一行文字的行高限制，所以在瀏覽器就可以看到邊界、框線、內距會與上下內容重疊
+    和行內元素相對的，稱為區塊（block）元素，其排列就像範例中的h2、p元素，會由上而下進行排序、放置
+    -->
+    <p>只靠<span>鹽檸檬</span>的調味, 就可以變化出一道道清爽健康的新風味料理。
+       這邊介紹的搭配以<span>西洋料理</span>為主, 不論是以沙拉為主的蔬食料理, 
+       或是醋醃&香煎的海鮮、肉類、義大利麵、各式麵食、麵包、飯食、湯品甚至甜點, 
+       都能做搭配。</p>
+    <!-- 
+    img元素同時具備行內與區塊的特質，稱為inline-block，與其他的inline或inline-block元素放置一起時，會呈現左右放置並列的效果
+    但即使放置於行內，預設也會像區塊元素一樣有一定的寬高，不會像span元素會與周邊元素邊界重疊
+    -->
+    <img src="https://www.flag.com.tw/images/cover/middle/F5251.gif"></td></tr>
+</body>
+</html>
+
+
+<!-- 
+控制元素定位：一般來說，區塊元素的預設是由上而下依序排列，行內元素則會由左至右排列，但可以利用CSS來調整排列方式
+1.float屬性：利用此屬性，可以控制區塊從原本版面使其漂到左邊（屬性值left）或右邊（屬性值right），原本在其下的區塊則會上移，變成在float區塊旁邊
+
+2.clear屬性：有時利用float屬性將區塊一到左右邊時，呈現的效果可能會跟預期的不一樣，例如可能會希望某個區塊旁邊不要有float的區塊，就可利用clear屬性調整，可設定的值如下：
+none：預設值，維持原排列方式
+left：若左邊出現float區塊，則將本區塊向下移，直到左邊沒有float區塊為止
+right：若右邊出現float區塊，則將本區塊向下移，直到右邊沒有float區塊為止
+both：若左右任一邊出現float區塊，則將本區塊向下移，直到兩邊都沒有float區塊為止
+
+3.position屬性：可以利用position屬性來指定區塊的定位方式，可設定的值如下：
+static：預設值，表示採預設的排版方式
+relative：指定相對位置，也就是先依預設方式將區塊排好位置後，再依屬性值所設定的位移量移至新位置，而原本的位置會留空
+absolute：指定絕對位置，也就是排列版面時會依照最接近的非static定位之上層元素（若是都static定位，則會依照瀏覽器視窗），來決定其位置
+fixed：表示區塊會固定在瀏覽器畫面上，即使使用者捲動網頁內容，fixed區塊仍會停留在視窗上的固定位置
+*上述設定值皆用top、right、bottom、left來進行設定
+-->
+<!-- 範例1 ================================ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        img {width:240px;
+            height:320px;
+            border: 5px solid white}
+        h2,p{background: yellow;margin-left:2em;}
+        .right {float:right}
+        .left  {float:left}
+        div {background: orange;}
+        /* 若沒有加上clear屬性，讓hr元素的左側無float區塊的話，hr元素之後的所有元素則會顯示到<p>元素的下方，這邊也可以設定hr{clear:both;} */
+        hr {clear:left;}
+    </style>
+</head>
+<body>
+    <img class="left"
+         src="https://www.flag.com.tw/images/cover/middle/F5251.gif">
+    <h2>鹽檸檬食譜</h2>
+    <p>只靠鹽檸檬的調味, 就可以變化出一道道清爽健康的新風味料理。
+       這邊介紹的搭配以西洋料理為主, 不論是以沙拉為主的蔬食料理, 
+       或是醋醃&香煎的海鮮、肉類、義大利麵、各式麵食、麵包、飯食、湯品甚至甜點, 
+       都能做搭配。</p>
+    <hr>
+    <div class="left">上一頁</div>
+    <div class="right">下一頁</div>
+</body>
+</html>
+
+<!-- 範例2 ================================ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        .item1{border-left: solid #2244FF 1em; }
+        /* 將清單中第 2、第 4 項用相對定位改變位置 */
+        .item2{border-right: solid #3366FF 1.5em; 
+               width:200px;
+               position:relative;
+               top: 0.6em;
+               left:2em;}
+        .item3{border-left: solid #4488FF 2em; }
+        .item4{border-right: solid #55AAFF 2.5em;
+               width:150px;
+               position:relative;
+               bottom: -0.6em;
+               right:-16em;}     
+        .item5{border-left: solid #66CCFF 3em; }        
+        img{float:right; }
+    </style>
+</head>
+<body>
+    <img src="https://www.flag.com.tw/images/cover/middle/F5128.gif">
+    <h3>想學會 Linux 不一定要挑戰艱澀的指令, 親切的視窗環境, 
+        有效降低學習門檻、建立信心, 讓你學 Linux 可以輕鬆、紮實, 
+        又有效率！</h3>
+    <p class="item1">專為初學者設計, 完整實測、逐步示範講解
+    <p class="item2">不怕弄壞系統, Live DVD 免安裝開機立即體驗, 馬上學習
+    <p class="item3">從操作、管理到架站, 正確觀念詳實解析
+    <p class="item4">統整 Linux 系統管理經驗, 分享實用技巧
+    <p class="item5">用 Linux 成功架站, 穩定性高、成本低、功能強！
+</body>
+</html>
+
+<!-- 範例3 ================================ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        p{width: 150px; 
+          background: #4488FF; 
+          color: #fe5;
+          position: absolute}
+        .item6{top: 0;
+               left: 18.25%; }
+        .item7{top: 0;
+               right: 18.25%;}
+        .item8{top: 56.25%; }
+        .item9{top: 56.25%;
+               right: 1%;}     
+        .item10{bottom: 5%;
+                left: 40%; }        
+        img{margin: 25% 30%; }
+    </style>
+</head>
+<body>
+    <img src="https://www.flag.com.tw/images/cover/middle/F5128.gif">
+    <p class="item6">專為初學者設計, 完整實測、逐步示範講解
+    <p class="item7">不怕弄壞系統, Live DVD 免安裝開機立即體驗, 馬上學習
+    <p class="item8">從操作、管理到架站, 正確觀念詳實解析
+    <p class="item9">統整 Linux 系統管理經驗, 分享實用技巧
+    <p class="item10">用 Linux 成功架站, 穩定性高、成本低、功能強！
+</body>
+</html>
+
+
+<!--
+多欄版面的設計：
+許多網站都會將網頁呈現的內容，分成兩欄或三欄排列，這邊利用div元素和CSS樣式表定義出1左1右的畫面區塊，然後再將網頁內容依序放到這兩個div元素內，就成為兩欄式的版面
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Ch08-08</title>
+    <style>
+      #left {float: left; background: wheat; width: 33%}
+      #right{float: right; width: 66%}
+      img   {width: 180px;}
+      h2    {margin: 5px; color: navy}
+    </style>
+    <base href="http://www.flag.com.tw">
+</head>
+<body>
+  <div id="left">
+    <h2>新書通報</h2>
+    <ul>
+      <li><a href="/book/5105.asp?bokno=F5910">積木閱讀法 奇蹟 3 步驟 翻轉英文閱讀力!</a></li>
+      <li><a href="/book/5105.asp?bokno=F5166">完全詳解! 免費雲端工具活用事典</a></li>
+      <li><a href="/book/5105.asp?bokno=F5524">設計職人必備 Photoshop 精緻筆刷素材集</a></li>
+      <li><a href="/book/5105.asp?bokno=F5171">網路規劃與管理實務- 協助考取 CCNA 證照</a></li>
+    </ul>
+  </div>
+  <div id="right">
+    <!--
+    這邊介紹一下&nbsp，這個是HTML字元符號，在進行一些 HTML 頁面中文對齊時，很常使用一些空格符號來調整，如下
+    &nbsp：半形的不換行空格，就是一般鍵盤上的空白鍵(space key)產生的空格
+    &ensp：半形的空格，特性為寬度是 1/2 個中文字寬度
+    &emsp：全形的空格，特性係寬度是 1 個中文字寬度
+    -->
+    <img src="/images/cover/middle/F5910.gif">&nbsp
+    <img src="/images/cover/middle/F5166.gif">&nbsp
+    <img src="/images/cover/middle/F5524.gif">&nbsp
+    <img src="/images/cover/middle/F5171.gif">
+  </div>
+</body>
+</html>
+
+
+<!--
+濾鏡特效：
+在影像處理軟體中，通常可以使用濾鏡（filter）為影像加上各種不同效果，CSS內也有filter屬性可以做到濾鏡特效
+filter可設定的值如下：
+blur()：模糊處理，括號內填入像素數，數字越大，圖形就越模糊，例如：blur(5px)
+brightness()：調整亮度，1或100%表示和原圖相同，若大於1或100%表示調亮，小於1或100%表示變暗，例如：brightness(0.5)
+contrast()：調整對比，1或100%表示和原圖相同，若大於1或100%表示增加對比，小於1或100%表示減少對比，例如：contrast(0.5)
+grayscale()：灰階處理，0表示和原圖相同，1或100%表示變成全灰階的圖案，例如：grayscale(50%)
+hue-rotate()：調整色相，將圖點在色彩環（color Circle）中旋轉的角度，0deg（0度）、360deg表示和原圖相同，例如：hue-rotate(90deg)
+invert()：反相處理，設為1或100%表示完全反相（黑變白、白變黑），例如：invert(75%)
+opacity()：調整透明度，1或100%表示和原圖相同，0表示完全透明，例如：opacity(50%)
+saturate()：調整飽和度，1或100%表示和原圖相同，大於1表示增加飽和度，例如：saturate(75%)
+sepia()：復古風，0表示和原圖相同，1或100%表示完整套用復古處理
+drop-shadow()：陰影特效，這個值與其他設定值不一樣，也可應用於非影像的元素，此屬性至少需要使用2個參數，另外還有2個選用參數，如下
+  1.X軸偏移及Y軸偏移：這2個值為必要參數，主要是拿來定義陰影位置和大小，若設為負值表示X軸向左偏移，Y軸向上偏移
+  2.模糊半徑：此為選用參數，用來設定陰影的邊緣是平滑（預設值）或是有模糊的效果
+  3.陰影顏色：選用參數
+
+這邊要注意一點是，有些屬性效果的規格尚未定案時，有些瀏覽器會將其視為實驗性的規格，對這類實驗性、非標準的樣式屬性，需視情況再屬性名稱前面加上字首，瀏覽器才能辨識，如下：
+-webkit-：適用於Chrome、Opera、Safari瀏覽器，可以再字首後面加上實驗性的屬性，例如：-webkit-filter
+-moz-：適用於Firefox瀏覽器，可以再字首後面加上實驗性的屬性，例如：-moz-filter
+-ms-：適用於Internet Explorer瀏覽器，可以再字首後面加上實驗性的屬性，例如：-ms-filter
+所以一般為了要讓這種所設的樣式能在不同瀏覽器上都生效，就須將各瀏覽器各自適用的樣式宣告都一起放入樣式表中
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        div      { float:left; margin:10px;}
+        img      { width:300px; 
+                   height:320px;
+                   margin:1em; 
+        }
+        #origin  { width:480px; }
+        #blur {
+            /* 同時加上兩種版本的屬性宣告，讓所設樣式能在不同瀏覽器上都生效 */
+            filter:blur(5px);
+            -webkit-filter:blur(5px);
+        }  
+        #contrast {
+            filter:contrast(300%);
+            -webkit-filter:contrast(300%);
+        }
+        #hue-rotate {
+            filter:hue-rotate(90deg);
+            -webkit-filter:hue-rotate(90deg);
+        }
+        #sepia {
+            filter:sepia(90%);
+            -webkit-filter:sepia(90%);
+        }
+        #saturate {
+            filter:saturate(3);
+            -webkit-filter:saturate(3);
+        }
+        
+        /* 深灰色文字陰影 */
+        h2{ text-shadow: 2pt 1pt darkgray;}
+        /* 在右下方顯示青色陰影 */
+        #shadow1 {   
+            filter: drop-shadow(6px 6px cyan);
+            -webkit-filter: drop-shadow(6px 6px cyan);
+        }
+        /* 在左上方顯示黑色陰影 */
+        #shadow2 {  
+            filter: drop-shadow(-12px -16px 5px);
+            -webkit-filter: drop-shadow(-12px -16px 5px);
+        }
+        .right {    float: right   }
+        .left  {    float: left    }
+    </style>
+</head>
+<body>
+    <img id="origin" src="media/sydney.jpg">
+    <div>
+      <img id="blur" src="media/sydney.jpg">
+      <br><span>blur(5px)</span></div>
+    <div>
+      <img id="contrast" src="media/sydney.jpg">
+      <br><span>contrast(300%)</span></div>
+    <div>
+      <img id="hue-rotate" src="media/sydney.jpg">
+      <br><span>hue-rotate(90deg)</span>
+    </div>
+    <div>
+      <img id="sepia" src="media/sydney.jpg">
+      <br><span>sepia(90%)</span>
+    </div>
+    <div>
+      <img id="saturate" src="media/sydney.jpg">
+      <br><span>saturate(3)</span>
+    </div>
+
+    <img id="shadow1" class="left" src="https://www.flag.com.tw/images/cover/middle/F5251.gif">
+    <img id="shadow2" class="right" src="https://www.flag.com.tw/images/cover/middle/F5251.gif">
+    <!-- 文字中也有陰影效果，可利用text-shadow屬性來設定 -->
+    <h2>鹽檸檬食譜</h2>
+    <p>只靠鹽檸檬的調味, 就可以變化出一道道清爽健康的新風味料理。 這邊介紹的搭配以西洋料理為主, 不論是以沙拉為主的蔬食料理, 或是醋醃&香煎的海鮮、肉類、義大利麵、各式麵食、麵包、飯食、湯品甚至甜點, 都能做搭配。
+    </p>
+</body>
+</html>
+
+
+<!--
+轉移特效：
+轉移（transition）特效，指的是狀態的變化，例如讓網頁a元素的文字，在滑鼠指過去時由藍變紅
+也就是利用之前講過的:hover等虛擬類別，可時作出上述變化，再結合下列的屬性，就可以進一步控制轉移的過程，產生視覺上的效果，可設定之屬性如下：
+transition-duration：指定轉移過程時間長度，預設為0秒
+transition-delay：指定轉移延遲多久才開始，預設為0秒，設定值要加上時間單位，例如：5s、5ms
+transition-property：可以指定轉移的屬性，預設為所有屬性
+transition-timing-function：指定轉移過程的變化速率，可使用下列函式名稱：
+  ease：以先快後慢的方式變化，此為預設值
+  ease-in：以先慢後快的方式變化
+  ease-out：同樣是先快後慢，但變化率與ease不同，前段加速的部分較ease緩和
+  linear：以一致的速度變化
+
+這邊也可以將上述各個屬性，利用簡寫trasition屬性來進行設定，因為transition-duration、transition-delay兩個屬性都是跟時間有關，所以要用transition設定時要注意第一個時間為duration，第二個為delay
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Ch08-12</title>
+    <style>
+      img {
+          /* 圖片大小預設為 0 */
+          width:0px;         
+          position:absolute;
+          left:210px;
+          /* 轉移時間 0.5 秒 */
+          transition: 0.5s;  
+          }
+      h2  {margin:5px; color:navy}
+      li  {width:180px;}
+      a   {transition: 2s,            /* 第1組:轉移時間 2 秒   */
+                       4s             /* 第2組:轉移時間 4 秒   */
+                       color          /*       轉移 color 屬性 */
+                       2s;}           /*       延後 2 秒才開始 */
+      a:hover {
+              background:blue;        /* 第1組轉移效果 */
+              color:white;            /* 第2組轉移效果 */
+              }   
+      /* 滑鼠所指的 a 元素之後的 img 元素, (圖片) 寬度設為 180px */
+      a:hover + img {width:180px;} 
+    </style>
+    <base href="http://www.flag.com.tw">
+</head>
+<body>
+  <h2>新書通報</h2>
+  <ul>
+    <li>
+      <a href="/book/5105.asp?bokno=F5910">積木閱讀法 奇蹟 3 步驟 翻轉英文閱讀力!</a>
+      <img src="/images/cover/middle/F5910.gif">
+    </li>
+    <li>
+      <a href="/book/5105.asp?bokno=F5166">完全詳解! 免費雲端工具活用事典</a>
+      <img src="/images/cover/middle/F5166.gif">
+    </li>
+    <li>
+      <a href="/book/5105.asp?bokno=F5524">設計職人必備 Photoshop 精緻筆刷素材集</a>
+      <img src="/images/cover/middle/F5524.gif">
+    </li>
+    <li>
+      <a href="/book/5105.asp?bokno=F5171">網路規劃與管理實務- 協助考取 CCNA 證照</a>
+      <img src="/images/cover/middle/F5171.gif">
+    </li>
+  </ul>
+</body>
+</html>
+
+<!--
+動畫特效：
+一般來說，CSS的transition屬性只能配合:hover、:active等選擇器，在特定時機產生動態效果
+但如果想讓動態效果不只在上述的時機發生，就可以使用animation屬性，可設定之屬性如下：
+animation-duration：設定動畫播放的時間長度
+animation-delay：動畫延遲開始播放時間
+animation-timing-function：指定動畫播放過程各階段的快慢，可使用下列函式名稱：
+  ease：以先快後慢的方式變化，此為預設值
+  ease-in：以先慢後快的方式變化
+  ease-out：同樣是先快後慢，但變化率與ease不同，前段加速的部分較ease緩和
+  linear：以一致的速度變化
+animation-iteration-count：指定重複次數，預設值為1，表示只播1次；可設定infinite代表無限次循環播放
+animation-name：用來設定動畫名稱，這個名稱必須另外用@keyframes規則指定，@keyframes是用來建立動畫的內容，也就是指定動畫的畫格（frame）是如何變化，同時也指定這個動畫的名稱
+  @keyframes基本語法如下：
+    @keyframes 自訂的動畫名稱{
+      /* 畫格的規則 */
+    }
+  這邊"畫格的規則"是指利用百分比數字或關鍵字from（相當於0%，動畫開始處）、to（相當於100%，動畫結束處），來設定不同階段的畫格規則
+  例如：想製作背景圖案由左至右的動畫，就可以定義@keyframes如下：
+    @keyframes moving{
+      /* 開始時，背景圖案在最左邊 */
+      from{background-position: left}
+      /* 結束時，背景圖案在最右邊 */
+      to{background-position: right}
+    }
+
+總結來說，若是要製作出動態背景圖案的效果，依序完成以下設定即可：
+1.用@keyframes建立好動畫
+2.用animation設定好播放方式
+3.設定背景圖案相關屬性
+-->
+<!--  範例1 =====================================================  -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+      @keyframes moving {
+        from { background-position: 0% }
+      
+        to   { background-position: 100% }
+      }
+       
+      body {
+          background-image : url(media/bg-cloud.png);
+          /* 讓圖案不重複 */
+          background-repeat : no-repeat;
+          background-position: center center;  
+          height: 240px;
+          /* 30秒完成背景圖案依照moving定義的動畫方式 */
+          animation: moving 30s linear infinite;
+      }
+    </style>
+</head>
+<body>
+  <p>小雨滴，滴滴滴，是雲的眼淚，一滴一滴飄下來。</p>
+</body>
+</html>
+
+<!-- 範例2 ===================================================== -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Ch08-14</title>
+    <style>
+        ol {border: 2px dotted orange; }
+        /* 利用右框線表示投票數 */
+        li { 
+            margin: 3px; 
+            width:  8em;
+            border-right-style: solid;
+            border-right-color: red;
+        }
+        /* 建立 3 個 keyframes, 分別設定不同的框線寬度 */
+        @keyframes bar1 {
+            from {
+                border-right-width: 0px
+            }
+            to {
+                border-right-width: 150px
+            }
+        }
+        @keyframes bar2 {
+            from {
+                border-right-width: 0px
+            }
+            to {
+                border-right-width: 100px
+            }
+        }
+        @keyframes bar3 {
+            from {
+                border-right-width: 0px
+            }
+            to {
+                border-right-width: 50px
+            }
+        }
+        
+        /* 
+           用 id 選擇器建立所要的動畫效果 
+           各動畫時間長度不同, 都只會執行 1 次
+        */
+        #htm {
+            animation: bar1 2s ease;
+            /* 因動畫播放完後，框線寬度會變回瀏覽器預設值，所以必須設定border-right-width屬性讓長條圖停在最終票數的長度 */
+            border-right-width: 150px
+        }
+        
+        #css {
+            animation: bar2 1.5s ease-out;
+            /* 因動畫播放完後，框線寬度會變回瀏覽器預設值，所以必須設定border-right-width屬性讓長條圖停在最終票數的長度 */
+            border-right-width: 100px
+        }
+        
+        #js {
+            animation: bar3 1s ease-in;
+            /* 因動畫播放完後，框線寬度會變回瀏覽器預設值，所以必須設定border-right-width屬性讓長條圖停在最終票數的長度 */
+            border-right-width: 50px
+        }
+    </style>
+</head>
+
+<body>
+    <h3>最受歡迎網頁程式語言</h3>
+    <ol>
+        <li id="htm">HTML:150票</li>
+        <li id="css">CSS:100票</li>
+        <li id="js">JavaScript:50票</li>
+    </ol>
+</body>
+</html>
+
+
+<!-- 動畫範例 =========================================================== -->
+<!-- 範例1： -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Bill的網頁</title>
+    <style>
+      /* 一般來說，若我們要利用css來設定網頁動畫時，我們需要先定義一個動畫，定義的方法是利用@keyframs這個語法，然後加上要定義的動畫名稱，如下 */
+      @keyframes change-color{
+        /* 裡面要寫上要從什麼時間開始，什麼時間結束 */
+        /* 例如，下面的意思就是change-color這個動畫，從背景顏色紅色到背景顏色藍色 */
+        from{background-color: red;}
+        to{background-color: blue;}
+      }
+
+      .box{
+        width:200px;
+        height:200px;
+        background-color: grey;
+      }
+
+      .box-animation{
+        /* 接著我們將上面定義的動畫套用到標籤內 */
+        animation-name:change-color;
+        /* 然後我們再給這個動畫要持續的時間，此時在這五秒內，我們box這個容器創造出來的正方形框框，就會在這五秒慢慢的從紅色變成藍色，結束後再變回原本設定的灰色 */
+        animation-duration:5s;
+        /* 我們也可以定義動畫的循環次數，此時change-color這個動畫就會跑兩次，如果要無限次重跑動畫則可以設定infinite */
+        animation-iteration-count:2;
+        /* 我們也可以設定延遲時間，也就是當使用者的網頁載入完成後，要隔多久才開始執行動畫 */
+        /* 例如我們可以設定當網頁載入完成後，我們延遲五秒才開始執行動畫，如下 */
+        animation-delay:5s;
+      }
+    </style>
+  </head>
+<body>
+  <!-- animation(動畫) -->
+  <h1>css教學</h1>
+  <div class="box box-animation"></div>
+</body>
+</html>
+
+
+
+
+<!-- 範例2： -->
+<!-- 接續範例1 -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Bill的網頁</title>
+    <style>
+      /* 一般來說，若我們要利用css來設定網頁動畫時，我們需要先定義一個動畫，定義的方法是利用@keyframs這個語法，然後加上要定義的動畫名稱，如下 */
+      @keyframes change-color{
+        /* 裡面要寫上要從什麼時間開始，什麼時間結束 -->
+        /* 我們也可以不用照範例10的動畫設定from to，而是利用%數代替 -->
+        /* 此時，就會依照我們在套用css樣式的animation-duration秒數進行計算，例如我們下面若是設定10s，此時10s的20%(也就是第2秒的時候)，動畫就會變成橘色，以此類推 */
+        0% {background-color: red;}
+        20% {background-color: orange;}
+        40% {background-color: yellow;}
+        60% {background-color: green;}
+        80% {background-color: blue;}
+        100% {background-color: purple;}
+      }
+
+      .box{
+        width:200px;
+        height:200px;
+        background-color: grey;
+      }
+
+      .box-animation{
+        /* 接著我們將上面定義的動畫套用到標籤內 */
+        animation-name:change-color;
+        animation-duration:10s;
+        animation-iteration-count:1;
+        animation-delay:5s;
+      }
+    </style>
+  </head>
+<body>
+  <!-- animation(動畫) -->
+  <h1>css教學</h1>
+  <div class="box box-animation"></div>
+</body>
+</html>
+
+
+<!-- 範例3： -->
+<!-- 接續範例1、範例2 -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Bill的網頁</title>
+    <style>
+      /* 我們一樣另外創建一個css檔案，來做標籤內容樣式的設定 */
+      /* 一般來說，若我們要利用css來設定網頁動畫時，我們需要先定義一個動畫，定義的方法是利用@keyframs這個語法，然後加上要定義的動畫名稱，如下 */
+      @keyframes change-color{
+        /* 裡面要寫上要從什麼時間開始，什麼時間結束 -->
+        /* 2.接著我們在設定顏色這邊也設定上位置的屬性，這樣就會按照執行的%數改變顏色，並且移動到下方語法設定的位置 */
+        0% {background-color: red; top:10px; left:10px;}
+        20% {background-color: orange; top:20px; left:20px;}
+        40% {background-color: yellow; top:30px; left:30px;}
+        60% {background-color: green; top:40px; left:40px;}
+        80% {background-color: blue; top:50px; left:50px;}
+        100% {background-color: purple; top:60px; left:60px;}
+      }
+
+      .box{
+        width:200px;
+        height:200px;
+        background-color: grey;
+        /* 1.若我們還想要讓方塊動起來的話，此時要先在原本方塊設定加上位置的屬性，如下 */
+        position:relative;
+      }
+
+      /* 3.若我們不想要網頁載入之後動畫自動執行，我們也可以對此class加上hover的屬性，此時這個方塊在使用者滑鼠移動到的時候才會觸發動畫 */
+      .box-animation:hover{
+        animation-name:change-color;
+        animation-duration:2s;
+        animation-iteration-count:1;
+        animation-delay:5s;
+      }
+    </style>
+  </head>
+<body>
+  <!-- animation(動畫) -->
+  <h1>css教學</h1>
+  <div class="box box-animation"></div>
+</body>
+</html>
+

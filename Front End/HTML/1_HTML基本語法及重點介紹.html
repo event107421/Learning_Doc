@@ -1,0 +1,558 @@
+<!-- 重點整理網址： ============================= ->
+https://tw.alphacamp.co/blog/html-guide
+https://www.itread01.com/p/633972.html
+
+線上練習網站：
+https://www.w3schools.com/howto/default.asp
+-->
+
+<!-- 重點整理： =================================================== -->
+HTML 全名為 HyperText Markup Language ，中文翻為「 超文本標記語言 」
+要了解 HTML 標籤之前，你要先知道常聽到的 「 HTML 5 」 只是 HTML 最新的版本
+
+<!-- HTML<!DOCTYPE html>的意思： ================================== -->
+在一份標準的HTML文件中，在第一行都會有<!DOCTYPE html>，DOCTYPE其實是Document Type的簡寫，也就是文件類型的意思
+而<!DOCTYPE html>的作用是告訴瀏覽器這是一份以「HTML標記語言(markup language)」所撰寫的文件，所以請用HTML的定義來解讀我
+瀏覽器打開一份HTML文件時，當瀏覽器讀取到第一行看到<!DOCTYPE html>這行宣告時，瀏覽器就知道說，「喔，這份文件內容是HTML標記語言撰寫的，所以我必須用我的HTML翻譯器來解讀」。
+
+那你可能會想，welcome.html的副檔名.html不就代表這是一份HTML檔案了嗎，為什麼還要特別用<!DOCTYPE html>呢？
+那是因為HTML本身也是不斷在演進，所以有不同的版本。目前是HTML 5，而在幾年前是HTML 4.01，其DOCTYPE的宣告是下面這個樣子：
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+到了HTML 5，就是下面比較簡單的樣子：
+<!DOCTYPE html>
+
+所以瀏覽器看到HTML 4.01的DOCTYPE宣告，就會知道應該用HTML 4.01版本來解讀，看到HTML 5的DOCTYPE宣告就知道要用HTML 5版本來解讀。
+那可不可以把<!DOCTYPE html>放在其他位置？答案是不行，規定必須放在第一行，否則瀏覽器會認不得。誰規定的呢？一個叫W3C的組織，其負責制定HTML的標準
+
+
+<!-- HTML5元素分類： ==================================================== -->
+在HTML5之前的HTML/XHTML版本中，元素的分類大致是分為區塊層級元素、行內元素，以及除此之外的元素
+然而，從HTML5開始就沒有所謂區塊層級元素、行內元素的區別，大致分為以下7個類別
+1.Flow content（一般元素）：
+屬於一般元素通常含有文字或嵌入內容，如下：
+  1.表單相關元素：
+    1.input元素：input元素是根據type屬性中設定的值成為不同元件顯示的元素，主要用以給使用者輸入不同的值
+      可設定的屬性值：
+        search：搜尋用的文字輸入欄
+        tel：輸入電話號碼用的文字輸入欄
+        url：輸入URL用的文字輸入欄
+        email：輸入電子郵件住址的文字輸入欄
+        number：數值輸入的元件
+        range：滑桿（自行設定範圍選擇數值）
+        datetime：日期時間的輸入元件（有時區）
+        date：日期的輸入元件
+        month：月份的輸入元件
+        week：周的輸入元件
+        time：時間的輸入元件（無時區）
+        datetime-local：日期時間的輸入元件（無時區）
+        color：顏色的選擇元件
+
+    2.progress元素：progress元素是用來顯示進行狀況進度列的元素，使用max屬性來表示整體工作量，使用value屬性來表示已完成的工作量
+      以腳本改寫value屬性值，進度列就可以即時表示進行狀況
+      
+      範例：
+        <p>進行狀況：
+          <progress value="50" max="100"></progress>
+        </p>
+
+    3.meter元素：meter元素是用來表示例如硬碟使用量的情況等，這種要表示所佔比重時使用，設定方法與progress元素相同
+      只不過，meter元素還可以設定指定最小值min屬性及表示最佳值的optimum屬性
+      
+      範例：
+      <p>磁碟使用區域：
+        <meter value="50" min="0" max="100"></meter>
+      </p>
+
+    4.datalist元素：datalist元素是對input元素加入建議功能（也就是顯示輸入的候選字詞），但在不支援datalist元素的瀏覽器輸入候選字詞並不會顯示為普通的文字
+      
+      範例：
+      <p>
+        <label>您的慣用瀏覽器是？
+          <input type="text" list="browsers">
+          <datalist>
+            <option value="Google Chrome">
+            <option value="Internet Exploer">
+            <option value="Firefox">
+            <option value="Safari">
+            <option value="Opera">
+          </datalist>
+        </label>
+      </p>
+
+    5.output元素：output元素是用於輸出從其他表單元件的值算出的結果
+      
+      範例：
+      <form oninput="c.value = a.valueAsNumber + b.valueAsNumber">
+        <input type="number" name="a" step="any"> +
+        <input type="number" name="b" step="any"> =
+        <output name="c"></output>
+      </form>
+
+    6.keygen元素：keygen元素是在如網路銀行服務這種需要高度安全性的情況下，用於產生公鑰與私鑰的配對元素
+      
+      範例：
+      <form>
+        <p><keygen name="key"></keygen></p>
+      </form>
+
+  2.在HTML5中改變原本意義的元素：
+    1.small元素：原本是用來以小字顯示的元素，在HTML5中變更為用來表示一般以小字標記的部分
+    2.strong元素：表示該部分很重要的元素，在HTML5中增加了可藉由巢狀插入strong元素，提供重要度
+    3.i元素：原本是用來以斜體顯示的元素，在HTML5中變更為一般以斜體標記的部分
+    4.b元素：原本是用來以粗體顯示的元素，在HTML5中變更為用來表示希望引起注意的部分，例如文章中的關鍵字等
+    5.hr元素：原本是用來作為顯示橫線的元素，在HTML5中變更為表示段落層級的分隔元素，例如使用於場景或話題改變的部分
+    6.cite元素：原本是用來作為顯示出處、參考來源的元素，在HTML5中變更為表示作品的標題（不使用於人名）
+    7.dl元素：原本是用來作為定義清單（Definition List）的元素，在HTML5中變更為表示名稱和其相關的文章清單（Decription List）
+    8.s元素：原本是用來作為顯示刪除線的元素，在HTML5中變更為表示變得不正確的部分/沒有關連的部分
+    9.u元素：原本是用來作為顯示底線的元素，在HTML5中變更為表示習慣加上底線的部分
+
+2.Phrasing contetn（行內元素）：
+
+3.Embedded contetn（嵌入外部內容的元素）：
+在HTML5中，新增了不必使用外掛程式就能播放影片、聲音、動態影像的新元素，新增的嵌入元素如下：
+  1.audio（嵌入聲音資料）：audio元素是在網頁內嵌入聲音資料所使用的元素
+    主要可設定的屬性：
+    src="URL"：聲音資料的URL
+    controls：顯示播放用的控制按鈕，若沒加上此屬性就沒有控制器可以操作
+    autoplay：自動開始播放
+    loop：循環播放
+    muted：將聲音的音量預設為0
+    preload="保留字"：是否預載（none/metadata/auto）
+    mediagroup="群組名稱"：要同步複數個資料時加上的群組名稱
+
+    範例：<audio src="music.mp3" controls></audio>
+
+  2.video（嵌入影片資料）：video元素是在網頁內嵌入影片資料所使用的元素
+    主要可設定的屬性：
+    src="URL"：聲音資料的URL
+    controls：顯示播放用的控制按鈕，若沒加上此屬性就沒有控制器可以操作
+    autoplay：自動開始播放
+    loop：循環播放
+    muted：將聲音的音量預設為0
+    width="像素數"：播放影片的寬度
+    height="像素數"：播放影片的高度
+    poster="URL"：在準備好影片播放前顯示的圖像資料URL
+    preload="保留字"：是否預載（none/metadata/auto）
+    mediagroup="群組名稱"：要同步複數個資料時加上的群組名稱
+
+    範例：<video src="video.mp4" controls width="640" height="360"></video>
+
+  3.source（嵌入不同格式資料）：
+    audio元素、video元素可播放的資料格式視瀏覽器的種類而不同，也就是說，若只準備一種格式的資料，有可能會視瀏覽器不同而無法播放
+    因此，可以準備格式不同的多個資料的source元素，另外，使用source元素時，不得設定audio / video元素的src屬性
+
+    範例：
+    <video controls width="640" height="360">
+      <source src="video.mp4" type="video/mp4">
+      <source src="video.ogv" type="video/ogg"> 
+    </video>
+
+  4.canvas（嵌入動態影像資料）：
+    canvas元素是顯示點陣圖的動態影像的元素，實際描繪以JavaScript來控制
+
+  5.embed（嵌入使用外掛程式的資料）：
+
+
+4.Interactive content（對話型的元素）：
+5.Metadata content（文件資訊的元素）：
+6.Heading content（標題元素）：
+
+7.Sectioning content（建立區段的元素）：
+自HTML5開始新加入區段概念，即"通常從標題開始，標示圍繞某個主題的內容之連貫"的元素
+也就是，相當於1個章、節、網誌文章等，而header、main、footer這三個元素並非表示區段的元素，只有以下四個才是：
+  1.section（一般區段）：
+    section元素是區段相關元素中的基本元素，在表示如章、節這種一般區段時使用，或是不符合以下三種區段元素，就可以使用section這個元素來標記
+  2.article（只有這個區段就完結的區段）：
+    article元素是在使用於如網誌、新聞的文章，這種只有這些內容就完結的區段
+  3.aside（主要內容以外的區段）：
+    aside元素是用來表示不包含於該網頁主要內容的區段
+  4.nav（主要導覽列的區段）：
+    nav元素是用來表示該網頁主要導覽列的區段
+
+這邊要注意的是，HTML內各元素可配置的位置、可作為子元素插入的元素等，是以上述這些類別來表現
+
+
+<!-- 必要的基本標籤： ======================================================= -->
+  1.<!DOCTYPE HTML>
+    HTML5 的宣告方式，比以往的宣告方式更簡單，對於未支援 HTML5 的瀏覽器會忽略 HTML5 的特性。
+    是一個宣告，所以沒有關閉標籤
+
+  2.<html>
+    網頁的最根部元素
+
+  3.<head>
+    網頁的資訊，包含 CSS & JS 檔案的網址，內容不會顯示在頁面上
+    其實 CSS 跟 js 的引入不一定要放在 <head> 標籤裡，放在 <body> 其實也可以，只是放在 <head> 是比較常見的作法
+    常見的 <head> 內容：
+      <head>
+          <!-- 在瀏覽器 tab 標籤上的標題 -->
+          <title>網頁標題</title>
+          <!-- 聲明該頁面的編碼方式 -->
+          <meta charset="UTF-8"> 
+          <!-- 行動裝置的顯示方式，initial-scale=1.0 代表不縮放 -->
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <!-- 在瀏覽器 tab 標籤上的小圖示 -->
+          <link rel="icon" href="favicon.ico">
+          <!-- 連接 main.css -->
+          <link href="main.css" rel="stylesheet">
+          <!-- 連接 common.js -->
+          <script src="common.js"></script>
+      </head>
+  
+  4.<body>
+    網頁的主要內容，所有在畫面看得到的元素都放在裡面，因主要內容都是放在這部分，所以這邊標籤解釋另外紀錄
+
+
+<!-- 常見的 <body> 標籤： ================================================ -->
+[大區塊]：
+<header> 網頁標頭，經常包含 logo、標題、導航列
+<main> 主要內容
+<footer> 網頁結尾，經常包含版權資訊、聯絡方式
+<article> 主要文章
+<section> 段落
+<nav> 導航列
+<aside> 跟主要內文沒有太直接關係的側欄
+
+[內容]：
+<div> : 分組用(block)
+<ul> 有序清單 & <ol> 無序清單
+  底下清單都是 <li>
+  去除清單預設樣式 CSS：list-style: none
+
+[圖片相關]：
+<img> 圖片：
+  src 圖片網址
+  title 鼠標停留在圖片上的提示文字
+  alt 圖片連結失效的替代文字
+<figcaption> 圖片說明文字
+
+[文字]：
+<h1> ~ <h6> 網頁標題
+  數字越小越重要
+<p> 網頁內文
+  假文產生字： Lorerm ipsum
+  也可以用塊級字體取代： blokkfont、Redacted-Font
+<span> 分組用 ( inline )
+  通常放在 <p> 裡面
+<em> 強調文字
+<strong> 重要文字
+<blockquote> 表示引用自其他內容
+<a> 超連結 or 錨點
+  超連結：
+    href 填網址
+    target 內連 or 外連
+      _self 在同一個標籤頁跳轉
+      _blank 另開標籤頁
+
+  錨點：
+    href 填 #id
+    例如網頁要跳到 h1
+      <h1 id="title">標題</h1>
+      <a href="#title">跳到標題</a>
+<pre> 保留格式
+  因為在瀏覽器解析裡，不管內文有多少空白，都只會顯示成 1 個空白，也不會換行。所以如果要換行可以使用 <br>> 標籤
+<code> 放程式碼
+<time> 日期與時間
+<hr> 分隔線
+<br> 換行
+
+[嵌入內容]：
+<ifram> 內嵌網頁
+  src 填上要內嵌的網址
+  但 server 端可以設定擋掉被其他網頁嵌入的功能
+<embed> 嵌入一個外部資源，可以是影片、圖片、程序
+<video> 一段影片檔
+<audio> 一段聲音檔
+<source> 可填入不同的 <video> or <audio> 類型，讓瀏覽器選擇支援度高的媒體播放。
+<canvas> 通過 JavaScript 實現繪圖功能，甚至是動畫、遊戲
+<svg> 繪製一個向量圖
+
+[table 表格]：
+<thead> 表格頭部
+<tbody> 表格主體
+<tr> 橫排
+  放 <td> 表格內容
+  第一排通常會放 <th> 表頭
+
+<!-- 表單<form>介紹： ================================================ -->
+不可或缺的標籤 <form>
+1.所有 HTML 表單 都是以 <form> 元素开始，以下為 <form> 的屬性值：
+  action：表單傳送的網址
+  method：傳送方法：GET or POST
+    Get 方法 （ 默認 ）：
+    表单提交是被动的（ 比如搜索引擎查询 ），并且没有敏感信息
+    傳送的參數下在 url，都是可見的：action_page.php?firstname=Mickey&lastname=Mouse
+    而參數的 key 則為表單的 name
+    GET 最适合少量数据的提交。浏览器会设定容量限制
+
+    POST 方法：
+    表单正在更新数据，或者包含敏感信息（例如密码）
+    POST 的安全性更加，因为在页面地址栏中被提交的数据是不可见的
+
+2.單行輸入 <input>、說明文字 <label>：
+<input> 沒有關閉標籤，其中輸入類型 type 為最重要的屬性類型，以下是幾種常見的 type 類型：
+  text：純文字
+  password：顯示會以符號代替文字
+    可以使用 maxlength and minlength 來控制輸入字數
+  email：會自動做簡單驗證
+  search：搜尋框
+  tel：電話
+  url：網址
+
+  範例：
+    <form>
+      <input type="text" name="name">
+      <input type="email" name="email">
+      <input type="password" name="password">
+      <input type="search" name="search">
+      <input type="tel" name="phone">
+      <input type="url" name="url">
+    <form>
+
+3.選擇框：
+  date：日期，有些瀏覽器會出現簡單的日曆工具
+  color：選擇顏色
+  number：整數數字
+  file：上傳檔案
+  range：一個範圍的數字
+  radio：單選框
+    要設定同樣的 name
+    搭配標籤 <label> 做選取文字
+  checkbox：複選框
+    要設定同樣的 name
+    搭配標籤 <label> 做選取文字
+
+  範例：
+    <form>
+      <input type="date" name="date">
+      <input type="color" name="color">
+      <input type="file" name="upload-file">
+      <input type="number" name="sigle-number">
+      <input type="range" min="0" max="5" name="range-number">
+      <!-- 單選 -->
+      <div>
+          性別：
+          <input type="radio" name="gender" id="male" checked>
+          <label for="male">男性</label>
+          <input type="radio" name="gender" id="female">
+          <label for="female">女性</label>
+      </div>
+      <!-- 複選 -->
+      <div>
+          興趣：
+          <input type="checkbox" name="interest" id="sport">
+          <label for="sport">運動</label>
+          <input type="checkbox" name="interest" id="reading">
+          <label for="reading">閱讀</label>
+      </div>
+    <form>
+
+4.按鈕：
+  button：無動作按鈕，按下去不會發生任何事，但當你要使用 JavaScript 來操作時非常好用。
+  submit：提交按鈕，按下會送出 form 裡所有的資訊
+    按鈕文字在 value 更改，或者改用 <button> 標籤
+  reset：重置表單內容（ 盡量別用，使用者體驗不佳 ）
+
+  範例：
+    <form>
+        <input type="button" value="按了沒用">
+        <input type="submit" value="按了會傳送表單">
+        <input type="reset" value="按了會重置表單">
+    <form>
+
+5.多行輸入<textarea>：
+跟 <input> 標籤不同的是，需要有關閉標籤 </textarea>：
+  rows：行數
+  cols：列數
+
+  範例：
+    <form>
+        <textarea name="message" cols="30" rows="10"></textarea>
+    </form>
+
+6.下拉選單：
+  option：單個選項內容
+    可加上 selected 屬性，表示為預設選項
+  optgroup：分組選項內容，但本身並不可選
+    label 標籤是強制的，會顯示在選項中
+
+  範例：
+    <form>
+        <select id="myAddress" name="myAddress">
+          <option>台北市</option>
+          <option>新北市</option>
+          <optgroup label="彰化縣">
+            <option selected>彰化市</option>
+            <option>花壇鄉</option>
+            <option>鹿港鎮</option>
+            <option>員林鎮</option>
+          </optgroup>
+        </select>
+    </form>
+
+7.表單屬性：
+某些屬性是可以共用的，但並不是所有 input 的類型都可以擁有這些屬性，以下列出幾個最常見的屬性：
+  name：如想要正確的提交表單，要記得每個輸入項目都要帶有 name 屬性。
+  value：預設內容
+    <input> 沒有關閉標籤，所以內容是寫在 value 屬性值上面，但通常會用 placeholder 代替。
+  disabled：禁止作用
+  required：表示為必填項目
+  plceholder：表單內的提示文字，當使用者開始輸入文字就會消失
+    根據 MDN - Labels_and_placeholders 的解釋，盡量以 <label> 標籤取代 placeholder，或者兩者以一起用，以防止使用者輸入到一半忘記表單的用途。
+  maxlength：控制輸入框的最大字數，適用於 text & password
+  checked：預設選項，適用於 radio & checkbox
+  selected：預設選項，適用於 <option>
+
+<!-- HTML標籤內全域屬性介紹： ======================================= -->
+1.class（種類的名稱）：
+class屬性是表示元素種類名稱的屬性，由於是表示種類的名稱，所以可以在網頁內附數個元素中設定相同的名稱，也可以在1個屬性內設定複數個值（各個值以半形空白區隔）
+
+2.id（獨有的名稱）：
+id屬性是對網頁內的元素加上獨有名稱的屬性，因為是獨有的名稱，所以在同一個網頁內的各個元素無法設定相同的名稱，且也無法設定複數個值
+
+3.lang（語言編碼，繁體中文情況下要設定zh-tw）：
+lang屬性是以語言編碼表示元素內容是以什麼語言寫成的屬性
+
+4.style（套用CSS到屬性值）：
+style是可以直接套用CSS的屬性，而套用的對象就是該屬性所設定的元素
+
+5.title（補充資訊）：
+title屬性是用於對該元素添加補充資訊的屬性，
+
+6.accesskey（快捷鍵）：
+
+7.contenteditable（可否編輯）：
+
+8.dir（文字標記的方向）：
+
+9.hidden（隱藏）：
+
+10.spellcheck（啟用/關閉拼字檢查）：
+
+11.tabindex（Tab鍵的移動順序）：
+
+12.translate（是否翻譯，yes/no）：
+
+
+<!-- 標籤內Class屬性介紹： ========================================= -->
+首先我們先介紹html中的class的含義：
+class屬性規定元素的類名（classname）
+html中的class=是一個選擇器，可以理解為一個標識，用來標識特定的標籤
+比如：<div class="div1"></div>這就是一個標識效果，以後你想要改變這個div的樣式的話就可以找class為div1的元素了
+
+注意：class屬性不能在以下HTML元素中使用：base, head, html, meta, param, script, style以及title
+
+範例：
+<style type="text/css">
+/*id調用*/
+#nav{float:left;}
+/*class調用*/
+.text{font-size:30px;}
+.text2{font-size:10px;}
+</style>
+<body>
+  <div id="nav">
+    <p class="text">第一行文字</p>
+    <p class="text2">第二行文字</p>
+  </div>
+</body>
+
+多重class寫法：
+我們也可以同時套用數個 class。舉例來說，若我們有以下的 CSS 宣告
+.applylarge {
+  font-size:20px;
+}
+
+.applyred {
+  color:#FF0000;
+}
+
+HTML就寫成如下：
+<p class="applylarge applyred">這是多重 Class 的例子。</p>
+
+<!-- 標籤內ID屬性介紹： ========================================== -->
+1.每個HTML元素都可以使用id屬性。
+2.它的作用是在頁面的所有元素中，將某個元素獨立辨識出來。
+3.他的值必須以字母或下滑線做開頭(不能使用數字或任何字元）
+4.同一個頁面上的兩個元素不能有相同的id屬性值（否則該值就不是唯一）
+5.透過js，id屬性可以讓程式碼與該特定元素互動。
+6.id屬性是全域屬性（global attribute），因為他可以用在任何元素上
+
+ID 的宣告法，是先放一個井字號 (#)，之後再列出選擇器名稱，如下：
+#footer {
+color:#FF00FF;
+}
+
+<p id="footer">這是用 ID 選擇器的例子。</p>
+
+<!-- 標籤屬性Class 跟 ID 的比較： ============================================== -->
+這兩者最大的不同，是在於 ID 選擇器在一個 HTML 文件中只能被使用一次，而 Class 選擇器在一個 HTML 文件中可以被使用多次
+第二個不同的地方，是 ID 選擇器可以被 Javascript 中的 GetElementByID 函數所運用，而 Class 選擇器無法被 Javascript 運用到
+另外，並沒有什麼固定的規則，來決定什麼時候要用 ID 及什麼時候要用 Class
+我們的建議是盡量用 Class，因為這樣子最靈活 (同一個 HTML 文件可以利用這類的選擇器多次)
+唯一的例外，是當你要用 Javascript 的 GetElementByID 函數時。在這個情況下，你就應該要用 ID
+Class 名稱及 ID 名稱都是對大小寫敏感的。舉例來說，.classone 及 .ClassOne 是代表兩個不同的 Class 選擇器
+
+<!-- 區塊元素<div>、行內元素<span>比較： ========================================= -->
+HTML是網頁的骨架，架構出來後，再用CSS來對網頁進行美化，而當你要美化網站時，你希望某個段落的一兩個字可以變為橘紅色，又或者某幾個段落文字要有背景顏色或邊框，你需要框選出一個範圍，<div>和<span>標籤便可以很明確的劃定位置
+
+在了解<div>和<span>這兩個標籤前，有個小觀念需要知道一下，就是區塊(block)與行內(inline)的概念：
+區塊(block)呈現在網頁上是會換行的內容，行內(inline)則會在同一行
+
+區塊元素<div>標籤：
+div是division這個單字取前面三個字母來表示，division是區分的意思，<div>標籤主要的功能就是在形成一個個的區塊，方便網頁排版美化
+
+行內元素<span>標籤：
+如果希望在行內劃分出一個小區域，並且不換行，你可以使用<span>標籤。<span>是行內元素，不會換行，可以保持你希望維持的段落文字格式
+
+
+<!-- 自訂資料屬性： ===================================================== -->
+再HTML5中，也可以用"data-XXX"的格式新增獨有的屬性，其中，屬性名稱一定要以"data-"為開頭，後面的"XXX"則一定要加上非大寫的XML相容字元1個字元以上
+例如，我們可以利用自訂資料屬性來表示歌曲長度，如下：<li data-length="3m18s"></li>
+
+
+<!-- 基本HTML元素與標籤介紹 ======================================================= -->
+<!-- 在HTML內，由角括號<..>組成的內容稱為HTML標籤(Tag)，且標籤是英文，不區分大小寫，但目前大多是使用小寫的寫法 -->
+<!-- 一般來說，HTML檔案內會有很多的元素(Element)所組成，一個元素包含了以下內容: -->
+<title>標題</title>
+<!-- 前面的<title>標籤稱為起始標籤，後面的</title>稱為結束標籤(開頭為斜線)，中間則是要表達的內容 -->
+
+<!-- lang屬性為用來表示HTML檔案內元素內容所採用的語言，語法如下 -->
+<html lang="en"></html>
+
+<!-- title元素用來表示HTML文件的標題，會將內容文字顯示在瀏覽器分頁標籤或視窗標題上 -->
+<title>HTML練習</title>
+
+<!-- meta元素用來表示與HTML文件相關處理資訊(稱為metadata，中繼資料等)，例如可以用meta元素標記檔案所使用的編碼、作者是誰、何時編寫完成等資訊 -->
+<!-- 另外，meata元素跟其他元素有很大的不同，它並沒有結束標籤，這類元素稱為空元素(void element)，表示它們並沒有內容，所以不需要結束標籤 -->
+<meta charset="utf-8">
+
+<!-- 這邊要注意一點，<html>標籤內的lang屬性與<meta>標籤內的charset屬性兩者不相同，前者是代表HTML文件使用的語系，後者是電腦的編碼方式，也就是萬國碼(Unicode) -->
+
+<!-- body元素用來表示網頁本文的部分，後續撰寫的其他元素，幾乎都會將其放置於此元素內 -->
+<body>
+  <!-- HTML文件內容 -->
+</body>
+
+<!-- 用來標示特殊性質的文字內容 ================================================= -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+      <p>CSS樣式表將段落文字設為藍色的範例:</p>
+        <!-- pre元素用來表示讓文字的排列維持HTML原始檔中的排列，例如有換行就換行，空白、定位字元也會保留 -->
+        <pre>
+        p {
+        color: blue
+        };
+        </pre>
+      <p>JavaScript程式用交談窗顯示"Hello World"的範例
+        <br>
+        <!-- code元素用來表示程式碼片段，預設效果是使用等距字 -->
+        <code>alert("Hello World");</code>
+      </p>
+    </body>
+</html>

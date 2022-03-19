@@ -1,0 +1,737 @@
+<!--
+DOM（Document Object Model）物件模型：
+此處的Document指的是HTML文件，而DOM是一種以物件表現文件結構的方式，並透過此物件結構存取文件內容的程式介面(API)
+
+以節點組成的DOM樹狀結構：
+可以用常見的樹狀圖來表示DOM的結構，當看到一個HTML文件時，就可以將其用樹狀圖表示，如下圖，整個文件樹是由節點所組成，
+一般來說，document在最上層，另外文件樹也可以包含屬性(Attribute)、文字(Text)、註解(Comment)，甚至連<!DOCTYPE html>文件宣告也可以算是document下的一個特殊節點
+從下面的例子來說，body是h3、ul的父(Parent)節點，h3、ul則是body的子(Child)節點，而同一個父節點，例如head、body同為html的子節點，則可以稱彼此為兄弟(Sibling)節點
+
+        document
+           |
+          html
+          /  \
+         /    \
+     head      body
+    / |  \    /  \
+   /  |   \  h3   ul
+  /   |    \      /\
+meta title style li li
+-->
+<!-- 用來表示樹狀圖的HTML範例 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            body {background-color: seashell}
+        </style>
+    </head>
+    <body>
+      <h3>旗旗公司圖書系列</h3> 
+      <ul>
+        <li>網路概論與技術</li>
+        <li>程式設計</li>
+      </ul>
+    </body>
+</html>
+
+
+<!--
+所以document，可以用以下的屬性來存取子節點：
+firstChild：傳回代表第一個子節點的物件
+lastChild：傳回代表最後一個子節點的物件
+childNodes：傳回包含所有子節點物件的集合，所以傳回的結果並非單一節點，而是一個NodeList類型的清單集合
+
+或者也可以直接用元素名稱來進行存取：
+head：專屬於document物件的屬性，可傳回代表head元素的子節點
+body：專屬於document物件的屬性，可傳回代表body元素的子節點
+-->
+<!-- 範例一 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            body {background-color: #ffed3f}
+        </style>
+        <!-- 可以用console.log()輸出到主控台看取得屬性的結果 -->
+        <script>
+          function show(){
+            console.log("1 document的子節點");
+            // 所有子節點
+            console.log(document.childNodes);
+            
+            console.log("2 document的first:");
+            // 第 1 個子節點
+            console.log(document.firstChild);
+            
+            console.log("3 document的last:");
+            // 最後 1 個子節點
+            console.log(document.lastChild);
+            
+            console.log("4 body的子節點:");
+            // 取得 body 節點, 再取得其下的子節點
+            console.log(document.body.childNodes);
+          }
+        </script>
+    </head>
+    <!-- 這邊使用body元素的onload屬性，主要是讓HTML文件在瀏覽器載入完成後，再去觸發body元素的onload屬性內的事件，因為瀏覽器以建構出完整的DOM模型，這樣才能讓程式顯示節點資訊 -->
+    <body onload="show()">
+      <h3>旗旗公司圖書系列</h3> 
+      <ul>
+        <li>網路概論與技術</li>
+        <li>程式設計</li>
+        <li>資料結構與演算法</li>
+        <li>資料庫</li>
+      </ul>
+    </body>
+</html>
+
+<!-- 範例二 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            body {background-color: #ffed3f}
+        </style>
+    </head>
+    <!-- 這邊使用body元素的onload屬性，主要是讓HTML文件在瀏覽器載入完成後，再去觸發body元素的onload屬性內的事件，因為瀏覽器以建構出完整的DOM模型，這樣才能讓程式顯示節點資訊 -->
+    <body>
+      <h3>旗旗公司圖書系列</h3> 
+      <ul>
+        <li>網路概論與技術</li>
+        <li>程式設計</li>
+        <li>資料結構與演算法</li>
+        <li>資料庫</li>
+      </ul>
+      <!-- 若不想項範例一使用body元素的onload屬性的話，可以將放在head元素內的script元素移至body元素內的最後面，這樣就等於是建立好DOM文件樹模型後才接著執行JavaScript程式 -->
+      <!-- 可以用console.log()輸出到主控台看取得屬性的結果 -->
+      <script>
+          function show(){
+            console.log("1 document的子節點");
+            // 所有子節點
+            console.log(document.childNodes);
+            
+            console.log("2 document的first:");
+            // 第 1 個子節點
+            console.log(document.firstChild);
+            
+            console.log("3 document的last:");
+            // 最後 1 個子節點
+            console.log(document.lastChild);
+            
+            console.log("4 body的子節點:");
+            // 取得 body 節點, 再取得其下的子節點
+            console.log(document.body.childNodes);
+          }
+      </script>
+    </body>
+</html>
+
+<!--
+從上述範例中，輸出childNodes的結果時，可以看到有些節點是一個集合，裡面包含了多個子節點，是用0、1、2...的方式編號，此編號稱為索引(index)，編號皆是從0開始
+所以，若是想起得某一個子節點時，就可以利用以下語法來取得，如下
+document.childNodes[0]
+
+所以假設body下有5個子節點，那就可以利用以下語法來取得各個子節點物件
+document.childNodes[0]～document.childNodes[4]
+
+在JavaScript中最常處理的節點是元素節點，因此在DOM API也提供了一組屬性和方法，可以用來取得document元素節點的子元素：
+firstElementChild：傳回第一個子元素
+lastElementChild：傳回最後一個子元素
+children：所有子元素的集合，用法跟childNodes取得子節點的方法差不多，可以用children[索引編號]取得指定的子元素，另外也可以利用children.length取得子元素總數
+getElementsByTag()：以標籤名稱作為參數，例如：getElementsByTag("li")，可取得後代元素中所有li元素的集合
+getElementsByName()：以name屬性作為參數，例如：getElementsByTag("test")，可取得所有name="test"的元素之集合
+
+但這邊要注意，當開啟主控台，取節點的結果是顯示undefined代表有可能瀏覽器不支援上述的方法
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            body {background-color: #ffed3f}
+        </style>
+        <script>
+          function test(){
+            // 列出 document 的第1個和最後1個子元素
+            console.log(document.firstElementChild);
+            console.log(document.lastElementChild);
+            
+            console.log("---以下是body的子元素---");
+            // 將 body 節點設給變數 b
+            var b = document.body;
+            // 列出 body 所有子元素
+            console.log(b.children);
+            // 列出子元素集合中的第 0 個子元素
+            console.log(b.children[0]);
+            // 列出子元素集合中的第 1 個子元素
+            console.log(b.children[1]);
+          }
+        </script>
+    </head>
+    <body onload="test()">
+      <h3>旗旗公司圖書系列</h3> 
+      <ul>
+        <li>網路概論與技術</li>
+        <li>程式設計</li>
+        <li>資料結構與演算法</li>
+        <li>資料庫</li>
+      </ul>
+    </body>
+</html>
+
+<!--
+但經過上述的方法介紹，可能會有人覺得DOM樹狀結構存取元素不是很方便，還不如直接用getElementById()直接取得想要的元素
+但這樣就會有個問題，例如想要處理ol或ul清單中的20個li元素，此時如果是用getElementById()的話，就要為這20個元素設定20個不同的id，然後再呼叫20次getElementById()
+-->
+
+<!--
+利用DOM文件樹新增元素，有以下方法：
+document.createElement()：建立元素節點物件，例如：document.createElement("li");
+document.createTextNode()：建立文字節點物件，像是可用以建立開始標籤與結束標籤之間的文字，例如：document.createTextNode("你好");
+
+利用上述方法建立好新節點後，例如用上述方法建好一個li物件，但此時還並未加入原本某個物件中，此時就可以再用ul、ol物件呼叫appendChild方法，即可將剛剛建好的li物件加入成為ul、ol的子元素
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript">
+    function addBook(){
+      // 利用getElementById()取得id="book"的節點
+      var book= document.getElementById("book");
+      // 用輸入欄位使用者打的值建立文字節點
+      var txtNode = document.createTextNode(book.value);
+      
+      // 建立新的 li 元素節點
+      var li = document.createElement("li");
+      // 將文字節點加入成為 li 元素的子節點
+      li.appendChild(txtNode);
+      
+      // 取得 id="list" 的清單元素節點
+      var list = document.getElementById("list");
+      // 將 li 元素節點加入成為清單元素的子節點
+      list.appendChild(li);
+      
+      /*
+        這段語法較為複雜，結果就是將目前清單子元素的總數顯示在網頁上
+        document.getElementById("bookCount")這一句語法回傳的是id="bookCount"的物件，所以可以立即再使用"."符號取得其innerText屬性
+        而"="右邊的list.children.length是傳回清單集合的物件長度（子元素個數）
+        最後id="bookCount"物件的innerText屬性就為list清單集合的物件長度
+
+        其實也可以將其拆解為以下語法：
+        var x = document.getElementById("bookCount");
+        x.innerText = list.children.length;
+      */
+      document.getElementById("bookCount").innerText = list.children.length;
+    }
+    </script>
+</head>
+<body>
+    <p>
+      書名：<input id="book" type="text">
+      <button onclick="addBook()">新增</button>
+    </p>
+    <p>現在有<span id="bookCount">0</span>本書<p>
+    <ul id="list"></ul>
+</body>
+</html>
+
+<!--
+JavaScript條件判斷與流程控制：
+在程式中可以用if-else敘述來改變程式執行流程，例如上面的例子，需要讓空白資料不會被加入清單中，就可以利用if-else來進行判斷
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script>
+      function addBook(){
+        var book= document.getElementById("book");
+        
+        // 若輸入欄位為空白，利用alert()顯示警告訊息
+        if(book.value == "" ) {
+          alert("請先輸入書名!");
+        }
+        // 輸入欄位非空白
+        else {                  
+          // 用輸入欄位的文字建立文字節點
+          var txtNode = document.createTextNode(book.value);
+          
+          // 建立新的 li 元素節點
+          var li = document.createElement("li");
+          // 將文字節點加入成為 li 元素的子節點
+          li.appendChild(txtNode);
+          
+          // 取得 id="list" 的清單元素節點
+          var list = document.getElementById("list");
+          // 將 li 元素節點加入成為清單元素的子節點
+          list.appendChild(li);
+          
+          // 將目前清單子元素的總數顯示在網頁上
+          document.getElementById("bookCount").innerText = 
+            list.children.length;
+        }
+      }
+    </script>
+</head>
+<body>
+    <p>
+      書名：<input id="book" type="text">
+      <button onclick="addBook()">新增</button>
+    </p>
+    <p>現在有<span id="bookCount">0</span>本書</p>
+    <ul id="list"></ul>
+</body>
+</html>
+
+<!--
+使用DOM存取表單：
+document.forms：傳回網頁中表單元素的清單集合，可以用索引或是表單元素有設定name或id屬性也可以直接把屬性值當索引來取得，例如：
+  document.forms[0]：代表取得網頁中第一個表單元素物件
+  document.forms["form1"]：代表取得的是以下元素表單，<form name="form1"></form>
+
+表單.elements：表單物件的elements屬性會傳回表單所有子元素的集合，例如：
+  document.forms[0].elements[0]：代表取得網頁中第一個表單元素物件中的第一個元素
+  document.forms["form1"].elements["username"]：取得name="form1"或id="form1"的表單中name="username"或id="username"的輸入欄位
+
+這邊要注意，elemets屬性僅能用於表單物件，另外之前介紹的children並不支援上述以name、id當索引的語法
+
+另外，通常有關表單的程式，都是等使用者按下頁面上的送出按鈕(type="submit"按鈕被按下)後才會執行，此時就需要用到表單元素的onsubmit屬性，指定表單送出事件所要執行的程式
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style> 
+        input {margin-left: 1em;}
+    </style>
+    <script>
+      function validate(){
+        // 取得表單form1內所有 name="answer" 的物件
+        var all = document.forms["form1"].elements["answer"];
+        // 因為此項題目的答案為36，也就是第2個選項 (36) 被選取，就回傳一個正確視窗訊息 
+        if(all[1].checked)
+          alert("Good Job!");
+        // 若是選了其它答案，代表答案是錯的，就回傳一個錯誤的視窗訊息
+        else
+          alert("Try Again!"); 
+      }
+    </script>
+</head>
+<body>
+    <h3>小學生加法練習</h3>
+    <!--
+      當使用者點送出按鈕後，就會觸發onsubmit屬性內的validate()事件
+      之所以後面要再加上return false;是因為來說，當使用者點下送出按鈕時，瀏覽器會執行送出表單的動作
+      但對於這邊的語法而言，重點是在執行validate()函數，而不是在送出表單，所以加上return false;可以讓瀏覽器不執行送出表單的動作
+      若是不想再onsubmit內寫兩個語法，也可以將return false;寫入validate()函數最後，然後將其改成onsubmit="return validate();"，這樣就一樣會回傳給瀏覽器false的結果
+    -->
+    <form name="form1" onsubmit="validate(); return false;">
+      20 + 16 = ?
+      <input type="radio" name="answer" value="2016" required>2016
+      <input type="radio" name="answer" value="36" required>36 
+      <input type="radio" name="answer" value="216" required>216
+      <input type="submit">
+    </form>
+</body>
+</html>
+
+<!--
+使用迴圈處理多個欄位：
+有時可能一個集合內有多個元素，那若是要一次處理所有的元素，就需要寫好幾行相同程式來處理索引0、1、2...的所有元素物件
+一來效率不佳，二來有時也無法事先確認集合長度（元素個數），此時就可以利用迴圈（loop）來處理
+
+for(var i=0; i<4; i=i+1){...}，for迴圈的結構包括幾個部分：
+{...}（大括號）：內部所放的是要重複執行的程式碼
+var i=0（初始算式）：一進入迴圈就會執行的語法，通常是會宣告一個變數i，之後就利用此變數控制迴圈執行次數，在大括號內程式也可以使用此變數i
+i<4（條件算式）：決定迴圈是否要繼續執行的語法，類似if的條件判斷，每一次迴圈都會去進行判斷，若是此條件結果為true才會繼續執行，若是false就結束
+i=i+1（控制算式）：每一輪迴圈執行完，所需執行的語法，這邊也就是通過對變數i的值進行遞增或是遞減，當i的值遞增到條件算式結果為flase時，迴圈就會結束
+                另外遞增與遞減運算也可以透過i++(遞增)、i--（遞減）來簡化程式碼
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript">
+      function addInputField(){
+        var parent = document.getElementById("book").parentNode;
+        
+        /*
+          若是一次要給使用者多個輸入欄位，再HTML內就要打上多行的重複語法
+          此時就可以利用迴圈配合body的onload屬性，讓網頁再載入時就執行此增加輸入欄位的函數，一次加入 4 個input輸入欄位
+        */
+        for(var i=0;i<4;i++){
+          parent.appendChild(document.createElement("br"));
+          parent.appendChild(document.createTextNode("書名："));
+          parent.appendChild(document.createElement("input"));
+        }
+      }
+      
+      function addBook(){
+        // 取得所有 input 欄位
+        var inputs = document.getElementsByTagName("input");
+        // input 欄位總數
+        var len = inputs.length;
+        
+        // 取得清單物件
+        var list = document.getElementById("list");
+        // 計數器，用來計算新增了幾本書
+        var counter=0;    
+        
+        // 利用迴圈逐一讀取, 處理所有輸入欄位
+        for(var i=0;i<len;i++) {
+          // 輸入欄位非空白
+          if(inputs[i].value != "") { 
+            // 用輸入欄位的文字建立文字節點
+            var txtNode = document.createTextNode(inputs[i].value);
+          
+            // 建立新的 li 元素節點
+            var li = document.createElement("li");
+            li.appendChild(txtNode);
+          
+            // 將 li 元素節點加入成為清單元素的子節點
+            list.appendChild(li);
+            
+            // 計數器值加 1
+            counter++;
+            // 最後將原本使用者在輸入欄位的資料清除，還原空白的欄位
+            inputs[i].value = "";
+          }
+        }
+
+        // 若計數器值為 0, 表示所有欄位都是空白
+        if(counter == 0 ) { 
+          alert("請先輸入書名!");
+        }
+        // 若計數器值不是 0, 更新書籍數量
+        else {
+          // 將目前清單子元素的總數顯示在網頁上
+          document.getElementById("bookCount").innerHTML = list.children.length;
+        }
+      }
+    </script>
+</head>
+<body onload="addInputField()">
+<p>
+  書名：<input id="book" type="text">
+  <button onclick="addBook()">新增</button>
+</p>
+<p>現在有<span id="bookCount">0</span>本書</p>
+<ul id="list"></ul>
+</body>
+</html>
+
+<!--
+處理數值資料：
+一般來說，表單的預設資料都是字串資料，而當要將輸入的資料當作數值來做運算的時候，就必須先用內建函式進行轉換，如下：
+parseInt()：將參數字串轉成整數傳回，例如：parseInt("123")會傳回整數形式的123
+parseFloat()：將參數字串轉成浮點數傳回，例如：parseInt("3.14159")會傳回浮點數形式的3.14159
+
+這邊要注意一點，若是參數字串的內容不是數字形式，例如：parseInt("你好")，則上述兩個函數都會傳回NaN(Not a Number)
+在程式中可以利用isNaN()函式來判斷某個變數是否為NaN，是的話就會回傳true，否則回傳false，如下：
+var value = parseInt("你好");
+isNaN(value);
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript">
+      function calculateBMI(){
+        // 取得身高欄位
+        var inputH = document.getElementById("height");
+        // 將欄位內容轉成浮點數
+        var height = parseFloat(inputH.value); 
+
+        // 取得體重欄位
+        var inputW = document.getElementById("weight");
+        // 將欄位內容轉成浮點數
+        var weight = parseFloat(inputW.value); 
+
+        // 若 height或weight 任一變數為非數值，即結束函式
+        if(isNaN(height) || isNaN(weight)) return;
+        
+        // 若height或weight任一變數小於或等於 0，即結束函式
+        if(height<=0 || weight<=0) return;
+        
+        // 將身高由公分換算為公尺
+        height = height / 100;
+        
+        // BMI 指數 = 體重(公斤)/身高(公尺)平方
+        document.getElementById("bmi").innerHTML = weight / (height * height);
+      }
+    </script>
+</head>
+<body>
+    <p>身高(公分)：<input id="height" type="number"></p>
+    <p>體重(公斤)：<input id="weight" type="number"></p>
+    <p><button onclick="calculateBMI()">計算BMI</button>
+       BMI指數 = <span id="bmi">0</span></p>
+</body>
+</html>
+
+<!--
+存取元素屬性：雖然透過DOM也能取得元素的屬性節點，但通常都是直接利用元素物件呼叫下列方法來取得或是設定元素的屬性值，如下：
+a.getAttribute()：以屬性名稱為參數，函式會傳回指定的屬性值，若屬性不存在，則會回傳null，例如：
+  // 取得href的屬性值
+  var href = ele.getAttribute("href")
+b.setAttribute()：設定屬性值，此函式要設定兩個參數，第一個是設定屬性名稱，第二個參數是要指定的屬性值
+c.removeAttribute()：移除參數指定的屬性
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        div    {clear:left;}
+        .small {
+            width:100px; 
+            float:left;
+            margin:2px; 
+            padding:2px; 
+            border: 1px black solid;}
+        #big   {width:640px; }
+    </style>
+    <script>
+      // 每隔3秒（3000毫秒）呼叫 1 次 play()函式
+      /*
+        這邊解釋一下JavaScript的計時器函式setInterval()
+        第一個參數是指定要定時執行的函式，第二個參數是隔多久執行一次（單位：毫秒）
+      */
+      setInterval(play, 3000);
+
+      // 用來控制每次要顯示的圖片索引
+      var index = 0; 
+      function play(){
+        // 取得縮圖的 img 元素集合
+        var imgs = document.getElementById("thumbs").    // 取得 id="thumbs" 的 div 區塊
+                            getElementsByTagName("img"); // 取得div區塊中所有 img 子元素
+        // 取得大圖的 img 元素
+        var bigImg = document.getElementById("big");
+        
+        // 遞增索引值, 以播下一張照片
+        index++;
+        
+        // 若索引值超過範圍, 則設為0, 表示再重頭開始播放
+        if(index == imgs.length){index=0;}
+        
+        // 將大圖 img 的 src 屬性設為小圖之 src 屬性值
+        bigImg.setAttribute("src", imgs[index].getAttribute("src"));
+      }
+    </script>
+</head>
+<body>
+  <h3>看蜂炮<h3>
+  <div id="thumbs">
+    <img class="small" src="media/DSCF3350.jpg">
+    <img class="small" src="media/DSCF3359.jpg">
+    <img class="small" src="media/DSCF3392.jpg">
+    <img class="small" src="media/DSCF3396.jpg">
+  </div>
+  <div>
+    <!-- 先套用第一個小圖的src位置，後續利用JavaScipt -->
+    <img id="big" src="media/DSCF3350.jpg">
+  </div>
+</body>
+</html>
+
+<!--
+JavaScript變數的可見範圍（Scope）：
+這邊要注意一個點，從上面的例子可以發現在函式外，有設定一個變數var index = 0，這種定義在<script>標籤中且不是定義在函式內的變數稱為全域變數
+全域變數在各部分的程式都可使用，所以在程式中，變數依其宣告(定義)的位置，會有不同的可見範圍(Scope)，也就是可使用該變數的範圍
+1.全域變數（Global Variable）：表示在程式中任何位置都可以使用這個變數，此種變數是定義在<script>標籤中且不是定義在任何函式內
+2.局部變數（Local Variable）：或稱區域變數，表示只有某一部份的程式看得到該變數，在範圍外的程式都不能使用，例如函式中宣告的變數，只有在該函式的大括號內才能使用
+-->
+
+
+<!--
+設定CSS樣式：
+在JavaScript內，要設定元素的CSS樣式，不需透過上面提到的setAtrribute()來設定style屬性，可以直接用元素物件的style屬性來設定樣式規則，如下：
+var x = document.findElementById("x")
+x.style.color = red;
+
+另外，在CSS樣式中都會用到"-"連結兩個英文單字，例如：border-width，但因為JavaScript中"-"這個符號被視為減號，所以這類的樣式名稱都改用Camel Case的方法來命名，如下：
+x.style.borderWidth = "3px";
+x.style.marginLeft = "5px";
+
+使用CSS樣式表時，常利用類別選擇器來設定樣式，並設定元素class的屬性值，而在JavaScript中也可以使用此技巧
+DOM介面中特別為元素物件提供了一個classList屬性，可取得元素的類別集合，接著再利用add()、remove()方法做新增、移除類別名稱，如下：
+// 新增myclass的類別名稱
+x.classList.add("myclass")
+// 刪除myclass的類別名稱
+x.classList.remove("myclass")
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        div    {clear:left;}
+        .selected  {background: orange; }
+        .small {
+            width:100px; 
+            float:left;
+            margin:2px; 
+            padding:3px; 
+            border: 1px black solid;}
+        #big   {width:640px; }
+    </style>
+    <script>
+      // 每隔 3 秒呼叫 1 次 play()
+      setInterval(play, 3000);
+      // 用來控制每次要顯示的圖片索引
+      var index=0;
+      
+      function play(){
+        // 取得縮圖的 img 元素集合
+        var imgs = document.getElementById("thumbs").
+                                getElementsByTagName("img");
+        // 取得大圖的 img 元素
+        var bigImg = document.getElementById("big");
+        
+        // 播下一張照片前, 先取消目前相片的橘色背景         
+        imgs[index].classList.remove("selected");
+        // 遞增索引值, 以播下一張照片
+        index++;
+                
+        // 若索引值超過範圍, 則設為0, 表示再重頭開始播放
+        if(index == imgs.length) index=0; 
+        
+        // 為下一張照片套上設定的CSS橘色背景
+        imgs[index].classList.add("selected");
+        
+        // 將大圖 img 的 src 屬性設為小圖之 src 屬性值
+        bigImg.setAttribute("src", imgs[index].getAttribute("src"));
+      }
+    </script>
+</head>
+<body>
+  <h3>看蜂炮<h3>
+  <div id="thumbs">
+    <!-- 第一個img元素中的class先套用selected這個橘色背景的樣式，後續利用JavaScript來進行取消，並套用到下一個img元素 -->
+    <img class="small selected" src="media/DSCF3350.jpg">
+    <img class="small" src="media/DSCF3359.jpg">
+    <img class="small" src="media/DSCF3392.jpg">
+    <img class="small" src="media/DSCF3396.jpg">
+  </div>
+  <div>
+    <img id="big" src="media/DSCF3350.jpg">
+  </div>
+</body>
+</html>
+
+<!--
+DOM事件設定：
+一般來說，若是都在HTML中設定事件處理函式會有缺點，因為讓HTML和JavaScript混在一起，編輯、修改時都非常不便
+例如要變更onclick呼叫函式的名稱，除了在JavaScript程式中修改外，也要到HTML檔案中修改，但如果有好幾個元素需要修改時，或者JavaScript程式是採取存放於另一個檔案時，就很容易出錯
+此時就可以利用DOM的事件屬性來設定，格式為：元素物件.事件屬性 = 處理函式;，如下：
+var abutton = document.getElementById("abutton");
+abutton.onclick = hello;
+// 將屬性值設為函式名稱
+function hello() {alert("hello");}
+
+另外，在JavaScript程式中，有時為了方便，某些只用一次的函式，會以匿名函式（Anonymous function）來定義，如下：
+var abutton = document.getElementById("abutton");
+abutton.onclick = function () {alert("hello");};
+
+或者，也可以用元素物件呼叫addEventListener()這個函式來設定事件處理，而在此函式中，事件名稱就不需加"on"這個字首，如下：
+var abutton = document.getElementById("abutton");
+function hello() {alert("hello");}
+abutton.addEventListener("click", hello);
+
+也可以將上述hello函式寫成匿名函式形式，這樣就可以減少程式量
+var abutton = document.getElementById("abutton");
+abutton.addEventListener("click", function () {alert("hello");});
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <style>
+            * {font-size: large;}
+            input {text-align:right;
+                    width:3em;}
+        </style>
+    </head>
+    <body>
+      <ol> 
+        <li>珍珠奶茶(NT$30): <input type="number" id="tea" value="0"> 杯</li>
+        <li>招牌拿鐵(NT$45): <input type="number" id="latte" value="0"> 杯</li>
+      </ol>
+      <p>小計 <span id="subtotal">0</span>元</p>
+      <button id="order">訂購</button>
+      <button id="cancel">清除</button>
+      <script type="text/javascript">
+          // 金額小計元素
+          var subtotal = document.getElementById("subtotal");
+          // 奶茶杯數元素
+          var tea = document.getElementById("tea");
+          // 拿鐵杯數元素
+          var latte = document.getElementById("latte");
+          // 奶茶杯數變數、拿鐵杯數變數、金額小計變數，都要先給定一個預設值
+          var teaCups = 0, latteCups = 0, money = 0;
+          
+          // 用匿名函式設定 '清除' 鈕的動作
+          document.getElementById("cancel").onclick = 
+            function (){
+                tea.value = 0;
+                latte.value = 0;
+                teaCups = 0;
+                latteCups = 0;
+            };
+          
+          // 用匿名函式設定 '訂購' 鈕的動作
+          var btnOrder = document.getElementById("order").onclick=
+            function (){
+                // 金額為 0 時不處理
+                if(money == 0) return;
+                var msg = "";
+                // "\n"是字串中的換行字元表示法，所以在訊息字串後面加上"\n"，顯示時就會有換行的效果
+                if(teaCups > 0) msg += "珍珠奶茶 "  + teaCups +  "杯\n";
+                if(latteCups > 0) msg += "招牌拿鐵 "  + latteCups +  "杯\n";
+                msg += "總共 " + (teaCups + latteCups) + " 杯, " + money + "元";
+                alert(msg);
+            };
+         
+         // 將兩個輸入欄位的change事件處理器都設為 calc() 函式，其中change代表輸入欄位值變動的事件
+         tea.addEventListener('change', calc);
+         latte.addEventListener('change', calc);             
+
+        function calc() {
+          // 這邊說明一下this物件，這一個變數是代表目前的物件，以事件處理函式而言，就是指觸發事件的元素物件
+          // 在主控台顯示 this 物件，可以從開發人員工具中的主控台觀察this物件顯示的結果
+          console.log(this);
+
+          // 取得杯數
+          var cups = parseInt(this.value);
+          
+          // 若是珍珠奶茶的欄位
+          if(this == tea) {
+            // 若杯數為負數
+            if(cups < 0)
+              // 將欄位值回負為舊值
+              this.value = teaCups;
+            else
+              teaCups = cups;
+          }
+          // this==latte, 招牌拿鐵
+          else {
+            // 若杯數為負數
+            if(cups < 0)
+              // 將欄位值回負為舊值
+              this.value = latteCups;
+            else
+              latteCups = cups;
+          }
+          // 計算金額
+          money = teaCups * 30 + latteCups * 45;
+          // 顯示金額
+          subtotal.innerHTML = money;
+        }        
+      </script>      
+    </body>
+</html>

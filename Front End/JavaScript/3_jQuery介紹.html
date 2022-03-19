@@ -1,0 +1,497 @@
+<!--
+JQery是開放原始碼的JavaScript函式庫(Library)，最大的特色就是提供簡單、易用的語法，來完成原本需撰寫複雜JavaScript程式才能完成的工作
+另外也解決在不同瀏覽器上，JavaScript程式執行結果不同的問題
+
+一般來說，想在網頁程式中使用jQuery，必須先用script元素的src屬性來指定載入jQuery函式庫檔，目前最普遍的作法是從公開的CDN(內容傳遞網路，Content Delivery Network)，也就是利用公用的伺服器下載
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+另外，也有其他的CDN，如下
+微軟的CDN： http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.min.js
+Google的CDN： http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js
+
+當瀏覽器載入網頁時，就會到CDN載入jQuery檔案，當然也是可以從官網下載一份jQuery檔案，然後將檔案存於自己的網頁伺服器上
+不過使用CDN有以下優點：
+1.CDN伺服器分佈在全球主要網路節點，所以在不同地方瀏覽網頁的人，瀏覽器會連到最近的伺服器下載，加快載入速度
+2.由於瀏覽器自CDN下載檔案，連帶也使自己的伺服器減少許多送出資料的流量，相對的也就提高伺服器的服務效率
+3.對瀏覽器而言，可能再使用者上網四處瀏覽的過程中，早已將jQuery檔案存於瀏覽器本身的快取中，所以當網頁又指定由CDN下載jQuery檔案時，瀏覽器直接從快取中讀出jQuery即可
+-->
+
+<!--
+jQuery基本用法：
+1.以CSS選擇器取得元素：如：jQuery("h3")代表可以取得h3元素，但一般來說，也可以用簡寫語法，利用"$"取代"jQuery"，如下：
+  a.$("h3")：代表元素選擇器，可以取得h3元素
+  b.$("#booklist")：取得id="booklist"的元素
+  c.$(".db")：取得class="db"的元素
+  d.$("ul li")：取得ul之下的li子元素
+  e.jQuery擴充選擇器：除了使用CSS的選擇器語法外，jQuery也另外定義了一些特殊的選擇器語法，例如：$(":header")表示所有h1~h6的標題元素
+
+2.使用jQuery變更網頁內容：和DOM類似，以選擇器取得元素物件後，即可利用jQuery提供的方法來取得或改變元素內容等，且jQuery提供的方法有個特色，就是同一個方法可用來讀取或是寫入內容，例如函數內不加參數時是讀取，加參數則是寫入
+  a.text()：不加參數時，可取得元素內的文字，加參數則可設定文字，例如：$("h3").text()代表取得h3元素內的文字，$("h3").text("Hello")代表讓所有h3元素的文字都變成Hello
+  b.val()：不加參數時，可取得指定的input欄位值，加參數則可設定欄位值，例如：$("#title").val()代表取得id="title"的欄位值，$("#title").val("jQuery")會讓id="title"的輸入欄位值變成jQuery
+  c.attr("屬性名稱")：查詢或設定元素的屬性值，此函數較為特別，至少要有一個參數，當只有一個參數時代表查詢指定屬性名稱的值，當加上第二個參數代表設定屬性名稱的值，例如：
+    // 查詢第一個a元素的href屬性值
+    $("a").attr("href")
+    // 將所有元素的屬性值都設為"http://google.com"
+    $("a").attr("href", "http://google.com")
+  d.$("<元素名></元素名>")：建立新元素物件，參數的標籤字串中間可以直接加入元素的文字內容，或是利用text()另外設定，例如：
+    // 建立新的h1元素，文字內容為Hello
+    var elem1 = $("<h1>Hello</h1>")  
+    // 建立新的span元素，文字內容為World
+    var elem2 = $("<span></span>").text("World")
+  e.append()：加入新的子元素，並將其加在現有的子元素之後，參數可以是新建的元素物件，或是新元素的標籤字串，例如：
+    // 先建立新元素物件，再加入
+    var elem = $("<b>Hello</b>");
+    $("p").append(elem);
+    // 直接用新元素的標籤字串當參數
+    $("p").append("<b>Hello</b>");
+  f.prepend()：與append()一樣的用法，皆是加入新元素，只是append()是將其加在現有的子元素之後，而prepend()是將其加在原有子元素之前
+  g.after()：在指定元素後加入新的相鄰元素（同層的元素）
+  h.before()：在指定元素前加入新的相鄰元素（同層的元素）
+  i.wrap()：在目前元素外層加上一層父元素，例如：$("p").wrap("<div></div>");，代表在p元素外加一層新的div父元素，使p變成div的子元素
+  j.remove()：移除指定的元素，例如：$("#foo").remove();，代表移除文件中id為foo的元素
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+</head>
+<body>
+    <p>
+      書名：<input id="book" type="text">
+      <button>新增</button>
+    </p>
+    <p>現在有<span id="bookCount">0</span>本書<p>
+    <ul id="list"></ul>
+    <script type="text/javascript">
+        // 下面語法是jQuery設定按鈕事件處理函式的語法，指定按鍵的 click 事件處理函式
+        $('button').click(function (){
+          
+          // 先附加新的 li 子元素, 子元素內容為輸入欄位值
+          $('#list').append('<li>' + $('#book').val() + '</li>');
+          
+          // 加完新的元素後，清空輸入欄位內容
+          $('#book').val('');
+          
+          // 顯示 (更新) 清單項目的數量
+          $("#bookCount").text($('#list li').length);
+        });
+    </script>
+</body>
+</html>
+
+<!--
+另外這邊補充說明jQuery物件與DOM物件差別，上述講到的$()方法，傳回的是jQuery自行定義的jQuery物件
+和透過DOM介面getElementById()等方法取得的元素物件、集合物件不同，所以若是想將jQuery物件應用於DOM API的話
+例如用$("#myid")取得元素後使用innerHTML屬性，就必須先用get()或[]語法取得DOM元素物件，如下：
+// 雖然#myid只有一個物件，但也是要指定索引參數0
+$("#myid").get(0).innerHTML = "Hello";
+$("p").get(3).style.color = "red";
+
+//上面的get()也可以改成利用索引來執行
+$("p")[3].style.color = "red";
+
+相對的，若是要將getElementById()、getElementsByTagName()等方法取得DOM物件用於jQuery，只需將其放進$()括號中即可，如下：
+$(document.getElementById("myid")).val()
+-->
+
+<!--
+使用jQuery變更CSS樣式：jQuery與樣式相關的功能也很多，可以直接透過jQuery設定CSS樣式
+a.css()：可用以查詢或設定樣式屬性，但這邊要注意的是，查詢時是傳回第一個符合選擇器條件的元素樣式；而設定時則是將所有元素都設定成指定樣式，如下：
+  // 查詢樣式，會傳回第1個a元素的font-size屬性值
+  $("a").css("font-size");
+  // 將所有a元素font-size屬性值設定為2em
+  $("a").css("font-size", "2em");
+  // 若需設定多個樣式，可利用串接的方式連續呼叫多次css()
+  $("p").css("height", 50).css("color", "gray");
+  // 也可以用類似CSS樣式表規則的{...}大括號來設定
+  $("p").css({"height": 50, "color": "gray"});
+
+  而這邊css()方法參數內的大括號使用的是JavaScript的物件(Object)語法，物件其實就像是可存放多個屬性值的變數，建立物件時必須指定屬性名稱和屬性值，如下：
+  var person = {
+    name: "小明",
+    age: 18,
+    height: 170,
+    weight: 65
+  };
+  當物件建好後，就可以用"物件.屬性名稱"或"物件['屬性名稱']"取得屬性值
+b.width()：查詢或設定元件區塊（這邊不含padding、border）的寬度值
+  // 查詢寬度值，會傳回第1個div元素的寬度值
+  $("div").width();
+  // 將所有div元素的寬度值設定為100px，也可以用含單位的字串進行設定
+  $("div").width(100);
+  $("div").width("10em");
+c.height：查詢或設定元件區塊（這邊不含padding、border）的高度值
+d.addClass()：以類別名稱為參數，即可替元素新增類別
+e.removeClass()：以類別名稱為參數，即可替元素移除類別
+f.toggleClass()：切換類別，若呼叫的元素已具備參數指定的類別，相當於使用removeClass()；若是未具備參數指定的類別，就相當於使用addClass()
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+</head>
+<body>
+  <h3>旗旗公司圖書系列</h3> 
+  <ul id="booklist">
+    <li>網路概論與技術</li>
+    <li>程式設計</li>
+    <li>資料結構與演算法</li>
+    <li>資料庫</li>
+  </ul>
+  <script type="text/javascript">
+    // 這邊的:even是擴充選擇器，代表設定第偶數個顏色為紅色
+    $('li:even').css('color','red');
+    // 這邊的:odd是擴充選擇器，代表設定第奇數個顏色為藍色再加上陰影
+    $('li:odd').css({'color':'blue', 'text-shadow': 'gray 4px 4px'});
+    
+    // 用 each() 方法替每個 li 元素做不同字型大小設定
+    // each()方法的功能類似for迴圈，只是不需設定條件算式等等參數，它就會自動逐筆呼叫函式來處理集合中的所有物件
+    $('li').each(function(index){
+        var size = 1 + index * 0.5; 
+        $(this).css('font-size', '' + size + 'em');
+                     
+        console.log((this)); 
+    });
+  </script>
+</body>
+</html>
+
+<!--
+使用jQuery處理事件：jQuery可以很方便的設定事件處理函式，以下為常見的事件：
+1.click()：點擊按鈕事件
+2.change()：輸入欄位內容改變事件
+3.dbclick()：滑鼠雙按事件
+4.load()：載入事件
+5.mouseenter()：滑鼠進入事件
+6.mouseleave()：滑鼠離開事件
+7.submit()：表單送出事件
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <base href="http://www.flag.com.tw">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js">
+    </script>
+</head>
+<body>
+  <h2>新書通報</h2>
+  <ul>
+    <li><a href="/book/5105.asp?bokno=F5910">積木閱讀法 奇蹟 3 步驟 翻轉英文閱讀力!</a></li>
+    <li><a href="/book/5105.asp?bokno=F5166">完全詳解! 免費雲端工具活用事典</a></li>
+    <li><a href="/book/5105.asp?bokno=F5524">設計職人必備 Photoshop 精緻筆刷素材集</a></li>
+    <li><a href="/book/5105.asp?bokno=F5171">網路規劃與管理實務- 協助考取 CCNA 證照</a></li>
+  </ul>
+  <!-- 利用jQuery的mouseenter()和mouseleave()來模擬CSS的.hover效果 -->
+  <script>
+      // 設定a元素當使用者用滑鼠進入事件處理器時，就做大括號內的事情
+      $('a').mouseenter(function(){
+           // 將事件元素設為粗體
+           $(this).css('font-weight','bold');
+      });
+      
+      // 設定a元素當使用者用滑鼠離開事件處理器時，就做大括號內的事情
+      $('a').mouseleave(function(){
+           // 將事件元素設為一般字體 
+           $(this).css('font-weight','normal');
+      });
+  </script>  
+</body>
+</html>
+
+<!--
+jQuery的ready事件：最常用的是document的ready事件，ready()是用來取代<body onload="">的功能，body元素的onload事件是指文件全部載入完成時觸發的事件，而document的redy事件是在DOM結構備妥後可立即使用時觸發
+所以一般而言ready事件的觸發順序是在onload事件之前，而jQuery也將ready自行定義，可以利用ready來進行各項初始化的動作，像是設定各項事件處理函式，執行初始化程式敘述等，一般來說語法如下：
+  // 完整寫法
+  $(documnet).ready(function(){
+    // 大括號裡面放各項初始化的工作
+  })
+
+  // 因為ready事件經常用到，所以jQuery提供簡寫的寫法
+  $(function(){
+    // 大括號裡面放各項初始化的工作
+  })
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js">
+    </script>
+    <style>
+        div    {clear:left;}
+        .selected  {background: orange; }
+        .small {
+            width:100px; 
+            float:left;
+            margin:2px; 
+            padding:3px; 
+            border: 1px black solid;}
+        #big   {width:640px; }
+    </style>
+    <script>
+      // 這邊程式較為複雜，所以以下加上程式執行的順序編號
+      $(function(){
+        /* 1.設定一個計時器變數 */
+        var timer;
+        
+        // 設定縮圖的按下事件處理函式
+        $('.small').click(function(){
+            /*
+              5.全域變數timer在步驟4已經存放setTimeout()回傳的計時器物件，為了讓使用者在手動點選縮圖時，可重新安排自動播放的次序
+                所以在剛進入點擊縮圖事件處理函式時，呼叫clearTimeout()清除全域變數timer內原本的計時器
+                所以假設使用者在計時器到一半的時候，點擊了其他的縮圖，此時就會觸發click事件，clearTimeout()就會終止目前的計時，重新開始計時
+            */
+            clearTimeout(timer);
+            
+            // 取消上張縮圖的選取圖框
+            $('.selected').toggleClass('selected');
+            
+            // 將被按的縮圖加上選取圖框
+            $(this).toggleClass('selected');
+            
+            // 利用將大圖 img 的 src 屬性設為縮圖之 src 屬性值，達成圖片輪播的效果
+            $('#big').attr('src', $(this).attr('src'));
+            
+            /*
+              3.$('.small').index(this)表示是查看this物件（目前的物件）在$('.small')中的索引編號
+                接著再將此索引值加1設定給next變數，以表示下一張縮圖，用它來觸發下一張相片的click()事件
+            */
+            var next = $('.small').index(this) + 1;
+            
+            // 若索引值超過$('.small')的個數範圍，則將next變數設為0，表示再重頭開始播放
+            if(next == $('.small').length) next = 0; 
+            
+            /* 
+              4.此時透過函式的設定，播放動作變成都透過click事件處理函式完成
+                所以在函式最後設定setTimeout()來設定3秒後觸發下一張縮圖的 click 事件，透過此種方式即可達到自動輪流播放的效果
+            */
+            timer = setTimeout(function(){
+              $('.small')[next].click()
+             }, 3000);
+        });
+        
+        /* 
+          2.一開始使用者因為還未點擊任何縮圖，所以用click()函式先選第一張縮圖
+            利用程式來觸發點擊縮圖的事件，這樣才能觸發上面縮圖的按下事件處理函式的條件
+        */
+        $('.small')[0].click()
+      });
+    </script>
+</head>
+<body>
+  <h3>看蜂炮</h3>
+  <div id="thumbs">
+    <img class="small" src="media/DSCF3350.jpg">
+    <img class="small" src="media/DSCF3359.jpg">
+    <img class="small" src="media/DSCF3392.jpg">
+    <img class="small" src="media/DSCF3396.jpg">
+  </div>
+  <div>
+    <img id="big" src="media/DSCF3350.jpg">
+  </div>
+</body>
+</html>
+
+<!--
+jQuey特效：在CSS樣式中，常用的特效之一就是以切換display屬性值，做出讓元素可動態顯示或隱藏的效果，而在jQuery中可以用以下方法來控制：
+1.hide()：立即隱藏元素物件
+2.show()：立即顯示元素物件
+3.toggle()：依目前狀態切換顯示或隱藏
+4.fadeIn()：淡入效果，讓元素由看不到，漸漸變成清楚的顯示在網頁中，可利用選用的參數控制漸入效果時間長短，例如："fast"、"slow"或時間值(單位毫秒)
+5.fadeOut()：淡出效果，可用的參數同fadeIn()
+6.slideDown()：讓元素已由上往下滑動的方式進入或移出畫面，可用的參數同fadeIn()
+7.slideUp()：讓元素已由下往上滑動的方式進入或移出畫面，可用的參數同fadeIn()
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+         $(function(){
+           //第偶數項（因li元素有四個，所以偶數項指的就是索引值[0, 2]的子元素）的滑鼠進入事件
+           $('li:even').mouseenter(function(){
+              // children()是jQuery用來選取指定子元素的方法，此處表示選取this物件的img子元素       
+              // 由上往下移入
+              $(this).children('img').slideDown(500);
+           });
+           
+           // 第偶數項的滑鼠離開事件
+           $('li:even').mouseleave(function(){
+              // 由下往上移出         
+              $(this).children('img').slideUp(500);
+           });
+
+           // 第奇數項（因li元素有四個，所以奇數項指的就是索引值[1, 3]的子元素）的滑鼠進入事件
+           $('li:odd').mouseenter(function(){
+              // 淡入效果
+              $(this).children('img').fadeIn('slow');
+           });
+           
+           // 第奇數項的滑鼠離開事件
+           $('li:odd').mouseleave(function(){
+              // 淡出效果
+              $(this).children('img').fadeOut('fast');
+           });
+         });
+    </script>
+    <style>
+      img {
+          width:180px;      
+          /* 使用絕對定位 */   
+          position:absolute;
+          left:210px;
+          /* 預設不顯示 img */
+          display:none;
+      }
+      h2  {margin:5px; color:navy}
+      li  {width:180px;}
+    </style>
+    <base href="http://www.flag.com.tw">
+</head>
+<body>
+  <h2>新書通報</h2>
+  <ul>
+    <li>
+      <a href="/book/5105.asp?bokno=F5910">積木閱讀法 奇蹟 3 步驟 翻轉英文閱讀力!</a>
+      <img src="/images/cover/middle/F5910.gif">
+    </li>
+    <li>
+      <a href="/book/5105.asp?bokno=F5166">完全詳解! 免費雲端工具活用事典</a>
+      <img src="/images/cover/middle/F5166.gif">
+    </li>
+    <li>
+      <a href="/book/5105.asp?bokno=F5524">設計職人必備 Photoshop 精緻筆刷素材集</a>
+      <img src="/images/cover/middle/F5524.gif">
+    </li>
+    <li>
+      <a href="/book/5105.asp?bokno=F5171">網路規劃與管理實務- 協助考取 CCNA 證照</a>
+      <img src="/images/cover/middle/F5171.gif">
+    </li>
+  </ul>
+</body>
+</html>
+
+<!--
+jQuery動畫特效：jQuery另一個常用的特效方法為animate()，此函式提供類似於CSS animation的功能
+參數設定的語法和css()函式相同，必須以{...}大括號刮著屬性設定的內容，如下：
+// 用漸變的方式讓寬度變為0px
+$("img").animate({"width": "0px"});
+
+另外，也可以加上第二個參數設定動畫持續的時間，或是在大括號中加入多個樣式設定，表示同時要變化多個樣式屬性，如下：
+// 加上第二個動畫持續時間的參數，變化時間為2秒
+$("img").animate({"width": "0px"}, 2000);
+// 用漸變的方式讓長度、寬度變為0px
+$("img").animate({"width": "0px", "height": "0px"});
+
+雖然這邊一樣是以CSS樣式屬性的變化來產生動態效果，但搭配jQuery程式控制，可製作的效果就更具彈性
+-->
+<!-- 這邊的範例是將上面的相片輪播功能範例加入橫向換圖的功能 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <style>
+        div    {clear:left;}
+        .selected  {background: orange; }
+        .small {
+            width: 100px; 
+            float: left;
+            margin: 2px; 
+            padding: 3px; 
+            border: 1px black solid;}
+            
+        #viewer{width: 640px;
+                /* 
+                  將大圖超出範圍的內容隱藏，若是不做隱藏，會將所有縮圖都變成大圖顯示，這樣就沒有橫向換圖的效果，overflow屬性可設定的值如下：
+                  visible：表示超出範圍的內容仍會顯示出來，此為預設值
+                  hidden：表示超出範圍的內容不會顯示出來
+                  scroll：表示有超出範圍的內容時，雖然不會顯示，但畫面上會出現捲動軸，讓使用者可捲動要檢視的部分
+                */
+                overflow: hidden;}
+
+               /* 容納全部大圖的區塊 */
+        #all   {width: 2560px;
+                height: 427px;
+                /* 使用相對定位 */
+                position: relative;}
+    </style>
+    <script>
+      /*
+        利用jQuery達成大圖橫向換圖，其實是先讓全部的縮圖img都由左至右放在一個div區塊，接著透過CSS限制只能顯示單張圖片的範圍
+        最後再用animate()控制區塊相對定位的位置（如這個範例設定為left屬性），這樣就能做出圖片橫向捲動換圖的效果
+      */
+      $(function(){
+        // 計時器變數
+        var timer;
+        
+        /*
+          利用each()方法自動逐筆呼叫函式來處理集合中的所有物件，為每張縮圖製作一個大圖的 img 標籤
+          並加到原本沒有內容的<div id="all"></div>區塊中，這邊會利用each()方法主要是減少程式碼的量，若是有較多圖的時候，先將<img>標籤寫入大圖的div區塊中就會重複許多的圖片元素
+          
+          或者也可以先將縮圖的<img>標籤寫在<div id="all"></div>區塊中，只是編寫時要注意不能有空白或換行字元
+          因為會佔用空間，就會使CSS樣式設定的寬度2560px裝不下4張圖片，導致換圖的效果不如預期
+        */
+        $('.small').each(function() {
+            // 建立 img 元素
+            var tag = $('<img></img>');
+            // 複製縮圖的 src 屬性
+            tag.attr('src', $(this).attr('src'));
+            // 附加元素
+            $('#all').append(tag);
+        });
+        
+        // 設定縮圖的按下事件處理器
+        $('.small').click(function(){
+          // 清除計時器
+            clearTimeout(timer);
+            
+            // 取消上張縮圖的選取圖框
+            $('.selected').toggleClass('selected');
+            
+            // 將被按的縮圖加上選取圖框
+            $(this).toggleClass('selected');
+            
+            /*
+              這邊將利用更改大圖的src屬性值達成輪播效果的語法換成以animate()方法控制left屬性
+              每次計算每次區塊要移動的寬度（-640px，負值表示向左移），等到回第一張時，index = 0，就會跳回left: 0px顯示第一張相片
+            */
+            var pos = $('.small').index(this) * -640;
+            $('#all').animate({'left':pos + 'px'},'slow');
+            
+            // 索引值加 1 表示下一張縮圖
+            var next = $('.small').index(this) + 1;
+            
+            // 若索引值超過範圍, 則設為0, 表示再重頭開始播放
+            if(next == $('.small').length) next = 0; 
+            
+            // 設定 3 秒後觸發下一張縮圖的 click 事件
+            timer=setTimeout(function(){
+              $('.small')[next].click()
+             }, 3000);
+        });
+        
+        // 一開始先選第 1 張縮圖
+        $('.small')[0].click()
+      });
+    </script>
+</head>
+<body>
+  <h3>看蜂炮</h3>
+  <div id="thumbs">
+    <img class="small" src="media/DSCF3350.jpg">
+    <img class="small" src="media/DSCF3359.jpg">
+    <img class="small" src="media/DSCF3392.jpg">
+    <img class="small" src="media/DSCF3396.jpg">
+  </div>
+  <!-- 限制顯示寬度的區塊 -->
+  <div id="viewer">
+    <!-- 用來容納全部大圖的區塊 -->
+    <div id="all"></div>
+  </div>
+</body>
+</html>

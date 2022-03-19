@@ -1,0 +1,644 @@
+<!-- 在HTML中可以使用<img>這個標籤來加入圖片 =============================== -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+    	<!-- src屬性：必須指定圖片檔的檔名、路徑，alt屬性：可用來指定有關此圖片的一段文字描述，此屬性為非必要 -->
+    	<!-- 目前可用於網頁的圖檔格式為以下幾種：JPEG、GIF、PNG -->
+	    <img src="media/main_logo.jpg" alt="Logo">
+	    <p>Cute design 獨家設計<b>印花手提袋</b>，特選輕帆布材質，輕巧好攜帶，<br>
+	       搭配時尚流行印花圖案，讓您走在潮流尖端！
+	    <p>請至各大網路商店購買。</p>
+	    <br>
+	    <!-- 也可以利用width屬性、height屬性來指定圖片寬、高大小 -->
+	    <img src="media/danube_budapest.jpg" width="640" height="360" alt="多瑙河">   
+	    <h3>多瑙河</h3>
+    </body>
+</html>
+<!--
+這邊也稍微探討一下，圖片路徑表示方法，一般來說指定路徑可以分為以下兩種：
+相對路徑：表示以此檔案本身的所在位置作為參考點，再描述要導入進來的檔案相對的位置，例如上面範例src="media/main_logo.jpg"，代表圖檔"main_logo.jpg"是放在與此HTML檔案同一層的media資料夾裡面
+絕對路徑：直接在src屬性中指定圖檔在網路上的位置，也就是把整個路徑給貼上，一般來說會用於網址連結圖檔
+-->
+
+
+<!-- 在HTML中可以使用<audio>這個標籤來加入音訊檔 ============================ -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+    		<!-- 除了可以用sr屬性指定檔案來源，也可以用以下屬性，autoplay屬性：表示要在載入音訊後就開始自動播放，loop屬性：設定讓音訊循環播放
+    				 controls屬性：在網頁中顯示操控面板，讓使用者可以自由播放/停止及調整音量大小 -->
+    		<!-- 目前可用於網頁的音訊檔格式為以下幾種：MP3、WAV、OGG（有些瀏覽器不支援OGG格式） -->
+    		<audio src="media/Strauss_An_der_schoenen_blauen_Donau.mp3" autoplay controls loop></audio>
+    		<!-- 在HTML中可以使用<video>這個標籤來加入影片檔 -->
+    		<!-- <video>這個標籤可加入的屬性與<audio>標籤差不多，多了可以用width、height這兩個屬性來指定影片的大小 -->
+    		<!-- 目前可用於網頁的音訊檔格式為以下幾種：MP4 H.264（.mp4）、WebM（.webm）、OGG Theora Vorbis（.ogg、.ogm、.ogv等） -->
+        <video src="media/FWIDE_basketball_game.ogg" autoplay controls loop></video>
+        <video src="media/FWIDE_basketball_game.webm" width="120" height="160"></video>
+        <p>使用旗標 <b>FWIDE</b> 套件的紅外線測距模組、
+           <mark>LED 七彩燈模組</mark>以及<mark>語音合成模組</mark>
+           加上玩具籃框製作的自製投籃機, 大家都可以自己 DIY 
+           享受不用投幣就可以一直投一直投的樂趣喔！</p>
+        <!-- 除了以上兩種標籤，也可以利用<embed>這個萬用標籤，可以在網頁中嵌入影片、Flash等各種物件，且格式也不僅限於<audio>、<video>這兩個標籤所限制的類型 -->
+        <embed type="video/mp4"
+               src="media/FWIDE_basketball_game.mp4" 
+               width="360" height="360">
+    </body>
+</html>
+
+
+<!-- 建立網頁上的超連結 ==================================================== -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+    		<!-- 其實超連結就是HTML文件中指向另一個HTML文件(或其他資源，如影片等) -->
+        <h2>學攝影的參考書</h2>
+        <p>最近在學習攝影的過程中, 看了幾本書, <br>
+           下面幾本對我幫助很大, 推薦給大家參考：<br><br>
+        <!-- 所以在HTML文件中，只要用以下<a>標籤接著以href屬性來指定URL網址，即可建立超連結 -->
+        <!-- 另外，在a元素中，也可以放入<img>標籤，就可以讓使用者不管是點下文字還是圖片都能訪問href內的網址 -->
+        <a href ="http://www.flag.com.tw/book/5105.asp?bokno=F5620">
+            <img src="http://www.flag.com.tw/images/cover/middle/F5620.gif"
+                 width="82" height="111">
+            正確學會數位攝影的 16 堂課</a><br>
+        <a href ="http://www.flag.com.tw/book/5105.asp?bokno=F4689">
+            <img src="http://www.flag.com.tw/images/cover/middle/F4689.gif"
+                 width="82" height="111">
+            DSLR 構圖寶典- 數位攝影的黃金法則</a>
+        </p>
+
+        <!-- 也可以利用相對路徑指定超連結位置 -->
+        <!-- 對相同目錄底下連結到aa.html此檔案的寫法，如下 -->
+        <a href ="aa.html">img範例</a><br>
+        <!-- 也可以利用相對目前檔案的路徑，假設目前檔案在b資料夾中，那就可以利用".."來進行上移一層目錄後，此時就到網站的根目錄，接著再到a資料夾下抓b.html這個檔案 -->
+        <a href ="../a/b.html">文字強調範例一</a><br>
+        <!-- 或是利用相對於網站根目錄的路徑，在路徑的開頭直接加上"/"，代表根目錄，後面就直接加上檔案所在的資料夾名稱以及檔案名稱即可 -->
+        <a href ="/a/c.html">文字強調範例二</a>
+    </body>
+</html>
+
+<!-- 利用base元素設定相對路徑的基準點 ============================================ -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        
+        <!-- 如果網頁中有多個超連結，且大多都是指定到某個固定路徑或網站，此時就可以在head元素內加入一個bas元素，接著再利用href屬性指定固定的路徑 -->
+        <!-- 當指定後，此時檔案內的相對路徑就不再是相對於"檔案路徑"，而是相對於base元素內指定的位置 -->
+        <base href="http://www.flag.com.tw/db/special/">
+    </head>
+    <body>
+        <h3>旗標好讀</h3>
+        <!-- 此時，因為已經指定了一個固定路徑，所以下面的路徑其實就是"http://www.flag.com.tw/db/special/good001.html" -->
+        <a href="good001.html">旗標好讀‧精采系列</a><br>
+        <a href="life.html">運動、養生健康生活</a><br>
+        <a href="good001_d.html">範例辭典，工作好幫手</a>
+    </body>
+</html>
+
+<!-- 建立文件中的超連結，可以建立指向文件本身內部的超連結 ============================= -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+    		<!-- 利用# + id名稱，可以前往元素ID的位置，如下 -->
+        <a href="#sec_1">認識感光元件</a><br>
+        <!-- 或是也可以在"#"前面加上網頁的路徑，此時就可以指向其他網頁元素ID的位置 -->
+        <a href="a.html#class_1">認識感光元件</a><br>
+        <section id="sec_1">
+            <h3>認識感光元件</h3>
+            <p>感光元件又稱『影像感測器』,
+            是數位相機中最重要的組件之一, 
+            也是數位相機得以記錄影像、拍出照片的關鍵。
+            <!-- href="#top"是HTML規格中定義的特殊語法，代表的是網頁開頭的位置，所以當在頁尾加上這個時就可以回到網頁的最上面 -->
+            <a href="#top">回頂端</a></p>
+        </section>
+        <!-- a元素可以設定target屬性，可以指定顯示超連結後開啟網頁的位置，預設是直接從目前視窗(_self)開啟，若設為_blank則會在新分頁開啟 -->
+        <p><a href ="http://www.flag.com.tw/DB/preview/F3240_1.pdf" target="_blank">蝦仁與木瓜條巧妙搭配的
+           <b>迷你沙鍋料理</b></a> (PDF)</p>
+        </p>
+        <hr>
+        <p>旗標FWIDE自製投籃機影片：
+        <!-- a元素也可以設定download屬性，指示瀏覽器下載所指的網頁（或是其他資源），並且指定下載存擋時所用的檔名（但目前還有些瀏覽器不支援，導致下載時不會採用屬性所指定的檔名） -->
+        <a href="media/FWIDE_basketball_game.mp4" download="fwide_demo">立即下載</a></p>
+    </body>
+</html>
+
+<!-- 建立清單 ====================================================== -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+      <h3>旗旗公司圖書系列</h3> 
+      <!-- HTML支援有序號、無序號兩種不同的清單元素 -->
+      <!-- <ul>標籤是無序號的清單，利用ul(Unordered list)元素來標示清單的位置，接著就用項目元素<li>標籤來條列出所有項目 -->
+      <ul>
+        <li>網路概論與技術</li>
+        <li>程式設計</li>
+        <li>資料結構與演算法</li>
+        <li>資料庫</li>
+      </ul>
+
+
+      <p>上個月的攝影集票選已經出爐,前3名如下：</p>
+      <!-- <ol>標籤是有序號的清單，利用ol(Ordered list)元素來標示清單的位置，接著一樣用項目元素<li>標籤來條列出所有項目 -->
+      <ol>
+	      <li><b>鬱金香攝影集</b></li>
+	      <li>向日葵攝影集</li>
+	      <li>薰衣草攝影集</li>
+      </ol>
+      <p>預定十二月的外拍行程,目前網友票選景點如下：</p>
+      <!-- 在<ol>標籤可以加上type屬性來設定編號的樣式，例如：type="1"代表使用數字編號，type="A"代表使用大寫英文字母編號
+       		 type="a"代表使用小寫英文字母編號，type="I"代表使用大寫羅馬數字編號，type="i"代表使用小寫羅馬數字編號 -->
+      <ol type = "I">
+	      <li>奧萬大楓葉之旅</li>
+	      <li>阿里山朝陽之旅</li>
+	      <li>玉山天池之旅</li>
+      </ol>
+      <p>本次攝影比賽得獎作品 (第1名從缺)：</p>
+      <!-- 在<ol>標籤可以加上start屬性來設定起始編號 -->
+      <ol start="2">
+        <li>阿里山雲海</li>
+        <li>觀音夕照</li>
+        <li>101煙火</li>
+      </ol>
+      <hr>
+      <p>本次攝影比賽得獎作品 (第1名從缺)：</p>
+      <ol>
+       	<!-- 也可以不用加上start屬性，而是對第一個清單加上value屬性指定編號，後續的項目只要沒有指定編號，都會接續前面的數字遞增 -->
+        <li value="2">阿里山雲海</li>
+        <li>觀音夕照</li>
+        <li>101煙火</li>
+      </ol>
+      <hr>
+      <p>讀者票選排名：</p>
+      <!-- 在<ol>標籤可以加上reversed屬性來設定編號由大到小排序 -->
+      <ol reversed>
+        <li>京都金閣寺</li>
+        <li>舊金山大橋</li>
+        <li>奧萬大楓葉</li>
+      </ol>
+
+
+      <!-- 多層清單：可以在一個清單中，在清單的li元素中再加入另一個用ol或ul建立的清單，此清單稱為巢狀清單 -->
+      <ul>
+       	<li>上個月的攝影集票選前3名：
+          <ol>
+	        <li><b>鬱金香攝影集</b></li>
+	        <li>向日葵攝影集</li>
+	        <li>薰衣草攝影集</li>
+          </ol><br>
+       	</li>
+        <li>十二月的外拍行程網友票選：
+            <ol type = "I">
+	            <li>奧萬大楓葉之旅</li>
+	            <li>阿里山朝陽之旅</li>
+	            <li>玉山天池之旅</li>
+            </ol>
+        </li>
+      </ul>
+      <!-- 若是巢狀清單都用ul元素來建立的話，因ul清單是無序清單，內層的項目符號就會自動更換為不一樣的項目符號 -->
+      <h3>旗旗公司圖書系列</h3> 
+      <ul>
+        <li>網路概論與技術</li>
+        <li>程式設計</li>
+        <li>資料庫
+        		<!-- 第 2 層 -->
+            <ul>
+                <li>資料庫系統理論與實務</li>
+                <li>資料探勘 (Data Mining)</li>
+  	 	        <li>Oracle OCP專業認證指南</li>
+	            <li>Microsoft SQL Server
+	            		<!-- 第 3 層 -->
+                  <ul>
+                      <li>設計實務</li>
+                      <li>管理實務</li>
+                  </ul>
+                </li>
+            </ul>        
+        </li>
+      </ul>
+    </body>
+</html>
+
+<!-- 建立表格 ====================================================== -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+	    <!-- 在HTML中，要建立表格需要用到多個元素來建構 -->
+	    <!-- 首先要先利用table元素來建制表格位置，其中，舊版HTML可以利用border屬性來調整表格框線粗細，但現在HTML5已淘汰此用法，若想改變框線粗細或樣式，用CSS來進行設定 -->
+	    <table border="1">
+	    	<!-- 可以利用<caption>標籤來設定一段文字做為表格的標題，此段文字預設會顯示在表格上方 -->
+	    	<caption>土地面積與人口統計表</caption>
+	    	<!-- 接著需要看表格中有幾列資料，每一列資料都需要用一個tr元素，結束標籤可以省略 -->
+		    <tr>
+		    		<!-- 接著再看每一列資料有幾欄資料，每個儲存格資料就用一個td元素，結束標籤可以省略 -->
+		    		<!-- 另外，也可以把欄位標題的內容其<td>標籤修改為<th>標籤，因為<th>標籤預設文字內容會有粗體的效果 -->
+		        <th>地區
+		        <th>土地面積<br>(平方公里)
+		        <th>人口
+		    <tr>
+		        <th>新北市
+		        <td>2,052.57
+		        <td>3,966,818
+		    <tr>
+		        <th>臺北市
+		        <td>271.80
+		        <td>2,702,315
+		    <tr>
+		        <th>高雄市
+		        <td>2,947.62
+		        <td>2,778,992
+	    </table>
+
+	    <table border="1">
+		    <caption>業績統計表</caption>
+		    <!-- 設置表格結構，可以利用<thead>（表頭）、<tbody>（內容）、<tfoot>（表尾）三個標籤來設定表格結構，這樣在編寫HTML時，就可以一眼看出表頭、內容、表尾的表格結構 -->
+		    <thead>
+		        <tr>
+		        <!-- 若想要讓某些欄位可以跨欄、跨列，並讓整個表格仍然維持四四方方的外觀，就必須在td、th元素中使用colspan與rowspan屬性來設定 -->
+		        <!-- colspan屬性：表示欄位要橫向跨(span)多個欄位(column) -->
+		        <th colspan="2">產品分類
+		        <th>上半年
+		        <th>下半年
+		        <th>全年總計
+		    </thead>
+		    <tbody>
+		    <tr>
+		    		<!-- rowspan屬性：表示欄位要縱向跨(span)幾列(row) -->
+		        <th rowspan="2">一般<br>家電
+		        <th>冰箱 <td>59000 <td>81000 <td>140000
+		    <tr>
+		        <th>洗衣機 <td>76000 <td>102000 <td>178000
+		    <tr>
+		        <th rowspan="2">影音<br>視聽
+		        <th>藍光影音光碟機 <td>60000 <td>99000 <td>159000
+		    <tr>
+		        <th>電視機 <td>78500 <td>112500 <td>191000
+		    </tbody>
+		    <tfoot>
+		    <tr>
+		        <th colspan="2">小計
+		        <td>273500
+		        <td>394500
+		        <td>668000
+		    </tfoot>
+	    </table>
+    </body>
+</html>
+
+<!-- 建立表單 ====================================================== -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+	    <!-- 表單（Form）就是網頁上用來接收使用者輸入的互動性元素，像是網路上常見的註冊、登入頁面 -->
+	    <!-- <form>表單標籤有以下屬性可設定，分別是
+	    		 name：指定表單的名稱，在JavaScript就可以透過這個名稱來存取表單內容
+	    		 action：指定表單內容要傳送給哪一個伺服器端的程式處理（可以是相對、絕對路徑），若未設定此屬性，則由目前的檔案本身處理（例如某個php、aspx動態網頁)，HTML文件並無處理表單能力
+	    		 method：指定表單送出方式，可設為GET或POST -->
+	    <form name="login">
+	    		<!-- 一般表單看到的輸入欄位，大多是用input元素來建立，可以設定的屬性值分別是
+	    				 type：表示設定不同類型的輸入欄位，例如：type="text"表示一般的文字輸入欄位，type="password"表示密碼輸入欄位，type="submit"表示送出資料的按鈕等，還有其他類型可以設定
+	    				 name：設定欄位名稱，必須明確指定欄位名稱，才能送出表單資料
+	    				 value：對於一般輸入欄位，此屬性可做為設定欄位的預設值，例如帳號欄位我們先設定value="admin"那網頁載入時，欄位就會預先填入admin，但對於type="submit"按鈕就不一樣，value屬性是設定按鈕上的顯示文字
+	    				 size：指定輸入欄位在畫面上的寬度，單位為字元數，不過實際使用時，會發現可輸入的字數通常大於size指定的寬度，如果要精確指定寬度，就要利用CSS來設定 -->
+	        帳號：<input name="account" type="text" size="8"><br>
+	        密碼：<input name="pass" type="password" size="8"><br>
+	        <input type="submit" value="登入">
+	    </form>
+
+
+	    <h2>調查表</h2>
+	    <form name="form1">
+	    		<!-- type="radio"表示單選欄，設定時必須把各個單選欄的name屬性設為相同，才能讓使用者每次僅能選擇其中一個 -->
+	        性別：<input name="sex" type="radio" value="male">男
+	             <input name="sex" type="radio" value="female">女
+	        <hr>
+	        您喜歡的拍攝主題：<br>
+	        <!-- type="checkbox"表示多選欄，用於建立可複選的欄位，設定時必須把各個單選欄的name屬性設為相同，這樣在送出表單時，程式才能判斷是同一個項目 -->
+	        <input name="topic" type="checkbox" value="natural">自然
+	        <input name="topic" type="checkbox" value="people">人像
+	        <input name="topic" type="checkbox" value="building">建築
+	        <input name="topic" type="checkbox" value="night">夜景<br>
+	        <hr>
+	        對本站的評分：
+	        <!-- type="range"代表滑條，相當於輸入數字的欄位，轉換成以滑鼠選擇的介面，此欄位可再加入min屬性：設定最小值（預設為0）、max屬性：設定最大值（預設為100）、step屬性：設定滑條移動1格的增減值（預設為移動1格增減1） -->
+	        不喜歡<input name="score" type="range" min="1" max="5">喜歡<br>
+	        <!-- type="reset"是一個按鈕，可以將瀏覽器表單內容全部清除或回復預設值 -->
+	        <input type="reset" value="清除重填">
+	        <!-- type="submit"是一個按鈕，可以將瀏覽器表單內容全部資料送出至伺服器 -->
+	        <input type="submit" value="填完送出">
+	    </form>
+
+
+	    <h3>預約訂房</h3>
+      <form name="booking">
+      	<!-- type="date"代表日期輸入欄位，會提供下拉式選單的日曆供使用者選擇，可以利用value屬性來設定預設值 -->
+        入住日期：<input name="checkin" type="date" value="2015-12-31">
+        退房日期：<input name="checkout" type="date"><br>
+        <hr>
+        <!-- type="time"代表時間輸入欄位，無下拉式選單，是提供箭頭按鈕供使用者設定時間，可使用value="時:分"來設定預設值 -->
+        預定晚餐用餐時間：<input name="dinnertime" type="time" value="18:00"><br>
+        <!-- type="color"代表色彩選取交談視窗，可以讓使用者選取顏色，可以利用value="#RRGGBB"屬性來預設顏色值 -->
+        迎賓燈色彩：<input name="color" type="color" value="#ffff00"><br>
+        <input type="submit" value="訂房">
+        <!-- 其餘時間格式如：
+        		 type="datetime-local"代表是將"data"和"time"兩種合併在一起，若是單純只使用type="datetime"就不會有下拉式選單出現
+        		 type="month"代表提供類似日期的下拉式選單日曆，但選取時是以月為單位
+        		 type="week"代表提供類似日期的下拉式選單日曆，但選取時是以週為單位 -->
+      </form>
+
+
+      <h3>相機同好調查表</h3>
+      <form name="survey">
+        請問您持有的相機品牌：<br>
+        <!-- 還有另一種下拉式輸入欄位，<select>標籤可以建立下拉式清單，利用<option>標籤來建立清單中的選項 -->
+        <!-- 若設定<option>Canon並沒有加上value屬性的話，傳送資料到程式時，若選項文字一多就會比較複雜，所以可以利用value屬性，將每個選項用一個簡略的值來帶表 -->
+        <!-- size屬性：讓select元素變成指定列數的選擇匡，不用下拉就可以看到選項內容
+        		 mutiple屬性：讓select變成可複選的欄位，使用者按住鍵盤的ctrl就可選取多個項目 -->
+        <select name="brand" size="5" multiple> 
+          <option value="1">Canon
+          <option value="2">Fujifilm
+          <option value="3">Nikon 
+          <option value="4">Olympus
+          <option value="5">Panasonic
+          <option value="6">Pentax
+          <option value="7">Sony
+        </select><br><br>
+        請問您想參加的行程：
+        <select name="tour">
+        	<!-- 也可以加上optgroup元素將option選項加以分類 -->
+          <optgroup label="國內">
+            <option value="1">花東山海之旅
+            <option value="2">淡水小吃之旅  
+　　　　　　</optgroup>
+          <optgroup label="國外">
+            <option value="3">日本賞櫻之旅
+            <option value="4">帛琉潛水之旅  
+          </optgroup>          
+        </select><hr>
+        <input type="submit" value="確定送出">
+      </form>
+    </body>
+</html>
+
+<!-- 規劃表單欄位的元素 ====================================================== -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+      	<h2>調查表</h2>
+        <form name="form1">
+        <!-- <fieldset>標籤表示將多個輸入框用一個框將其框在一起，也就是瀏覽器會預設用一個方框將這些欄位框起來，讓使用者更好分類 -->
+				<fieldset>
+					<!-- <legend>標籤可以用來標示fieldset所製造出來的方框上的說明文字，且此標籤必須放在fieldset元素中 -->
+					<legend><i>個人資料</i></legend>
+			    <!-- <label>標籤用來標示輸入欄位前的說明文字，可以將input元素放在label元素內，此時瀏覽器就會將文字和後方的輸入欄視為一體，例如在說明文字點擊一下，輸入游標就會跳到輸入框內 -->
+			    <!-- 而label元素有兩種使用方法，一種是下面這種將文字和input元素都放置於label元素內 -->
+			    <label>E-mail：<input name="email" type="email"></label><br>
+			    <label>個人網站：<input name="website" type="url"></label><br>
+			
+	        <!-- 於 label 元素中用 for 屬性設定關聯的 input 元素 -->
+	        <!-- 另一種是label元素中只有放置文字，input元素放置label元素之外，但此時就需要在input元素中加入id屬性設定識別碼，再於label元素內設定for屬性來建立兩者的連結 -->
+	        <label for="tel">連絡電話：</label>
+					<input name="tel" id="tel" type="tel"><br>
+	        <label for="bill">行動電話帳單平均：</label>
+					<input name="bill" id="bill" type="number">
+				</fieldset>
+        <label>對本站的意見：<br>
+        <textarea name="comment" rows="5" cols="25"></textarea></label><br>
+        <input type="reset" value="清除重填">
+        <input type="submit" value="填完送出">
+        </form>
+
+        <h2>調查表</h2>
+        <form name="form1">
+        	<!-- required屬性用來表示此欄位為必填欄位，若未輸入值，瀏覽器就不會給使用者送出 -->
+	        *E-mail：<input name="email" type="email" required ><br>
+	        <!-- placeholder屬性用來設定顯在在輸入欄位中的預設提示訊息，會以灰色字顯示，且此訊息不會被當成欄位的預設值 -->
+	        個人網站：<input name="website" type="url" placeholder="http://www"><br>
+	        <!-- autocomplete="off"屬性是用來關閉自動完成的功能，也就是通常輸入資料後送出表單，瀏覽器會記得前次輸入的值，此時設定此屬性就可以關閉此項功能 -->
+	        *連絡電話：<input name="tel" type="tel" autocomplete="off" required><br>
+	        <!-- autofocus屬性代表在網頁載入時，輸入游標會優先自動移到此欄位 -->
+	        行動電話帳單平均：<input name="bill" type="number" autofocus>
+	        <hr>
+	        對本站的意見：<br>
+	        <textarea name="comment" rows="5" cols="25" placeholder="歡迎提供任何意見"></textarea><br>
+	        <input type="reset" value="清除重填">
+	        <input type="submit" value="填完送出">
+	        <p>*為必填欄位</p>
+        </form>
+    </body>
+</html>
+
+<!-- 建立內嵌窗格 ====================================================== -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <p><b>雪梨歌劇院 (Sydney Opera House)：</b>世界知名的建築之一, 於 2007 年 6 月 28日被聯合國教科文組織指定為世界文化遺產。
+           <br><br><b>雪梨港大橋 (Sydney Harbour Bridge)：</b>全長1149公尺, 是世界上第 5 長的拱橋。</p>
+        <!-- iframe元素名稱來自於Inline Frame，其功能是在網頁畫面中嵌入一個瀏覽器窗格，指定其顯示另一個網頁的內容 -->
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13253.771230202285!2d151.210969864169!3d-33.85247732293014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDUxJzIyLjYiUyAxNTHCsDEyJzU0LjEiRQ!5e0!3m2!1szh-TW!2stw!4v1433752204350" width="400" height="300"></iframe>
+        <!-- 在日益注重安全性的今日，若是隨意在自己的網頁中內嵌其他網站的網頁，難免會有一些安全顧慮，例如可能會擔心別人的網頁含有惡意的JavaScript程式等 -->
+        <!-- 此時就可以加上sandbox屬性來指定iframe網頁允許的功能，也可以不設定屬性值，只加上sandbox，表示採最嚴格的安全限制 -->
+        <!-- sandbox屬性可以設定的項目如下：
+        		 allow-forms：設定此屬性時，代表內嵌窗格允許使用表單
+        		 allow-popups：允許內嵌窗格開啟新視窗
+        		 allow-top-navigation：允許內嵌窗格在載入網頁時（例如按下內嵌窗格的超連結）直接開啟網頁（覆蓋目前的網頁） -->
+        <!-- 所以說當iframe載入的網頁含有a元素，且其target屬性為_blank，那sandbox屬性就需要設定allow-popups這樣這個內嵌的超連結才能開啟新視窗顯示
+        		 所以說當iframe載入的網頁含有a元素，且其target屬性為_top，那sandbox屬性就需要設定allow-top-navigation這樣這個內嵌的超連結才能覆蓋目前網頁顯示，其他屬性值以此類推 -->
+        <iframe sandbox="allow-forms" src="aa.html" width="200" height="100"></iframe> 
+    </body>
+</html>
+
+
+<!-- 綜合實例： ==================================================== -->
+<!DOCTYPE html>
+<html lang=”en”>
+<head>
+  <!-- 一般來說，我們使用標籤時需要有起始標籤及結束標籤，如：<meta></meta>，但假設我們並沒有在起始標籤及結束標籤中間加入內容，我們可以直接用<meta/>一個標籤即可 -->
+  <!-- meta標籤整理 -->
+  <meta charset="utf-8"/>
+  <!-- 以下內容是代表告訴搜尋引擎的內容，讓使用者在搜尋網頁的時候，搜尋引擎可以依照下方我們列出的參數關鍵字來進行搜尋，當提供的越詳細越有可能被使用者搜尋到 -->
+  <!-- description參數代表在告訴搜尋引擎，我們這個網頁的描述，例如我們在利用google搜尋時，每個網頁的下方都有一小段描述 -->
+  <meta name="description" content="Bill的網站，裡面很多學習整理重點"/>
+  <!-- author參數代表在告訴搜尋引擎，此網頁的作者是誰 -->
+  <meta name="author" content="Bill"/>
+  <!-- keywords參數代表在告訴搜尋引擎，此網頁的關鍵字是哪些 -->
+  <meta name="keywords" content="Bill, 整理重點, 教學, html, HTML"/>
+  <!-- viewport參數代表視口，視口的意思是，我們在瀏覽此網頁的時候有可能是用電腦或是手機等裝置進行瀏覽，此時我們利用width=device-width這個參數來進行依照瀏覽裝置自動調整，initial-scale=1.0這個參數代表初始的縮放比為100%-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>我的商店</title>
+</head>
+
+<!-- 用下面 Bootstrap 格式來美化一下 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+<body>
+<!-- 因為用了上面的Bootstrap格式美化所以要加下面的<div class="container">語法 -->
+<div class="container">
+    <!-- <h1>標題標籤：代表標題的標籤有六個，分別從<h1>、<h2>依序到<h6>，<h1>代表這個網頁中主要標題。就像是文章的題目、一份工作報告的標題，都只會有一個，所以網頁的<h1>建議只用1次，瀏覽器與搜尋引擎才會知道你的主要標題是什麼，有利於搜尋引擎優化(SEO)
+         <h1>、<h2>到<h6>代表各個小標題，依照文章的層級，你可以依序列出各個小標，數字越大代表層級越低，h6就是最低的層級，h1是最大的標題，當然大標題字體就比較大，小標字體相對小
+         為什麼使用h來代表標題呢?主要是使用標題的英文heading來表示，取單字的第一個字母h作為標題的標籤 -->
+    <h1>我的APPLE商店</h1>
+  <!-- 因為用了上面的Bootstrap格式美化所以要加下面的<table class="table table-striped">語法 -->
+  <table class="table table-striped">
+    <p>成功建立</p>
+    <table>
+    <thead>
+      <th>商品名稱</th>
+      <th>價格</th>
+      <th>庫存數量</th>
+      <th>到貨日期</th>
+    </thead>
+    <!-- {% for merchandise in allOfMerchandise %} 就是一般我們認識的 for loop -->
+      {% for merchandise in allOfMerchadise %}
+      <tr>
+        <td>{{ merchandise.name }}</td>
+    <!-- 若是名字有需要用到超連結可以加上下面的語法
+       簡單來說，就是尋找 url 中 merchName為 detail 的路徑，而這個路徑對應到的 Callback function 需要使用到的 merchName 參數，我們餵給他merchandise.name -->
+    <td><a href="{% url 'detail' merchName=merchandise.name %}">{{ merchandise.name }}</td></a>
+        <td>{{ merchandise.price }}</td>
+        <td>{{ merchandise.inventory }}</td>
+    <!-- 也調整一下到貨日期的形式(format)，原本是<td>{{ merchandise.arrival_date}}</td>，我們可以將其調整為以下語法 -->
+        <td>{{ merchandise.arrival_date|date:"Y-m-d"}}</td>
+      </tr>
+   <!-- 使用HTML的for loop後要記得在最後加上{% endfor %} -->
+     {% endfor %}
+   </table>
+
+   <!-- <a>超連結標籤：是錨anchor的縮寫，主要使用屬性href來展現功能，href是hypertext reference的縮寫
+        設定屬性後，網頁就會轉跳到你在href屬性所設定的位置或網址。<a>標籤除了href這個屬性外，還有一個很常用的屬性是target，將屬性的值設為_blank，就可以讓你的超連結自動開新分頁，而不是預設的直接覆蓋掉原本的網頁 -->
+   <!-- 利用網址外連網站 -->
+   <a href="https://www.google.com/">google網站</a>
+   <!-- 假設今天不是要外連網站，而是要連結到自己寫好的其他HTML檔案，我們也可以利用href屬性來做連結，這是在同一個目錄底下的寫法 -->
+   <a href="page2.html">第二頁</a>
+   <!-- 若是不同目錄則要加上路徑，如下page3.html放在dir資料夾內 -->
+   <a href="dir/page3.html">第三頁</a>
+   <!-- 假設檔案是放在此html的上一層路徑，我們則可以用../來跳到上一層的目錄 -->
+   <a href="../page4.html">第四頁</a>
+
+   <!-- <img>圖片標籤：想在網頁放上圖片，你可以使用<img>標籤，這個標籤不需要開頭與結尾標籤，單獨一個<img>標籤即可，我們稱這樣的標籤為空元素(empty element)。換句話說，他不像段落文字標籤，需要開頭<p>與結尾</p>這樣成對的包覆規則，<img>只需要單獨一個標籤就可以發揮功能了
+        <img>標籤的使用上，主要在使用標籤的屬性(attributes)，屬性包括圖片檔案來源src、圖片替代文字alt、高度height、寬度width
+        img其實就是圖片的英文單字image之意，取這個單字的前三個字母代表。同樣的，屬性名稱src就是來源檔案的意思source file，alt是alternative text替代文字，height與width則是高度與寬度的英文 -->
+   <!-- 利用網址外連圖片 -->
+   <img src="https://oscimg.oschina.net/oscnet/up-f28e4226b879bddaee442bcc335f3a81799.png"/>
+   <!-- 連結目錄內圖片檔案，我們也可以加上寬度高度的屬性來定義，也可以只打width或height某個屬性，這樣他會案等比例自動放大縮小 -->
+   <img src="my_jpg.jpg" width="400" height="400"/>
+
+   <!-- 影片 -->
+   <!-- 利用網址嵌入影片，此部分是直接利用youtube分享影片內的嵌入功能直接複製語法 -->
+   <iframe width="560" height="315" src="https://www.youtube.com/embed/CLUPkcLQm64" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+   <!-- 我們也可以放自己準備的檔案，而此時可以看到我們這邊有用到起始標籤跟結束標籤，因為假設影片無法載入，那我們就要在頁面呈現無法載入影片這幾個字 -->
+   <!-- 其中，若是我們要讓影片順利播放，此時我們還要再加上controls這個屬性，才會有影片的播放按鍵等控制項目出現，這邊我們也可以加上width或height屬性來控制影片大小 -->
+   <video src="my_video.mp4" controls width="400" height="400">瀏覽器無法載入影片</video>
+
+   <!-- <ol>有序清單標籤：ol是ordered list有序清單的英文字母，各取單字的第一個字母形成的。實際的清單內容，則填在<li></li>標籤中，li是來自list清單這個英文單字
+        瀏覽器看到<ol>便知道在網頁上呈現有序標籤，便會幫<li>標籤的內容加上1、2、3的順序 -->
+   <!-- ol原本是在每行文字前面加上1 2 3 4...標示，若我們想修改可以加上type屬性 -->
+   <ol type="A">
+     <li>google</li>
+     <li>facebook</li>
+     <li>ig</li>
+     <li>ptt</li>
+   </ol>
+
+   <!-- <ul>無序清單標籤：當你想在網頁上呈現沒有順序性的清單，可以使用<ul></ul>標籤，同樣的，實際的清單內容同樣是使用<li></li>標籤來呈現
+        ul是unordered list無序清單的英文字母，各取單字的第一個字母而形成；unordered是ordered的前面加上un字首，un字首代表「沒有、不」的意思，所以ordered加上un，就從原本的有順序的意思，變為unordered無順序的了 -->
+   <!-- <ul>標籤常用於選單中，你平常瀏覽的網頁有許多下拉式的選項便是使用<ul>標籤製作出來的 -->
+   <ul type="A">
+     <li>google</li>
+     <li>facebook</li>
+     <li>ig</li>
+     <li>ptt</li>
+   </ul>
+
+   <!-- 表格 -->
+   <!-- 那如果覺得表格太擠，我們也可以加上width屬性，將表格拉寬 -->
+   <table width="400">
+     <tr>
+       <td>日期</td>
+       <td>數學</td>
+       <td>英文</td>
+     </tr>
+     <tr>
+       <td>2/8</td>
+       <td>70</td>
+       <td>90</td>
+     </tr>
+   </table>
+
+   <!-- 容器的標籤(例如：div、span)，可以讓我們在做網頁的美化跟排版的時候方便很多 -->
+   <!-- 例如，我們可以使用div容器，此時如果將上述的列表及表格，包入此容器中，我們要進行改字體的格式時，就可以直接在容器加上CSS，就會一次更改容器內的所有內容 -->
+   <div style="color: red;">
+    <ol type="A">
+        <li>google</li>
+        <li>facebook</li>
+        <li>ig</li>
+        <li>ptt</li>
+    </ol>
+    <table width="400">
+       <tr>
+         <td>日期</td>
+         <td>數學</td>
+         <td>英文</td>
+       </tr>
+       <tr>
+         <td>2/8</td>
+         <td>70</td>
+         <td>90</td>
+       </tr>
+    </table>
+   </div>
+
+     <!-- HTML的標籤顯示在網頁上主要分成兩種方式，第一種是標籤的寬度是多少，佔的空間就是多少，此種標籤我們稱為inline，
+          第二種是不管標籤的寬度是多少，佔的空間就是固定一整行block -->
+     <!-- 例如，我們從下方例子可以知道，a標籤就是第一種標籤，p標籤就是第二種標籤 -->
+    <a href="#">link_1</a>
+    <a href="#">link_2</a>
+    <hr/>
+    <!-- <p>段落標籤：是呈現網頁段落文字的標籤，文字段落大多都使用這個標籤，為什麼使用p來代表段落文字?是來自於paragraph這個單字，以第一個字母p來代表 -->
+    <p>你好</p>
+    <p>哈哈</p>
+    <!-- 此時，我們上面講的容器也有這個特性 -->
+    <!-- 例如，我們從下方例子可以知道，span容器這個標籤就是第一種標籤，div容器這個標籤就是第二種標籤 -->
+    <span>span_1</span>
+    <span>span_2</span>
+    <hr/>
+    <div>div_1</div>
+    <div>div_2</div>
+
+    <!-- html輸入標籤 -->
+    <!-- 因為有太多的輸入標籤類型，詳細可以到以下網站參考，標籤整理網站：https://www.runoob.com/tags/html-reference.html -->
+    <!-- 例如我們要呈現在網頁上，讓使用者輸入帳號密碼的框框，此時我們就可以利用input這個標籤讓使用者輸入字段 -->
+    <!-- 但一般來說網頁上載輸入匡內都會有一些灰色字的提醒字元，此時我們就可以利用這個placeholder屬性來幫我們達成 -->
+    <input type="text" placeholder="請輸入帳號"/>
+    <!-- <br>空格標籤：功用是空一行(a line break)，br取自break的前兩個字母，break的英文意思有打破的意思，也有休息的意思，這邊是休息一行的意思，所以網頁中會空一行 -->
+    <br/>
+    <br/>
+    <input type="password" placeholder="請輸入密碼"/>
+  </body>
+</html>

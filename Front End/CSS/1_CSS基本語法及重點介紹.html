@@ -1,0 +1,509 @@
+<!-- CSS重點整理 -->
+<!--
+重點整理網站：
+https://www.w3schools.com/css/css_border.asp
+
+3D設計網站：
+https://www.tinkercad.com/things/iB7zSQ3rc0Z-stunning-kasi-albar/edit
+-->
+
+<!-- CSS(Cascading Style Sheet)介紹： -->
+<!--
+CSS(Cascading Style Sheet，串接樣式表)介紹： ===========================================
+CSS(Cascading Style Sheet)樣式表是用來控制瀏覽器呈現HTML文件內容時所使用的樣式(Style)，像是文字的顏色、字體粗細、圖片的位置
+透過CSS，可讓原本內容單調的HTML網頁，呈現出各種不同的外觀設計，簡單來說，CSS是一種控制如何呈現顯示網頁的程式語言
+-->
+
+<!-- 一般來說，要在HTML文件中指定要套用的CSS樣式表，主要有以下四種方法 -->
+
+<!-- 1.用style元素定義內嵌樣式，也就是在HTML檔案內的head元素中加入style元素定義樣式表，如下 -->
+<head>
+  <!-- 這邊要注意CSS樣式表註解是用"/* */"符號將註解文字包起來 -->
+  <!-- 一般來說有些人會加上type="text/css"這個屬性來表示檔案類型，不過此屬性在新版的HTML中為非必要 -->
+  <style type="text/css">
+    /* 放入CSS樣式規則 */
+    body {background: #fc0}
+  </style>
+</head>
+
+<!-- 2.在各HTML元素標籤內使用style屬性指定樣式，如下 -->
+<body style="background: #fc0">
+  <h3>旗旗公司圖書系列</h3> 
+  <!-- 若style屬性中藥同時指定多個樣式規則，可以用";"分號符號分隔 -->
+  <ul style="color : blue">
+    <li>網路概論與技術</li>
+    <li>程式設計</li>
+    <li>資料結構與演算法</li>
+    <li>資料庫</li>
+  </ul>
+</body>
+
+<!-- 3.將樣式表定義在.css檔案內，以link元素連結該檔案 -->
+<head>
+  <!-- 我們可以將CSS樣式獨立存成一個檔案(副檔名.css)，然後用link元素將檔案連結進來HTML文件 -->
+  <link rel="stylesheet" href="a.css">
+</head>
+
+<!-- 把樣式規則寫入另一個a.css的檔案，如下 -->
+body{background: #fc0;}
+ul{color: blue;}
+
+<!-- 4.將樣式表定義在.css檔案內，以CSS的@import指令匯入該檔案 -->
+<head>
+  <style>
+    /* 在CSS檔案中，同樣也可以用@import指令匯入另一個CSS檔案 */
+    @import url("a.css")
+  </style>
+</head>
+
+<!-- 把樣式規則寫入另一個a.css的檔案，如下 -->
+@import url("b.css")
+body{background: #fc0;}
+ul{color: blue;}
+
+<!-- 所以，當在HTML文件內使用style元素（方法1）或是在個別元素使用style屬性（方法2）時，因為CSS的定義都是寫在HTML檔案內，所以稱為內部CSS（Internal CSS）
+     若是將CSS的定義另外存成一個.css檔案，再以link元素（方法3）或是用@import指令(方法4)匯入，稱為外部CSS（External CSS） -->
+
+<!-- 另外這邊也要注意一點，在HTML檔案內可以同時利用上述四種方法來套用CSS樣式，但是以style屬性（方法2）定義的樣式，優先權最高
+     接下來另外三種定義方式，則是以出現的順序來決定，原則上是"後出現的設定覆蓋先前的設定"，也就是越晚出現的定義方式，優先權越高 -->     
+
+
+<!-- CSS樣式表是由一條一條的規則（Rule）所組成，這些規則可以控制網頁呈現的外貌 -->
+<!-- CSS規則是由選擇器（Selector）和宣告（Declaration）兩個部分所組成，而宣告又區分為屬性（Property）和值（value） -->
+<!-- 以下面範例來說，"h3"就是選擇器（Selector），"{color: green;}"這是宣告（Declaration），宣告內的color是屬性（Property）、green是值（value） -->
+h3{color: green;}
+
+
+範例1： ===========================================================
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+  <!-- 所以我們只要在syle標籤內加上各個標籤要設定的樣式，就相當於把body的標籤都套用上屬性 -->
+  <style>
+    p{
+      background-color: grey;
+    }
+    h1{
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <!-- style標籤 -->
+  <!-- 我們來看下面的例子，假設我們想把每一行的p標籤，顏色都改為紅色時，我們必須要一行一行的進行更改 -->
+  <!-- 但如果我們不想這麼麻煩，我們可以在head標籤的區塊內進行style標籤的預設設定 -->
+  <h1>css教學</h1>
+  <p style="color: blue;">早餐吃什麼？</p>
+  <p style="color: blue;">早餐吃什麼？</p>
+  <p style="color: blue;">早餐吃什麼？</p>
+  <p style="color: blue;">早餐吃什麼？</p>
+  <p style="color: blue;">早餐吃什麼？</p>
+  <p style="color: blue;">早餐吃什麼？</p>
+  <h1>安安你好</h1>
+</body>
+</html>
+
+範例2： ===========================================================
+<!-- 這部分我們沿用範例1的程式碼 -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+  <!-- 我們也可以利用引入外部css檔案來統一設定body內標籤的格式 -->
+  <!-- 此時我們就不需要在head加上style標籤，我們將style標籤另存成一個檔案，叫style.css -->
+  <!-- 然後我們利用link標籤來引入外部css的檔案，其中，rel放的是引入的檔案是什麼類型的檔案，href放的則是要引入檔案的路徑及檔案名稱 -->
+  <!-- 那為什麼要改成透過外部引入css檔案的語法？這樣還要在創建另一個檔案。主要是因為當我們在建構一個網站的時候，會有很多的網頁，但網頁上標籤的設定樣式也許都大同小異
+       此時，css的屬性設定的語法也就大同小異，這樣我們只要創建一個統一的css樣式檔案，在各個網頁直接引入，就不用寫很多的重複css設定的語法，後續維護也就比較簡單 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>css教學</h1>
+  <p>早餐吃什麼？</p>
+  <p>早餐吃什麼？</p>
+  <p>早餐吃什麼？</p>
+  <p>早餐吃什麼？</p>
+  <p>早餐吃什麼？</p>
+  <p>早餐吃什麼？</p>
+  <h1>安安你好</h1>
+</body>
+</html>
+
+<!-- 以下部分寫到css的檔案，並將其檔案命名為style.css -->
+p{
+  color: yellow;
+  background-color: grey;
+}
+h1{
+color: blue;
+}
+
+<!--
+選擇器範例： ==================================================
+-->
+<!-- 選擇器（Selector）是用來選擇規則要套用的對象，依據對象的不同，有不同的寫法 -->
+<!-- 1.元素選擇器：在CSS規範中稱為類型選擇器（Type Selector），也就是以HTML的元素為選擇對象，如：p、h1等等，如下 -->
+h3{color: green;}
+
+<!-- 2.類別選擇器（Class Selector）：此選擇器需配合HTML元素的通用屬性class一起使用，在HTML元素中可以利用class="類別名稱"，將多個元素設定為屬於一個特定的類別
+     在CSS中就可以用".類別名稱"的選擇器來替同個類別的元素設定樣式，如下 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            /* 將藍色(blue)的樣式套用到所有class="prog"的元素，青色(lime)的樣式套用到所有class="other"的元素 */
+            .prog{color: blue}
+            .other{color: lime}
+
+            /* 另外也可以將元素選擇器與類別選擇器結合使用，例如只對li元素底下的class="other"套用樣式 */
+            li.other{background-color: red}
+        </style>
+    </head>
+    <body>
+      <h3 class="other">旗旗公司圖書系列</h3> 
+      <ul>
+        <li class="other">網路概論與技術</li>
+        <li class="prog">程式設計</li>
+        <li class="prog">資料結構與演算法</li>
+        <li class="other">資料庫</li>
+      </ul>
+    </body>
+</html>
+
+<!-- 3.識別碼選擇器（ID Selector）：此選擇器需配合HTML元素的通用屬性id一起使用，透過id屬性替元素設定一個獨一無二的識別碼
+       在CSS中可以用"#識別碼名稱"來替元素設定樣式 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Ch06-06</title>
+        <style>
+            #net{color: blue}   /* 藍 */
+            #prog{color: green}  /* 綠 */
+            #algo{color: red}    /* 紅 */
+        </style>
+    </head>
+    <body>
+      <h3>旗旗公司圖書系列</h3> 
+      <ul>
+        <li id="net">網路概論與技術</li>
+        <li id="prog">程式設計</li>
+        <li id="algo">資料結構與演算法</li>
+        <li>資料庫</li>
+      </ul>
+    </body>
+</html>
+
+<!-- 4.組合選擇器（Combinator Selector）：此選擇器代表利用以下選擇器，後代選擇器、子選擇器、相鄰兄弟選擇器與一般兄弟選擇器來選取元素，將具有後代或是相鄰關係的元素套用樣式，如下 -->
+<!-- 先說明元素的層次關係，從下面例子來看，h3、ul、li可以稱為body的後代元素（Descendant），其中h3、ul也是body的子元素（Child），另一方面ul則是h3的同層元素（Adjacent）
+     這邊要注意一點，CSS選擇器僅能選擇元素"之後出現的同層元素"，例如以下範例就不能先選擇ul之後再選擇h3，因為h3是ul"之前"出現的元素 -->
+<body>
+  <h3></h3>
+  <ul>
+    <li></li>
+    <li></li>
+  </ul>
+</body>
+
+<!-- 
+這邊先用A B C三個元素來當範例，如下：
+1."A B"（兩個元素中間空一格）：表示在A元素之內的所有後代元素B
+2."A>B"：表示A元素的子元素B
+<A>
+  <B></B> *1 *2
+  <C>
+    <B></B> *1
+  </C>
+  <B></B> *1 *2
+</A>
+
+3."A+B"：表示與A元素同層且相鄰的B元素
+4."A~B"：表示所有與A元素同層的B元素
+<C>
+  <B></B>
+  <A></A> 
+  <B></B> *3 *4
+  <C></C>
+  <B></B> *4
+</C>
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <style>
+            /* 假設這邊是輸入ul + h3，那此藍色樣式就會套用不成功，因為在body內可以看到h3是出現在ul之前 */
+            h3 + ul{color:blue}
+            /* li的子元素ul套用綠色樣式 */
+            li > ul{color:green}
+        </style>
+    </head>
+    <body>
+      <h3>旗旗公司圖書系列</h3> 
+      <ul>
+        <li>網路概論與技術</li>
+        <li>程式設計</li>
+        <li>資料庫
+            <ul>
+                <li>資料庫系統理論與實務</li>
+                <li>資料探勘 (Data Mining)</li>
+              <li>Oracle OCP專業認證指南</li>          
+            </ul>        
+        </li>
+      </ul>
+    </body>
+</html>
+
+<!-- 5.虛擬類別（Pseudo Class）：此選擇器代表用來表示某種狀態或是符合某特定條件的元素，在CSS中可以用":虛擬類別名稱"來替元素設定樣式 -->
+<!-- 因虛擬類別有很多種，詳細內容可以至以下網站：https://developer.mozilla.org/en-US/docs/Web/CSS/:link -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <style>
+            /* first-child意思是body的第一個子元素(h3、ul)套用綠色樣式 */
+            :first-child {color : green}
+            /* 當滑鼠指到li元素就套用藍色樣式 */
+            li:hover     {color : blue}   
+        </style>
+    </head>
+    <body>
+      <h3>旗旗公司圖書系列</h3> 
+      <ul>
+        <li>網路概論與技術</li>
+        <li>程式設計</li>
+        <li>資料結構與演算法</li>
+        <li>資料庫</li>
+      </ul>
+    </body>
+</html>
+
+
+<!--
+CSS宣告規則： ==================================================
+-->
+<!-- 若選擇器有多個樣式要宣告，可以一併放在同一個大括弧中，用分號分開，如下 -->
+h3{
+  color: green;
+  text-align: left; 
+}
+
+<!-- 若樣式相同，但選擇器不同時，也可以一併做宣告，各個選擇器用逗號分開，如下 -->
+h1, h2, h3{color: blue}
+
+<!--
+另外，這邊要注意一點，選擇器也有其優先性，這邊稱為選擇器的獨特性（Specificity）
+也就是說如果某個元素同時符合多個選擇器，此時就是以選擇器的獨特性來決定實際要套用哪個選擇器的樣式，而非出現的順序，獨特性的規則如下：
+1.ID選擇器的獨特性 > 類別選擇器（含虛擬類別）的獨特性 > 元素選擇器的獨特性
+2.組合選擇器中，獨特性與上述大致差不多，有使用ID選擇器的獨特性 > 有使用類別選擇器（含虛擬類別）的獨特性 > 只使用元素選擇器的獨特性
+*若上一項仍無法決定，則以出現的數量決定，也就是在組合選擇器中列出的類別、元素越多，表示其越有獨特性，如："section ul li" > "ul li" > "li"
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <style>
+            #last   {color:blue;   } /* 藍色 */
+            .mysql  {color:green;  } /* 綠色 */
+            ul li   {color:orange; } /* 橘色 */
+            li      {color:yellow; } /* 黃色 */            
+            ul      {color:red;    } /* 紅色 */
+        </style>
+    </head>
+    <body>
+      <ul>
+          <!-- 雖然style元素內並未指定b元素內容的顏色，但因為顏色、字型樣式這兩種是屬於可繼承的樣式，也就是子元素會繼承父元素的樣式 -->
+          <b>資料庫圖書系列</b>
+          <!-- 以下兩個li元素因為組合選擇器"ul li"的獨特性 > "li"的獨特性，所以這邊會顯示橘色 -->
+          <li>資料庫系統理論與實務</li>
+          <li>大數據 Big Data</li>
+          <!-- 因類別選擇器 > 只使用元素的組合選擇器，也就是class="mysql"的獨特性 > "ul li"的獨特性，所以這邊會顯示綠色 -->
+          <li class="mysql">MySQL 管理實務</li>
+          <!-- 因識別碼選擇器 > 類別選擇器 > 只使用元素的組合選擇器，也就是id="last"的獨特性 > class="mysql"的獨特性 > "ul li"的獨特性，所以這邊會顯示藍色 -->
+          <li class="mysql" id="last">MySQL 設計實務</li>
+      </ul>
+    </body>
+</html>
+
+範例1： ===========================================================
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+  <style>
+    /* 在設定id的css樣式時，我們必須要在id設定的名字前面加上"#"，這樣才可以跟html語法連接，如下 */
+    #css-h1{
+      color: yellow;
+      background-color: grey;
+    }
+    /* 例如我們要將class為food的內容做顏色設定，我們就可以在class設定的名字前面加上"."，這樣才可以跟html語法連接，如下 */
+    .food{
+      color: red;
+    }
+
+    .name{
+      color: blue;
+    }
+
+    .background-grey{
+      background-color: grey;
+    }
+  </style>
+</head>
+<body>
+  <!-- id -->
+  <!-- id是可以給我們的標籤一個唯一的識別名稱，因為id是唯一的標籤識別名稱，所以在本份html的語法中只能出現一次，不能重複賦予，也不能賦予多個id（跟class可以賦予多個不一樣） -->
+  <h1 id="css-h1">css教學</h1>
+
+  <!-- class -->
+  <!-- 以下6個p標籤我們可以看到分為兩類，分別是食物跟人名，若我們要分開套用不同的格式時，就可以利用class做分類 -->
+  <p class="food">麻婆豆腐</p>
+  <p class="food">肋眼牛排</p>
+  <p class="food">珍珠奶茶</p>
+  <p class="name">小明</p>
+  <p class="name">小佳</p>
+  <p class="name">小雨</p>
+  <!-- class內的類別設定不只可以設一個，我們只要在每一類名稱後面加上空白鍵，就可以再加上另一類的名稱，此時我們也就可以在另外為這另一類套上css格式，如下 -->
+  <p class="food background-grey">結束符號</p>
+</body>
+</html>
+
+範例2： ===========================================================
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+  <style>
+    /* 當標籤內的css設定樣式相同時，我們也可以一次設定多個標籤，如下，我們把id-1跟h1標籤一樣套用上灰色的背景 */
+    #id-1, h1{
+      background-color: grey;
+    }
+
+    /* 或是我們可以一次套用css樣式到整份html標籤的語法，此時我們就可以用"*"來設定 */
+    *{
+      color: blue;
+    }
+
+    /* 另外當我們HTML有多層語法的時候（如上面的ul底下有三個li那個區塊），畢竟一個區塊內並不會都只有同個標籤
+       所以如果我們要對ul標籤區塊內的li標籤做設定時，如下 */
+    ul li{
+      background-color: red;
+      opacity: 0.5
+    }
+
+    /* 所以當我們有需要對某一個區塊內的標籤就可以如上設定，而不只有可以對下一層進行設定，因為這個設定方法是指，只要在ul這個標籤區塊底下都算
+       例如我們也可以對ul底下li內的a標籤做設定，如下，此時我們不需要打li，因為a標籤確實是在ul標籤區塊底下 */
+    ul a{
+      color: red;
+    }
+
+    /* 另外，我們不只可以套用css樣式在html的標籤上，我們也可以套用在屬性上面 */
+    /* 例如我們想套用css樣式到有利用到type這個屬性的標籤，此時我們可以利用"[]"來進行屬性套用，如下 */
+    /* 這個時候所有利用到type屬性的標籤都會套用到此css樣式 */
+    [type]{
+      background-color: grey;
+      opacity: 0.5
+    }
+
+    /* 那假設說我們不想要讓背景顏色直接顯示在網頁上，而是要等使用者滑鼠滑過那個地方的時候才顯示時，
+       例如我們想要設定當使用者滑鼠滑過h1標籤的內容時，就顯示背景顏色，我們就可以利用hover這個設定來實現 */
+    h1:hover{
+      background-color: grey;
+    }
+  </style>
+</head>
+<body>
+  <!-- 更多套用css的方法，看設定css檔案的部分，另外此部分只有舉例一些，更多的css選擇器要自己研究 -->
+  <h1 id="css-h1">css教學</h1>
+  <p class="food">這是第一個段落</p>
+  <p class="food">這是第二個段落</p>
+  <h2 id="id-1">小明你好呀</h2>
+  <h2>小黑你好呀</h2>
+  <ul>
+    <li><a href="https://www.google.com/"></a></li>
+    <li>facebook</li>
+    <li>ig</li>
+  </ul>
+  <input type="text" />
+  <br/>
+  <input type="password" />
+</body>
+</html>
+
+<!-- 範例3： ======================================================= -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <!-- 當我們要對div容器內的所有內容做樣式的套用時，我們可以直接在div標籤內加上style屬性 -->
+  <!-- 如果想要設定多個樣式時，我們可以在style內加上多個設定項目，例如：文字顏色(color)、字體大小(font-size)，要記得每個設定的項目都要用;符號來當結束 -->
+  <div style="color: red; font-size: 20px;">
+    <!-- 此時，若我們有某個標籤要更改一致的樣式時，只要同樣在標籤內加上同個設定項目，就會依照此設定，
+         例如，我們的h1標題文字顏色想要改為藍色，但其他標籤維持原本容器設定的顏色，那我們就可以在h1標籤內另外加上style去設定，
+         HTML語法會以最內部的設定為基準 -->
+    <h1 style="color: blue;">CSS教學</h1>
+    <!-- 接下來我們想要對p這個標籤加上外框，此時我們可以加上style的border來設定，設定外框的線條寬度為5px、虛線樣式dashed、線條為綠色green
+         但我們還要設定框線的寬度，不然會是一整列都有，所以我們在style內再加上width參數 -->
+    <p style="border: 5px dashed green; width=200px;">這是一個段落</p>
+  </div>
+
+  <!-- 顏色設定 -->
+  <!-- 因為一般來說，顏色有許多，所以我們可以透過顏色編碼、RGB配色表、HSL色彩模式來進行設定 -->
+  <h2 style="color: rgb(255, 99, 71);">第二章</h2>
+  <h2 style="color: #ff6347">第三章</h2>
+  <h2 style="color: hsl(9, 100%, 64%)">第四章</h2>
+
+  <!-- padding(內部空間) & margin(外部空間)設定 -->
+  <!-- 一般來說，若我們想看網頁的原始碼，可以在瀏覽器按下F12，此時我們可以透過elements的部份(上面或是左邊的部分)看到HTML的原始碼 -->
+  <!-- 而在elements的下方(或是右邊)會有一個顯示css程式碼styles的地方，但這個顯示css原始碼不是全部，而是只會顯示你所選取的那段HTML原始碼所套用的css，另外我們拉到最下面就可以看到margin...等設定空間的像素 -->
+  <!-- 所以當我們要設定div這個容器在網頁上所佔的空間時，我們可以在style內加入padding、margin屬性 -->
+  <div style="padding: 20px; margin: 20px; background-color: lightblue; border: 1px solid black;">
+    大家好我是Bill，此部分要介紹的是padding & margin如何設定
+  </div>
+  <!-- 若是我們不想要四個邊都設定空間時，我們可以另外設定，例如我們內部空間只要邊框的上面留空間時，就可以使用padding-top這個屬性 -->
+  <!-- 或者是我們只想要下面留空間，就可以使用padding-bottom這個屬性，或者也可以只設定左(padding-left)、右(padding-right) -->
+  <!-- margin設定也是以此類推 -->
+  <div style="padding-top: 20px; margin: 20px; background-color: lightblue; border: 1px solid black;">
+    大家好我是Bill，此部分要介紹的是padding & margin如何設定
+  </div>
+  <!-- 或者是我們想要一次設定padding的四個邊框空間，此時我們就可以直接在padding屬性直接加上4個值，順序是順時鐘設定 -->
+  <!-- margin設定也是以此類推 -->
+  <div style="padding-top: 20px 30px 40px 50px; margin: 20px; background-color: lightblue; border: 1px solid black;">
+    大家好我是Bill，此部分要介紹的是padding & margin如何設定
+  </div>
+  <!-- margin設定還有一個特別的地方(padding不能設定)，我們可以將margin設定為負的像素，這個代表我們不想要外部空間，margin-top設定為負數，就可以將div這個容器整個向上移 -->
+  <div style="padding-top: 20px 30px 40px 50px; margin-top: -20px; background-color: lightblue; border: 1px solid black;">
+    大家好我是Bill，此部分要介紹的是padding & margin如何設定
+  </div>
+
+  <!-- float(漂浮屬性) -->
+  <!-- 一般來說，我們在設計網頁時，若是打上以下兩行程式碼，p標籤裡面的字就會顯示在圖片的下方 -->
+  <img src="htmlCss.jpg" width="200px" />
+  <p>這是一張圖片</p>
+  <!-- 但此時若是我們想要把字顯示在圖片的右邊(左邊)的話，我們就可以在img標籤內設定css的style，加上float這個屬性 -->
+  <!-- 若我們將float這個屬性設定為左邊，就代表圖片會顯示在左邊，此時我們p標籤內的字就會跑到圖片的右邊 -->
+  <!-- 這是因為HTML的排版有3D的概念，我們可以利用一個最上方整理的3D網站來設計一下排版的問題 -->
+  <img src="htmlCss.jpg" width="200px" style="float: left" />
+  <p>這是一張圖片</p>
+
+  <!-- display(顯示屬性) -->
+  <!-- HTML的語法中，標籤的顯示方式分為兩種，分別是block及inline，如下，p標籤顯示方式為block，span標籤顯示方式為inline -->
+  <p>你好</p>
+  <p>哈哈</p>
+  <span>span_1</span>
+  <span>span_2</span>
+  <!-- 此時，若我們想將p標籤預設的block顯示方式修改為inline時，我們就可以使用css語法中的display屬性來做修改 -->
+  <p style="display: inline;">你好</p>
+  <p>哈哈</p>
+  <span>span_1</span>
+  <span>span_2</span>
+</body>
+</html>

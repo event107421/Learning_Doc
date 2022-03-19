@@ -1,0 +1,448 @@
+<!--
+在HTML中可以使用border這個屬性來替表格加上外框線，但從呈現的結果可以發現其框線分為兩層，但生活中看到的表格多數只有一層框線
+此時就可以使用border-collapse屬性來控制，設定值如下
+1.collapse：表示將2層框線重疊，就可以變為一條線
+2.seperate：表示框線不重疊（預設值）
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <style>
+            table{border-collapse: collapse;}       
+        </style>
+    </head>
+    <body>
+    <table border="1">
+    <tr>
+        <th>地區
+        <th>土地面積<br>(平方公里)
+        <th>人口
+    <tr>
+        <th>新北市
+        <td>2,052.57
+        <td>3,966,818
+    <tr>
+        <th>臺北市
+        <td>271.80
+        <td>2,702,315
+    <tr>
+        <th>高雄市
+        <td>2,947.62
+        <td>2,778,992
+    </table>   
+    </body>
+</html>
+
+<!--
+CSS設定框線樣式、粗細、色彩：
+也可以不用HTML的border屬性來設定，可以直接使用CSS樣式來讓表格出現框線
+1.border-spacing（框線之間的間距）：這邊的間距也可以視為各個欄位值的間距，設定越大則儲存格之間的間距越大，整體表格也越大
+2.border-style（框線樣式）：可以設定的值為：none、dotted、dashed、solid、double、groove、ridge、inset、outset
+3.border-width（框線寬度）：可以用來指定框線的寬度，其值可以設定px、em等度量單位
+  另外，也可以設定關鍵字，如：thin、medium、thick，但CSS規格並未明確指出這三者的粗細是多少，只有規定粗細程度為thick > medium > thin
+4.border-color（框線顏色）：可以用來指定框線的顏色
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <style>
+            table{font-size:3em;
+                  border-spacing: 5px;
+                  background-color:pink;
+            }
+            td{border-width: 5px;
+               border-color: black;
+            }
+        </style>
+    </head>
+    <body>
+      <table>
+      <!-- 可以由以下各個儲存格框線設定觀察各個框線樣式的差異 -->
+      <tr>
+        <td style="border-style:none">none</td>
+        <td style="border-style:dotted">dotted</td>
+        <td style="border-style:dashed">dashed</td>
+      <tr>
+        <td style="border-style:solid">solid</td>
+        <td style="border-style:double">double</td>
+        <td style="border-style:groove">groove</td>
+      <tr>
+       <td style="border-style:ridge">ridge</td>
+       <td style="border-style:inset">inset</td>
+       <td style="border-style:outset">outset</td>
+      </table>
+    </body>
+</html>
+
+<!--
+四邊框線的樣式：
+上述說的border-style、border-width、border-color三個框線屬性，都是會同時套用到每個儲存格的上下左右四個邊，但也可以各邊做個別設定
+一般來說，指定的順序為：上、右、下、左，依順時針方向指定
+另外還有兩種寫法，也就是只設定兩個或三個屬性值，此時屬性值套用的順序如下：
+設定3個屬性值時：上、垂直（代表左和右）、下
+設定2個屬性值時：水平（代表上和下）、垂直（代表左和右）
+
+另外一種設定方式則是每一個邊都使用個別的屬性值，在各個屬性名稱中間插入"-top"、"-right"、"-bottom"、"-left"，如下：
+border-top-style、border-right-style、border-bottom-style、border-left-style
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <style>
+            td  {border-spacing: 5px;
+                 /* 上框線寬度為15px，依順時針方向指定 */
+                 border-width:15px 10px 5px 1px;
+                 /* 上框線顏色為紅色、垂直框線（左和右）顏色為綠色、下框線顏色為藍色 */
+                 border-color:red green blue; 
+                 /* 水平（代表上和下）框線樣式為實線，垂直（代表左和右）框線樣式為虛線 */
+                 border-style:solid dotted;
+                 font-size:2em}
+
+                 /*
+                 上述的border-style、border-width、border-color三個框線屬性也有簡寫屬性，可以使用border屬性來設定，如下
+                 border: 5px black solid;
+                 上述設定的意思代表，設定框線為寬度5px、框線顏色為黑色、框線樣式為實線，
+                 border: solid 5px;
+                 這邊也可以不一定所有屬性都指定，但border-style一定要指定，因為此屬性並無預設值，沒設定會導致看不到框線
+                 */
+        </style>
+    </head>
+    <body>
+      <table> 
+      <tr>
+        <td>One</td>
+        <td>Two</td>
+        <td>Three</td>
+      </table>
+    </body>
+</html>
+
+
+<!--
+border-radius（圓角框線）：
+使用CSS3提供的框線半徑屬性border-radius，可以畫出圓角的框線，當只設定一個值時，表示四個角都使用相同半徑
+也可以直接指定四個角的半徑，順序一樣式順時鐘方向，左上、右上、右下、左下
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Ch07-05</title>
+    <style>
+        table {
+            border: 10px orange ridge;
+            /* 4 角設定不同的半徑 */ 
+            border-radius: 10px 20px 30px 40px;
+            font: 20px 標楷體;
+        }
+    </style>
+</head>
+<body>
+    <table>
+    <tr><td><img src="media/sunset.jpg"></td></tr>
+    <tr><td>
+        <p>「夕陽無限好，只是近黃昏。」－李商隱
+        <p>只有欣賞過夕陽的人，才能感受到這首詩的美麗與哀愁。
+        千百年來，它引起了無數騷人墨客與文人雅士的共鳴！</td></tr>
+    </table>
+</body>
+</html>
+
+<!-- 另外，框線樣式也能套用在文字、圖片等元素，不一定要套用在表格內，以下舉幾個例子 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Ch07-06</title>
+    <style>
+        /* 利用下框線製作水平分隔線，可取代hr的分隔效果 */
+        p  { border-bottom: solid blue 2px;  }
+        h3 { border-bottom: solid navy thick;  }
+        /* 此屬性設定可以將圖片顯示在文字左側，後續章節會再加以說明 */
+        img {
+             float:left;
+             border: solid white 5px;
+            }
+
+        /* 利用虛線標示重點 */
+        span{ border-bottom: dotted red 2px;}
+        /* 標題文字加上、下框線 */
+        h2  { 
+              border-top   : solid green thick;  
+              border-bottom: solid blue thick;  
+            }
+
+        /* 用框線樣式製作出比較粗的框線來代替項目符號 */
+        .item1  { border-left: solid #2244FF 1em; }
+        .item2  { border-left: solid #3366FF 1.5em; }
+        .item3  { border-left: solid #4488FF 2em; }
+        .item4  { border-left: solid #55AAFF 2.5em; }
+        .item5  { border-left: solid #66CCFF 3em; }   
+    </style>
+</head>
+<body>
+    <img src="https://www.flag.com.tw/images/cover/middle/F5128.gif">
+    <h3>想學會 Linux 不一定要挑戰艱澀的指令, 親切的視窗環境, 
+        有效降低學習門檻、建立信心, 讓你學 Linux 可以輕鬆、紮實, 
+        又有效率！</h3>
+    <p>◆ 專為初學者設計, 完整實測、逐步示範講解
+    <p>◆ 不怕弄壞系統, Live DVD 免安裝開機立即體驗, 馬上學習
+    <p>◆ 從操作、管理到架站, 正確觀念詳實解析
+    <p>◆ 統整 Linux 系統管理經驗, 分享實用技巧
+    <p>◆ 用 Linux 成功架站, 穩定性高、成本低、功能強！
+    <hr>
+
+    <img src="https://www.flag.com.tw/images/cover/middle/F5251.gif"></td></tr>
+    <h2>鹽檸檬食譜</h2>
+    <p>只靠<span>鹽檸檬</span>的調味, 就可以變化出一道道清爽健康的新風味料理。
+       這邊介紹的搭配以<span>西洋料理</span>為主, 不論是以沙拉為主的蔬食料理, 
+       或是醋醃&香煎的海鮮、肉類、義大利麵、各式麵食、麵包、飯食、湯品甚至甜點, 
+       都能做搭配。</p>
+    <h2>鹽柚子食譜</h2>
+    <p>清爽的<span>日式料理</span>能徹底發揮<span>鹽柚子</span>
+       飽含清新香氣與鹹味的特點。柚子的酸味不只可以搭配高湯, 
+       與味噌或芝麻的味道也很合。將食材的原味發揮到淋漓盡致、
+       讓人吃了能夠放鬆心情。</p>
+    <hr>
+
+    <h3>想學會 Linux 不一定要挑戰艱澀的指令, 親切的視窗環境, 
+        有效降低學習門檻、建立信心, 讓你學 Linux 可以輕鬆、紮實, 
+        又有效率！</h3>
+    <p class="item1">專為初學者設計, 完整實測、逐步示範講解</p>
+    <p class="item2">不怕弄壞系統, Live DVD 免安裝開機立即體驗, 馬上學習</p>
+    <p class="item3">從操作、管理到架站, 正確觀念詳實解析</p>
+    <p class="item4">統整 Linux 系統管理經驗, 分享實用技巧</p>
+    <p class="item5">用 Linux 成功架站, 穩定性高、成本低、功能強！</p>
+</body>
+</html>
+
+<!--
+CSS清單樣式：
+在HTML中，可以透過type來指定清單項目編號的樣式，若是想做更多的變化，可以使用CSS屬性設定
+1.list-style-type：指定清單項目編號樣式
+  分為以下兩種設定：
+  ul清單（無序號清單）：disc（預設值，實心圓點）、circle（空心圓點）、square（實心方塊）、none（不顯示項目符號）
+  ol清單（有序號清單）：cjk-ideographic（中文數字，一、二、三...）、decimal-leading-zero（1~9是個位數的話會補0的數字，01、02、03...）、lower-greek（小寫希臘字母）
+                    cjk-earthly-branch（地支，子、丑、寅...）、cjk-heavenly-stem（天干，甲、乙、丙...）、trad-chinese-formal（大寫中文數字，壹、貳、參...）
+設定序號樣式這邊只舉例一些較常用的，不只有這些而已，還有其他樣式可以使用
+
+2.list-style-position：設定清單項目編號位置
+  可設為outside（預設值），表示項目符號放在項目li元素之外；若設為inside，表示項目符號放在項目li元素之內
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        /* 設定無序號清單的樣式 */
+        /* list-style-position一個類別有指定一個沒有，可以看一下差異 */
+        .squ_out  { 
+            list-style-type:square;   
+            color: blue; 
+        }
+        .cir_in   { 
+            list-style-type:circle;  
+            list-style-position:inside; 
+            color: tomato; 
+        }
+
+        /* 設定有序號清單的樣式 */
+        /* 而list-style-type、list-style-position也有簡寫屬性方式，可將其簡寫成list-style，這樣就可以同時設定兩個屬性值 */
+        ol   {list-style: trad-chinese-formal inside; 
+              color:red;}
+        body {border: inset lime 6px;  }
+        span {color:grey}
+    </style>
+</head>
+<body>
+    <h3>Fedora Linux 系統管理與架站實務</h3>
+    <ul class="squ_out">
+        <li>專為初學者設計, 完整實測、逐步示範講解
+        <li>不怕弄壞系統, Live DVD 免安裝開機立即體驗, 馬上學習
+        <li>從操作、管理到架站, 正確觀念詳實解析
+        <li>統整 Linux 系統管理經驗, 分享實用技巧
+        <li>用 Linux 成功架站, 穩定性高、成本低、功能強！
+    </ul>
+    <h3>Ubuntu Linux 實務應用</h3>
+    <ul class="cir_in">
+        <li>Windows / Linux 多重開機選單設定
+        <li>嘸蝦米、新酷音等多種中文輸入法
+        <li>Unity 桌面環境操作與個人化設定
+        <li>隨身碟安裝 Linux, 系統、設定、文件帶著走
+        <li>Linux 常見問題排困解難
+    </ul>
+
+    <h3>人工吹製耐熱雙層玻璃杯</h3>
+    <ol>
+      <li value="101"><span>玻璃光滑沒有毛細孔, 不會吸滲異質</span></li>
+      <li value="2020"><span>抗酸性、高強度、耐高溫材質</span></li>
+      <li value="30003"><span>耐熱玻璃高度透光, 與瞬間溫差可達150℃以上</span></li>
+      <li value="440000"><span>雙層設計, 裝冰不出汗, 裝熱不燙手</span></li>
+    </ol>
+</body>
+</html>
+
+<!--
+而項目符號除了上述指定方式外，也可以指定圖案做為項目符號
+list-style-image：屬性值可以用url("圖檔路徑")來做設定，這邊不只可以用一般.jpg圖檔格式，也可以使用GIF動畫，項目符號就會呈現動畫效果
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        ul{list-style-image:url("media/icon_heart.gif"); }
+        /* last-child代表最後一個項目，此處將最後一項設為不同的圖案 */
+        li:last-child{list-style-image:url("media/icon_house.gif"); }
+    </style>
+</head>
+<body>
+    <h3>人工吹製耐熱雙層玻璃杯</h3>
+    <ul>
+      <li>玻璃光滑沒有毛細孔, 不會吸滲異質</li>
+      <li>抗酸性、高強度、耐高溫材質</li>
+      <li>耐熱玻璃高度透光, 與瞬間溫差可達150℃以上</li>
+      <li>雙層設計, 裝冰不出汗, 裝熱不燙手</li>
+    </ul>
+</body>
+</html>
+
+
+<!-- 設定選擇器外框 ========================================================= -->
+<!-- 範例1： -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+  <style>
+    /* 對class=container內的div標籤設置css樣式，讓每個div都有外框 */
+    .container div{
+      border: 1px solid rgb(202, 201, 201);
+      padding: 10px;
+      width: 100px;
+    }
+
+    /* 當我們對class=container內的div標籤設置css樣式的時候，他會顯示成直的，因為他是block類型的標籤 */
+    /* 所以當我們想改成一整列的顯示方式時，我們就可以使用flex，由左至右顯示，此時container內的標籤會去分網頁的總寬度 */
+    .container{
+      display: flex;
+    }
+    /* 那我們也可以對div的三個class設定其flex的寬度，如下 */
+    /* 下面的意思代表，三個class去分flex的總寬度，也就是box-1寬度為2/6，box-2寬度為3/6，box-3寬度為1/6 */
+    /* 另外我們也可以利用order屬性來去進行區塊的排序，由小到大（由左至右）進行排序，如下 */
+    .box-1{
+      flex: 2;
+      order: 2;
+    }
+
+    .box-2{
+      flex: 3;
+      order: 1;
+    }
+
+    .box-3{
+      flex: 1;
+      order: 3;
+    }
+  </style>
+</head>
+<body>
+  <!-- flex -->
+  <h1 id="css-h1">css教學</h1>
+  <div class="container">
+    <div class="box-1">區塊1</div>
+    <div class="box-2">區塊2</div>
+    <div class="box-3">區塊3</div>
+  </div>
+</body>
+</html>
+
+
+<!-- 範例2： -->
+<!-- 接續範例2的例子 -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+  <style>
+    /* 對class=container內的div標籤設置css樣式，讓每個div都有外框 */
+    .container div{
+      border: 1px solid rgb(202, 201, 201);
+      padding: 10px;
+      width: 100px;
+    }
+
+    /* 我們可以從HTML語法看到，區塊從3個增加到9個，此時若是我們網頁視窗縮小時，這9個區塊會擠在同一列，
+       但這樣就不符合我們對上面css第一個部分對container底下的div寬度為100px的設定，所以我們可以再加一行語法，如下 */
+    .container{
+      height: 300px;
+      border: 1px solid red;
+      display: flex;
+      /* 一般來說，當我們套用display: flex屬性時，網頁預設的屬性是flex-direction: row，也就是順序先由左至右，由上而下去顯示 */
+      /* 但若我們要改變顯示的方向，也就是顯示順序是先由上而下，接著再由左至右，此時我們就可以套用屬性flex-direction: column，如下 */
+      flex-direction: column;
+      /* 或是當我們顯示的順序想由下而上，由左至右的話，此時我們則可以將上面的flex-direction: column屬性修改為flex-direction: column-reverse */
+
+      /* 當我們加上flex-wrap: wrap此行css語法時，系統就會自動去判斷使用者網頁的視窗大小，若不夠放時就會進行換行，從第二行再繼續放 */
+      /* 而原本範例8利用此屬性時，因為顯示順序是先由左至右，所以先判斷的是視窗寬度，不夠時才會進行換行，但因為我們加上了flex-direction: column屬性
+         所以就會先判斷視窗的高度，若不夠就會進行換行 */
+      flex-wrap: wrap;
+
+      /* 因為正常網頁顯示的時候都會從最左邊開始顯示，此時若我們想把網頁的容器置中時，可以套用屬性，如下 */
+      /* 但這邊要注意一點，這邊套用的置中屬性不是真的置中，屬性會按照我們所設定的顯示順序（也就是依照flex-direction屬性的設定）的主軸(也就是先顯示的順序)，去做置中 */
+      /* 也就是當我們設定屬性flex-direction: row時，它就會把容器放到由左至右一列的中間（也就是水平置中）;那如果設定屬性flex-direction: column時，它就會把容器放到由上而下一行的中間（也就是垂直置中） */
+      justify-content: center;
+      /* 那上方的justify-content屬性我們也不一定要設定中間，也可以將它設定為justify-content: flex-end，也就是顯示順序的結束點
+         也可以設定為justify-content: flex-start，也就是顯示順序的開始點
+         或是設定為justify-content: space-around，此時就會將顯示順序剩餘沒使用到的列/行空間進行平均切割，然後平均分到容器的左邊及右邊的空間
+         或是設定為justify-content: space-between，此時第一個容器跟最後一個容器就會分別貼至顯示順序的最左邊及最右邊（或是最上面及最下面），剩餘的容器則會平均分到沒用到的列/行的空間
+         或是設定為justify-content: space-evenly， */
+
+      /* 那上面justify-content屬性是設定主軸的置中，那也可以利用align-content來做次軸的設定，如下 */
+      /* 例如當我們套用flex-direction: column，此時主軸就是由上到下，那我們再套用justify-content: center，容器就會進行垂直置中
+         此時若我們再去套用align-content: flex-end屬性時，就會依照次軸由左至右，把容器放置最尾巴（最右邊） */
+      align-content: flex-end;
+      /* 那一般來說，如果是單行，也就是沒有設定flex-wrap: wrap;會自動換行時，還有align-items可以做設定，跟align-content設定方法一樣
+           但是如果有設定flex-wrap: wrap;，此時我們一樣利用align-items設定時，多行的時候他就會把它分開套用 */
+
+    }
+    /* 那我們從範例8可以了解到flex屬性跟order屬性是做什麼的，但此時若我們的顯示順序套用flex-direction這個屬性去做更改時，此時flex、order屬性就會依照顯示的順序去做套用 */
+    .box-1{
+      flex: 2;
+      order: 2;
+    }
+
+    .box-2{
+      flex: 3;
+      order: 1;
+    }
+
+    .box-3{
+      flex: 1;
+      order: 3;
+    }
+  </style>
+</head>
+<body>
+  <!-- flex -->
+  <h1 id="css-h1">css教學</h1>
+  <div class="container">
+    <div class="box-1">區塊1</div>
+    <div class="box-2">區塊2</div>
+    <div class="box-3">區塊3</div>
+    <div class="box-1">區塊4</div>
+    <div class="box-2">區塊5</div>
+    <div class="box-3">區塊6</div>
+    <div class="box-1">區塊7</div>
+    <div class="box-2">區塊8</div>
+    <div class="box-3">區塊9</div>
+  </div>
+</body>
+</html>
+
+

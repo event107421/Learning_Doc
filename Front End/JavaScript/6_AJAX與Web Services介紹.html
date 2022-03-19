@@ -1,0 +1,505 @@
+<!--
+AJAX（Asychronous JavaScript And XML，非同步JavaScript與XML）：
+雖然AJAX名稱看起來很高深，不過簡單的說，它就是透過JavaScript，讓網頁能動態的從網路下載資料，並顯示在目前瀏覽的網頁上
+靜態網頁一般運作方式是，瀏覽器要向伺服器要求(Request)網頁及圖片等資源，伺服器則會回應(Response)被要求的資源內容
+而使用AJAX技術時，網頁中的JavaScript程式可隨時再向伺服器提出要求，取得新的資料並更新到網頁，使用者不會看到重新載入網頁的動作
+例如使用Google Map服務瀏覽地圖時，用滑鼠拉曳地圖位置時，不會載入新網頁，而是持續用JavaScript，以AJAX方式不斷在背景向伺服器提出要求，下載新的地圖資料，但不用更新網頁
+
+瀏覽器對AJAX的安全性限制：
+在網頁中的JavaScript有一些安全性的限制，其中對AJAX有影響的是Same Origin Policy限制，例如從網站下載的網頁，其內的JavaScript使用AJAX功能時，預設只能存取同一網站的資料
+也就是說程式只能從原始的網站以AJAX取得新資料，並顯示在網頁中，如果想從其他網站抓資料，就會出現錯誤而無法取得資料
+此時，有幾項方案可突破此項限制，讓JavaScript可做跨域(Cross Domain)的存取：
+1.將提供AJAX服務的網站設定為允許其他網站的JavaScript透過AJAX存取其內容，此為W3C近來新訂定的規範(稱為Cross-Origin Resource Sharing，CORS)，在這種情況下，瀏覽器發現網站允許CORS時，就會解除JavaScript程式的執行限制，讓它可透過AJAX存取該網站
+2.利用載入外部script的方式載入資料，也就是利用<script>元素載入的外部JavaScript程式不受Same Origin Policy限制，因此有人利用此方式載入其他網站的資料，再用程式處理，其中有一種目前經常用於跨域存取的技術JSONP(JSON with Padding)
+3.透過PROXY代理機制：如果自己架設WWW伺服器，可在伺服器端撰寫程式(例如使用PHP等動態網頁)，由該程式負責至網站存取資料，再轉送給瀏覽器，因為對瀏覽器而言，存取的對象仍是原本的網站，所以沒有跨網域的問題
+
+使用jQuery的AJAX功能：
+一般來說，瀏覽器要提出AJAX要求，是透過Web API中的XMLHttpRequest，而在jQuery中提供了幾個不同用途的函式，以簡便的方式來操作XMLHttpRequest物件
+1.load()（範例一）：此函式會到指定的網址取得網頁資料後，再設定給選擇器本身所指的元素內容，因為是直接指定給元素，所以載入的資料一般會是HTML的格式
+2.getJSON()（範例二）：實務上，用AJAX取得的資料型態，使用HTML格式比例不高，通常都是使用JSON或是XML格式，其中JSON是JavaScript Object Notation的縮寫，也就是將資料以JavaScript物件語法的格式包裝起來，再傳送給瀏覽器，函式範例如下：
+                     $.getJSON(url, function(data){...})；url：網址、function：處理函式、data：此函式參數就是所取得的JSON物件
+3.each()（範例三）：在JSON物件中可能會有多個屬性或是個陣列，若想要用相同的程式邏輯對多個屬性或陣列進行重複性的處理，除了利用迴圈外，也可使用jQuery提供的each()函式，函式範例如下：
+                  $.each(data, function(propertyOrIndex, value){...})；data：待處理的物件或陣列，function：重複處理的函式，propertyOrIndex：這一輪被處理的屬性名稱或元素索引，value：這一輪被處理的屬性值或元素
+4.get()（範例四）：另一個AJAX常用的資料格式是XML，XML文件就像HTML文件一樣是用元素、標籤組成，而X是擴充(eXtensive)的意思，所以XML中可使用的元素、屬性名稱都可自行定義，在jQuery中，要利用AJAX取得XML的資料，可以使用get函式，函式範例如下：
+                 $.get(url, function(xml){...})；url：網址、function：處理函式、xml：XML資料
+另外，$.get()也可用以取得HTML、JSON資料，jQuery會判斷資料格式，亦可自行加上第3個參數指定要取得的資料格式，如："xml"、"json"、"html"
+-->
+
+<!-- 範例一 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+        // jQuery中ready事件的簡寫法
+        $(function(){
+            // 按鈕事件處理程式
+            $('button').click(function(){
+                // 測試用網址，此網址會提供各種類型的HTTP存取服務或資料，讓程式設計、網管人員練習、測試透過網路取得各種資料的情形
+                var url='http://httpbin.org/';
+                
+                // 判斷按下的按鈕，並在網址後面附加對應的路徑 
+                if($(this).attr('id') == 'btn1')
+                  // 載入HTML格式的資料
+                  url += "html";
+                else
+                  url += "encoding/utf8"; 
+                  
+                // 用 load() 載入檔案內容，並指定到 #test 元素
+                $('#test').load(url);
+            });
+        });
+    </script>
+    <style> #test {background:#CCC;} </style>
+</head>
+<body>
+    <button id="btn1">載入HTML測試頁</button>
+    <button id="btn2">載入Unicode測試頁</button>
+    <!-- 用來放置以 load() 載入內容的區塊 -->
+    <div id="test"></div>
+</body>
+</html>
+
+<!-- 範例二 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+        $(function(){        
+            // 網頁載入時, 就用 getJSON() 載入含 ip 位址資訊的 JSON 物件
+            $.getJSON('http://httpbin.org/ip',
+                      function(data){
+                        // 將 ip 位址顯示在'#test'元素中，而ip位置的資料存在data這個json格式資料內，屬性名稱為origin內
+                        $('#ip').text(data.origin);
+                      }
+            );
+        });
+    </script>
+</head>
+<body>
+    <h3>你的IP位址是
+      <span id="ip">???</span>
+    </h3>
+</body>
+</html>
+
+<!-- 範例三 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+    $(function(){
+        // 建立空的表格元素
+        var table = $('<table border="1"></table>');  
+    
+        // 網頁載入時, 就用 getJSON() 載入含HTTP表頭資訊的 JSON 物件，其內只有一個headers屬性，屬性值則為另一個物件，含有多個欄位
+        $.getJSON('http://httpbin.org/headers',
+                  function(data){
+                    // 利用 $.each() 逐一處理物件中屬性
+                    $.each(data.headers, function(property, value){
+                       // 建立 th 元素物件, 並放入屬性名稱
+                       var th = $('<th></th>').text(property);
+                       
+                       // 建立 td 元素物件, 並放入屬性值
+                       var td = $('<td></td>').text(value);
+                       
+                       // 建立 tr 元素物件, 並附加剛才建立的 th, td 元素
+                       var row = $('<tr></tr>').append(th).append(td);
+                       
+                       // 將 tr 元素附加到表格中
+                       table.append(row);
+                    });
+                    
+                    // 將表格元素附加到文件中
+                    $('body').append(table);
+                  }
+        );
+    });
+    </script>
+</head>
+<body>
+    <h3>顯示HTTP表頭資訊</h3>
+</body>
+</html>
+
+<!-- 範例四 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+        // 在文件 Ready 後, 就開始載入 XML
+        $(function(){        
+            // 用 get() 載入測試用 XML
+            $.get('http://httpbin.org/xml',
+                function(xml){
+                    // XML資料可以利用jQuery的find函式，來尋找指定的元素，下面語法是找出 slide 元素，並針對各元素做處理
+                    $(xml).find('slide').each(function(){
+                        // 建立 <li>...</li> 內容
+                        var li = $('<li></li>').text($(this).find('title').text());
+                        
+                        // 因此判斷式是在each()函式內，所以這邊的this是指當輪的slide元素下若還有item子元素，就將其內容建立成 ul 清單
+                        if($(this).find('item').length>0){
+                          var ul = $('<ul></ul>');
+                          // 這邊的this指的是這一輪的item元素
+                          $(this).find('item').each(function(){
+                            // 如果 item 內容是空字串就略過，不是空字串就建立 ul 清單中的 li 元素
+                            if( $(this).text() != ''){
+                              ul.append(
+                                 $('<li>' + $(this).text() + '</li>'));
+                            }
+                          });
+                          // 將 ul 清單附加成巢狀清單
+                          li.append(ul);
+                        }
+                        
+                        // 將 li 附加到網頁的清單元素中
+                        $('#list').append(li);
+                    });
+                }
+            );
+        });
+    </script>
+    <style> #list {border:1px dotted black} </style>
+</head>
+<body>
+    <h3>載入XML練習</h3>
+    <!-- 用來放置 XML 資料的清單元素 -->
+    <ol id="list"></ol>
+</body>
+</html>
+
+<!--
+利用AJAX取得Yahoo天氣概況：
+Yahoo!網站提供全球主要城市的天氣概況、預報資訊，在http://weather.yahooapis.com/forecastrss則提供XML格式的資料，但該網站預設未提供CROS跨域存取
+所以Yahoo!有提供另一項可跨域存取的YQL(Yahoo Query Language)服務，來取得天氣資料
+YQL是利用類似於資料庫的查詢語法，將網路上的資料整理、彙整並以XML、JSON格式傳回，其網址如下：https://developer.yahoo.com/yql/console，接著只要在網頁上進行修改查詢語法，最下方窗格就會列出此項查詢的完整URL，此URL就可以利用jQuery取得資料
+其中，更改查詢縣市的方式是要透過，更改欄位名稱為woeid的值後再進行查詢，而各個鄉鎮區、國家地區的woeid則可以透過以下網址進行查詢：https://www.flickr.com/places
+
+而XML資料中，天氣資料主要在item元素中，其中有許多子元素，如下：
+yweather:condition子元素：含目前天氣概況，資料包含在下列屬性中：
+    text：天氣狀況的英文描述，例如："Partly Cloudy"表示多雲
+    code：天氣狀況的代碼，例如："Partly Cloudy"的代碼為30
+    temp：溫度
+    date：英文表示日期時間字串，例如："Wed, 30 Nov 2015 1:56 pm PST"
+yweather:forecast子元素：
+    day：星期幾的英文縮寫，例如："Mon"、"Tue"
+    date：日期字串，此處只有日期資料，例如："30 Nov 2015"
+    low high：最低溫和最高溫
+    text、code：與yweather:condition內的屬性相同
+description：這個子元素中包含一段HTML內容，直接顯示在網頁中就是一塊含圖文的天氣預報，也可以利用此段HTML碼中的img元素，其src屬性就是代表天氣狀況的圖案
+上面列出的元素名稱開頭"yweather:"，稱為XML的命名空間(Namespace)，在JavaScript程式中可忽略，例如要利用find()函式尋找yweather:condition元素，只要寫成find("condition")即可
+
+但自2019年1月3日（星期四）起，基於YQL服務已不在運行，所以以下範例就當作參考即可
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+      // 天氣描述
+      var weaText =  {drizzle:'毛毛雨',
+                      showers:'陣雨',
+                      snow:'雪',
+                      foggy:'有霧',
+                      windy:'微風',
+                      cold:'寒冷', 
+                      cloudy:'陰', 
+                      "mostly cloudy":'多雲時晴',
+                      "oartly cloudy":'晴時多雲', 
+                      "mostly sunny":'晴時多雲', 
+                      clear:'晴',
+                      sunny:'晴',
+                      hot:'炎熱',
+                      "partly cloudy":'晴時多雲',
+                      "am showers":'短暫雨',
+                      "pm showers":'午後短暫雨',
+                      thundershowers:'雷陣雨',
+                      "pm thunderstorms":'午後雷雨',
+                      rain:'陰有雨'
+                      };
+      // 星期名稱
+      var weekDay =  {sun:'星期天',
+                      mon:'星期一',
+                      tue:'星期二',
+                      wed:'星期三',
+                      thu:'星期四',
+                      fri:'星期五', 
+                      sat:'星期六'
+                      };                
+      
+      // 自訂函式: 會下載天氣資訊並顯示在網頁中
+      function updateWeather(code){
+          // 由 $('#city').val() 取得目前所選城市的代碼, 並置入查詢的URL參數中，這邊的URL
+          $.get('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%3D'+$('#city').val()+'%20AND%20u%3D%22c%22',
+              function(xml){
+                // 找出天氣資料的 item 元素
+                $(xml).find('forecast').each(function(index){
+                    // 清空div內容, 並取得元素物件
+                    var div = $('.report:eq(' + index + ')').empty();
+                    
+                    // 建立'星期幾'的標題並加入div中，其中toLowerCase()函式是將文字全部轉成小寫
+                    $('<h3></h3>').text(weekDay[$(this).attr('day').toLowerCase()]).appendTo(div);
+                    
+                    // 建立氣象圖示並加入div中
+                    var filename = $(this).attr('code');
+                    $('<img>').attr('src',
+                                    'http://l.yimg.com/a/i/us/we/52/' + filename + '.gif').appendTo(div);
+                    
+                    // 設定天氣預報文字: 有對應翻譯時，加入中文；否則加入原文
+                    if(weaText[$(this).attr('text').toLowerCase()])
+                      $('<h4></h4>').text(weaText[$(this).attr('text').toLowerCase()]).appendTo(div);
+                    else
+                      $('<h4></h4>').text($(this).attr('text')).appendTo(div);
+                    
+                    // 加入高低溫資料
+                    $('<h4></h4>').text($(this).attr('high') + '°C').addClass('highTemp').appendTo(div);
+                    $('<h4></h4>').text($(this).attr('low') + '°C').addClass('lowTemp').appendTo(div);
+                });
+                
+                // 將英文的預報資料也加入網頁中
+                $('#eng').innerHtml = $(xml).find('description').text();
+              }
+          );
+      }
+      
+      // 文件 ready 後就進行下列工作
+      $(function(){        
+          // 1. 註冊 select 輸入欄位的 change 事件處理函式
+          $('#city').change(function(){
+            updateWeather();
+          });
+          
+          // 2. 觸發change事件，也就是觸發下拉選單的change事件時，就立即更新天氣資訊
+          $('#city').change();
+      }); 
+    </script>
+    <style> 
+        div  {float:left; margin:0 5px; border:1px dashed gray}
+        /* 高溫顯示紅色 */
+        .highTemp {color:red}
+        /* 低溫顯示藍色 */
+        .lowTemp  {color:blue}
+    </style>
+</head>
+<body>
+  <nav>
+      <select id="city">
+          <option value="2306179" selected>台北市</option>
+          <option value="20070569">新北市</option>
+          <option value="2298866">桃園</option>
+          <option value="2306185">新竹</option>
+          <option value="2306185">新竹市</option>
+          <option value="2301128">苗栗</option>
+          <option value="2306181">台中市</option>
+          <option value="2306183">彰化</option>
+          <option value="2306204">南投</option>
+          <option value="2296315">嘉義</option>
+          <option value="2296315">嘉義市</option>
+          <option value="2306182">台南市</option>
+          <option value="2306180">高雄市</option>
+          <option value="2306189">屏東</option>
+          <option value="2306188">基隆市</option>
+          <option value="2306198">宜蘭</option>
+          <option value="2306187">花蓮</option>
+          <option value="2306190">台東</option>
+          <option value="2347346">雲林</option>
+          <option value="22695856">澎湖</option>
+          <option value="28760735">金門</option>
+          <option value="12470575">馬祖</option>
+      </select>
+      <span>的天氣預報</span>
+  </nav>
+  <!-- 用來放置以 AJAX 載入內容的區塊 -->
+  <div class="report"></div>
+  <div class="report"></div>
+  <div class="report"></div>
+  <div class="report"></div>
+  <div class="report"></div>
+  <div id="eng"></div>
+</body>
+</html>
+
+<!--
+利用AJAX取得紫外線即時監測資料（使用JSONP）：
+因許多網站可能並未支援CROS（Cross-Origin Resource Sharing），因此跨網域要以AJAX存取這些網站提供的資料就必須透過其他方法
+但CROS是W3C在2014年才定案的規格，在此之前廣被用於跨網域存取的技術之一是JSONP（JSON with Paddings），JSONP是由瀏覽器端以載入外部程式的方式
+將JSON資料用<script>載入，但由於只是將JSON資料放在<script>標籤內，所以使用上不夠方便，所以JSONP是請伺服器端在回應資料時做一點加工，也就是將JSON資料包在一個預先指定的函式名稱內再傳回，如下：
+
+網頁中預先定義處理JSON的函式xyz()：
+function xyz(json){
+    ...
+}
+
+<script src="...callback=xyz">
+    xyz({A: B, C: D})
+</script>
+1.以載入外部script的方式，向伺服器要求JSON資料，並在URL後附加callback=xyz參數
+2.原本要回應JSON資料{A: B, C: D}的伺服器，看到要求的字串後面有callback=xyz的參數，便會加工將回應改成程式碼"xyz({A: B, C: D});"
+3.瀏覽器載入的script程式碼為"xyz({A: B, C: D});"，也就是用JSON資料{A: B, C: D}為參數呼叫xyz()函式
+
+透過JSONP的方式，就能順利以跨網域的方式，向伺服器以AJAX取得JSON資料，而上述一些處理工作，像是：在網頁中加入一個JSONP的script元素、在URL後附加callback參數等，這些工作都可以使用jQuery的ajax()函式來處理
+而先前使用的load()、get()、getJSON()其實都是ajax()的簡化版，而ajax()是jQuery中的主要AJAX函式，功能最完整，呼叫時須以如下物件的形式設定參數：
+ajax({
+    // 要求的網址
+    url: "http://...",
+    // 要求的資料種類
+    datatype: "jsonp",
+    // 失敗時執行的函式
+    error: function(){...},
+    // 成功時執行的函式
+    success: function(){...},
+    // 完成時執行的函式(不論成功失敗)
+    complete: function(){...}
+})
+如上指定datatype: "jsonp"時，jQuery就會處理前述使用JSONP的其他工作，所以我們只需在success:指定函式的處理工作即可
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+        var timer;
+        $(function(){        
+            // 設定按鈕事件處理函式
+            $('#reload').click(function(event){
+                // 在網頁載入時就觸以程式觸發按鈕事件，讓按鈕變成不能使用
+                $('#reload').attr('disabled', true).text('下載中');
+                
+                // 紫外線資料網址
+                url='http://opendata.epa.gov.tw/ws/Data/UV/?format=json';
+                
+                // 用 ajax() 以 JSONP 方式取得資料
+                $.ajax({url:url,
+                  dataType:'jsonp',
+                  success: onsuccess,
+                  error  : function(x){
+                             console.log('錯誤, 代碼:'+x.status);},
+                  complete: function(){
+                      // 等ajax()函式處理完成時，讓按鈕變成可使用
+                      $('#reload').prop('disabled',false).text('更新');
+                      }
+                });
+            });
+            
+            //立即觸發按鈕事件
+            $('#reload').click();
+        });
+        
+        // AJAX 要求成功時執行的函式 
+        function onsuccess(data){  
+          if (data == null) {
+             alert("下載失敗!");  
+             return;
+          }
+          // 清空區塊
+          $('#showdata').empty();
+          
+          // 逐筆處理陣列中的資料
+          $.each(data, function(index){
+            //將資料放在個別 div 中，並加上自訂的class="left"類別，套用style內對class="left"類別設定的CSS樣式
+            div = $('<div></div>').addClass('left');
+            
+            //用h3在div區塊內標示城市地區名稱
+            $('<h3></h3>').text(this.SiteName).appendTo(div);
+            
+            //用h2在div區塊內標示 UV 指數
+            var uvi = parseInt(this.UVI);
+            $('<h2></h2>').text(uvi).appendTo(div);
+            
+            // 依UV指數等級指定不同類別，後續將自定類別加入，以套用 CSS 樣式
+            var uviClass = '';
+            if(uvi<2) uviClass = 'low';
+            else if(uvi<5) uviClass = 'moderate';
+            else if(uvi<7) uviClass = 'high';
+            else if(uvi<10) uviClass = 'veryhigh';
+            else            uviClass = 'extream';
+            
+            // 將上述指定的不同類別加到網頁中
+            div.addClass(uviClass).appendTo($('#showdata'));
+          });
+        }
+    </script>
+    <style> 
+       .left {float:left; 
+              border:dashed 1px gray;
+              text-align:center;
+              padding:6px}  
+       .low      {background-color:green}   /* 指數0-2弱 (LOW)        */
+       .moderate {background-color:yellow}  /* 指數3-4中(MODERATE)    */
+       .high     {background-color:orange}  /* 指數5-6強(HIGH)        */
+       .veryhigh {background-color:red}     /* 指數7-9極強(VERY HIGH) */
+       .extream  {background-color:purple}  /* 指數10-15危險(EXTREME) */
+    </style>
+</head>
+<body>
+    <p>
+        <b>紫外線即時監測資料</b>
+        <button id="reload">更新</button>
+    </p>
+    <!-- 用來放置以 UV 監測資料的區塊 -->
+    <div id="showdata"></div>
+</body>
+</html>
+<!--
+資料形式
+[{"Name":"宜蘭縣","Type":"縣市","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"花蓮縣","Type":"縣市","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"台東縣","Type":"縣市","UVI":"7","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"屏東縣","Type":"縣市","UVI":"7","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"高雄市","Type":"縣市","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"台南市","Type":"縣市","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"嘉義縣","Type":"縣市","UVI":"5","UVIStatus":"中量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"嘉義市","Type":"縣市","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"南投縣","Type":"縣市","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"雲林縣","Type":"縣市","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"彰化縣","Type":"縣市","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"台中市","Type":"縣市","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"苗栗縣","Type":"縣市","UVI":"7","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"新竹縣","Type":"縣市","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"新竹市","Type":"縣市","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"桃園市","Type":"縣市","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"新北市","Type":"縣市","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"台北市","Type":"縣市","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"基隆市","Type":"縣市","UVI":"5","UVIStatus":"中量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"三仙台","Type":"旅遊預報點","UVI":"7","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"太平山","Type":"旅遊預報點","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"墾丁","Type":"旅遊預報點","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"日月潭","Type":"旅遊預報點","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"阿里山","Type":"旅遊預報點","UVI":"5","UVIStatus":"中量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"太魯閣","Type":"旅遊預報點","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"梨山","Type":"旅遊預報點","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"合歡山","Type":"旅遊預報點","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"玉山","Type":"旅遊預報點","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"溪頭","Type":"旅遊預報點","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"龍洞","Type":"旅遊預報點","UVI":"5","UVIStatus":"中量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"陽明山","Type":"旅遊預報點","UVI":"5","UVIStatus":"中量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"小琉球","Type":"外島預報點","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"蘭嶼","Type":"外島預報點","UVI":"7","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"綠島","Type":"外島預報點","UVI":"7","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"澎湖","Type":"外島預報點","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"馬祖","Type":"外島預報點","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"金門","Type":"外島預報點","UVI":"7","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"花東空品區","Type":"空品區","UVI":"6-7","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"宜蘭空品區","Type":"空品區","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"高屏空品區","Type":"空品區","UVI":"6-7","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"雲嘉南空品區","Type":"空品區","UVI":"5-6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"中部空品區","Type":"空品區","UVI":"6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"竹苗空品區","Type":"空品區","UVI":"6-7","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"},
+{"Name":"北部空品區","Type":"空品區","UVI":"5-6","UVIStatus":"高量級","PublishTime":"2015-11-17 17:00"}]
+-->

@@ -1,0 +1,1173 @@
+<!-- JavaScript相關網站整理 -->
+重點整理網站：
+JS-30 DAY：https://courses.wesbos.com/account/access/615952b4e15af66ceff735c2/view/194130650
+JS-30 DAT學習心得分享：https://ithelp.ithome.com.tw/articles/10192471
+
+參考資料查詢：
+https://www.w3schools.com/js/default.asp
+
+<!--
+JavaScript基本介紹：
+JavaScript是可內嵌於網頁中，供瀏覽器執行的程式語言，可以讓網頁產生更多的動態效果與應用，如：
+1.動態的網頁特效：雖然利用CSS已可時做出一些網頁特效，但仍有其限制，使用JavaScript可更自由的操控網頁上的內容
+2.檢查網頁表單輸入內容：雖然HTML能讓瀏覽器檢查使用者是否有輸入必要的資料、資料格式是否正確等，不過功能還是太過陽春，若是要有更完整的檢查以及提醒使用者的功能時，還需透過JavaScript來達成
+3.即時更新網頁狀態：一些新聞網站、社群網站等會持續的更新網頁的內容，這個也是利用JavaScript做出來的，讓使用者可不需手動更新網頁，也可以看到即時的消息
+4.補足瀏覽器功能的不足：雖然HTML、CSS持續在演進，但瀏覽器廠商實作新功能速度不一，有些功能可能在部分瀏覽器尚未支援，此時就可利用JavaScript來實作新功能，讓網頁在不同瀏覽器上都有一致的效果
+
+JavaScript註解方式：
+1.可以用雙斜線作為開頭，此時雙斜線後面的字就會被視為註解，如：// 註解內容
+2.也可以用跟CSS一樣的"/* */"註解方式，如：/* 註解內容 */
+-->
+
+<!--
+在HTML檔案中，加入JavaScript主要有以下3種方式：
+1.以script元素將JavaScript程式碼內嵌於網頁中
+2.將JavaScript程式碼另外存成一個檔案，透過script元素的src屬性載入
+3.以"事件屬性"將JavaScript程式碼內嵌於元素標籤中
+-->
+<!-- 範例1： ============================================================= -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <!-- 1.引入JavaScript方法 -->
+    <script>
+      // 用訊息窗顯示 "Hello" 訊息
+      alert("Hello!");
+    </script>
+
+    <!-- 2.引入JavaScript方法：此方法類似引入外部CSS的方式，將JavaScript程式碼另外存成一個檔案，再於sciprt元素中的src屬性指定檔案的路徑 -->
+    <script src="doc.js"></script>
+
+    <!-- 有些使用者可能會關閉瀏覽器的JavaScript功能，在這種情況下，網頁中的JavaScript就不會執行，此時就可以利用noscript元素加入不能執行JavaScript情況的相關說明文字 -->
+    <noscript>本網頁需使用JavaScript,
+    請開啟瀏覽器的JavaScript功能,
+    或換用其它支援JavaScript的瀏覽器。</noscript>
+</head>
+<body>
+    <p>利用script元素內嵌JavaScript程式。</p>
+
+    <!-- 3.引入JavaScript方法：此種方法是利用HTML元素的通用屬性中，稱為事件處理器（Event Handler）的屬性，當發生該屬性代表的事件時，就會執行此段JavaScript -->  
+    <!-- 這類事件處理器（Event Handler）的屬性，都是以on為開頭，例如下面的onclick代表按下滑鼠左鍵的事件處理器 -->
+    <p onclick="alert('Hello!');">你好, </p>
+    <p onclick="alert('JavaScript!');">JavaScript!</p>
+</body>
+</html>
+
+<!-- 將JavaScript程式碼另外存成一個檔案"doc.js" -->
+// 獨立儲存的 JavaScript 程式檔 (.js 檔)
+// 用訊息窗顯示 "Hello" 訊息
+alert("Hello!");
+
+
+<!-- 範例2： ============================================================= -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <!-- 若我們想再HTML內寫javascript語法，我們只需要加上<script>標籤即可 -->
+  <script>
+    // javascript內註解跟HTML不一樣，是用"//"符號，若是一整段則可以用"/* */"來將要註解的內容包起來
+    // 指在HTML文件內寫入文字
+    document.write("Bill的網頁");
+    // 也可以在內部加入HTML標籤
+    document.write("<h1>Bill的網頁</h1>");
+  </script>
+
+  <!-- 也可以像css一樣用引入檔案的方式，將javascript語法寫到另一個檔案中，如：script.js，再利用src屬性引入 -->
+  <script src="script.js"></script>
+</body>
+</html>
+
+<!-- script.js檔案內直接寫上js語法即可，如下 -->
+document.write("<h1>Bill的網頁</h1>");
+
+<!-- 範例3： ============================================================= -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <script>
+    // javascript三種資料型態：
+    // 1.字串、2.數值、3.布林值(true、false)
+
+    // javascript變數表示方式：
+    // 一般來說創建變數有兩個規則：1.開頭不能是數字、2.命名規則只能是英文大小寫、數字、$、_的組合
+    // 我們先利用var創建變數的函數，創造一個myname的容器，然後把"小明"這個字串，放進myname這個容器中
+    var myname = "小明"
+    // 接下來我們就可以用document.write來將這個變數print出來
+    document.write(myname);
+
+    document.write("有一個人叫小明");
+    document.write("<br/>");
+    document.write("小明今年20歲");
+    document.write("<br/>");
+    document.write("小明身高180公分");
+    document.write("<br/>");
+    document.write("小明討厭自己的名字");
+
+    // 此時我們語法如果像上面，當小明改名時我們就要一行一行程式碼做更改，此時我們就可以利用變數來將語法改寫，如下：
+    var myname = "小明"
+
+    document.write("有一個人叫" + myname);
+    document.write("<br/>");
+    document.write(myname + "今年20歲");
+    document.write("<br/>");
+
+    // 若是中途想更改名字，我們就可以不用寫var，因為容器已經創建完成，只要用另一個值取代變數原本的值即可，如下：
+    myname = "小黑"
+    document.write(myname + "身高180公分");
+    document.write("<br/>");
+    document.write(myname + "討厭自己的名字");
+  </script>
+</body>
+</html>
+
+
+<!-- 字串的用法 ============================================================= -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <script>
+    // 一般來說，我們在設定字串都會加上""符號，但假設我們在字串內要將"符號顯示出來，就要多加\符號，如下
+    var phrase = "小明\" 好帥"
+    document.write(phrase);
+
+    // 字串連接
+    var phrase = "小明" + " 好帥"
+    document.write(phrase);
+
+    // 字串長度：可以利用length這個函數來計算字串長度
+    var phrase = "小明" + " 好帥"
+    document.write(phrase.length);
+
+    // 回傳字串：可以利用charAt()這個函數來回傳要擷取的字串部分
+    var phrase = "小明" + " 好帥"
+    // 例如在charAt()函數內加上1，代表我們要phrase這個變數容器內的值第二個字，因為這邊計算位置是從0開始
+    document.write(phrase.charAt(1));
+
+    // 字串位置回傳：可以利用indexOf()這個函數來回傳要字串的索引
+    var phrase = "Hello World"
+    // 例如在indexOf()函數內加上"W"，代表我們要搜尋"w"這個字串是在變數容器內的值第幾個索引，這邊計算位置是從0開始
+    document.write(phrase.indexOf("W"));
+
+    // 字串擷取：可以利用substring()這個函數來回傳要擷取的字串部分
+    var phrase = "Hello World"
+    // 例如在substring()函數內加上0,5，代表我們要phrase這個變數容器內的值第0位到第四位（不包含第五位）的值
+    document.write(phrase.charAt(0,5));
+
+    // 英文字母全部轉大寫：可以利用toUpperCase()這個函數來將英文全部轉成大寫
+    // 英文字母全部轉小寫：可以利用toUpperCase()這個函數來將英文全部轉成小寫
+    var phrase = "Hello World"
+    document.write(phrase.toUpperCase());
+    document.write(phrase.toLowerCase());
+  </script>
+</body>
+</html>
+
+
+<!-- 數值的用法 ============================================================= -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <script>
+    // 一般的加減乘除直接在document.write內表示即可，如下
+    document.write((2+3)*5);
+
+    // 我們也可以先設置變數
+    var number = 5;
+    document.write((2+3)*number);
+
+    // 運算符號%：此符號代表取餘數，例如下面的例子得出來的結果就會是2
+    document.write(8%3);
+
+    // 取數值絕對值：可以利用Math.abs()這個函數來回傳數值的絕對值
+    var number = -5;
+    document.write(Math.abs(number));
+
+    // 取多個數值中的最大值：可以利用Math.max()這個函數來回傳數列中的最大值
+    var number = 999;
+    document.write(Math.max(2, 5, 10, 3, 256, number));
+
+    // 取多個數值中的最小值：可以利用Math.min()這個函數來回傳數列中的最小值
+    var number = -5;
+    document.write(Math.min(2, 5, 10, 3, 256, number));
+
+    // 對數值做四捨五入：可以利用Math.round()這個函數來回傳數值四捨五入後的結果
+    var number = 2.3;
+    document.write(Math.round(number));
+
+    // 對數值做次方運算：可以利用Math.pow()這個函數來回傳數值做次方運算後的結果
+    var number = 3;
+    // 利用Math.pow()這個函數對number這個變數取3次方後的結果
+    document.write(Math.pow(number, 3));
+
+    // 對數值做開根號運算：可以利用Math.sqrt()這個函數來回傳數值開根號運算後的結果
+    var number = 36;
+    document.write(Math.sqrt(number));
+
+    // 亂數產生器：可以利用Math.random()這個函數來回傳0~1之間產生隨機一個亂數的結果
+    document.write(Math.random());
+  </script>
+</body>
+</html>
+
+<!-- 陣列的用法 ============================================================= -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <script>
+    // 一般來說，如果像上面利用var設定變數，當有多個變數的應用場景時，如：全班每位同學的成績，那勢必就要設定很多的變數，這樣會導致程式碼冗長
+    // 此時我們就可以用陣列來設定全班同學成績的變數，如下
+    var scores = [80, 50, 40, 20, 60, 70];
+    document.write(scores);
+
+    // 選取陣列內的值（所有的索引都是從0開始計算）
+    document.write(scores[0]);
+
+    // 修改陣列內的值
+    scores[0] = 20;
+    document.write(scores);
+
+    // 陣列內可以存放各種不同型態的資料
+    var value = [true, "小明", 100];
+    document.write(value);
+  </script>
+</body>
+</html>
+
+
+<!-- 初步製作一個計算機 ============================================================= -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <script>
+    // 可以利用prompt()這個函數給使用者輸入參數，然後我們再將使用者的參數儲存於變數中，如下
+    var my_name = prompt("請輸入你的名字");
+
+    document.write("你好啊" + my_name);
+
+    // 製作一個基本的計算機
+    var num_1 = prompt("請輸入數字1");
+    var num_2 = prompt("請輸入數字2");
+
+    document.write(num_1 + num_2); // 但此時我們看到結果會是數字1字串 + 數字2字串合併的結果，並不是真的兩個數字相加的結果，主要是因為prompt會把使用者輸入的內容預設成字串
+
+    // 所以利用parseInt()函數，把原本字串的數字轉成"整數型"的數字
+    num_1 = parseInt(num_1);
+    num_2 = parseInt(num_2);
+    document.write(num_1 + num_2); 
+
+    // 那如果數值是有小數點，則可以用parseFloat()函數，把原本字串的數字轉成"浮點數型"的數字
+    num_1 = parseFloat(num_1);
+    num_2 = parseFloat(num_2);
+    document.write(num_1 + num_2); 
+  </script>
+</body>
+</html>
+
+
+<!--
+在學習JavaScript時，除了程式語言的語法外，更重要的是學習如何使用各種API（Application Programming Interface）
+API簡單來說就是一組預先設計好、可完成某類功能的函式，例如上面所使用的alert()，就是一個現成可用的API函式
+
+JavaScript是物件導向的程式語言，會將事物一期特性歸類為不同的類別（Class），例如：可以定義人、汽車、狗...等類別（Class）
+類別的實體，就稱為物件（Object），例如：老王的古董車、大雄的跑車，這些是屬於汽車類別的物件
+
+同類的資料會有相同的資料屬性（稱為屬性，例如：小美和大明都有名字屬性，但值不同）與程式功能（稱為方法，也就是函式）
+物件.屬性 = ... // 例如：p.innerHTML = 'Hello!';
+物件.方法(參數); // window.alert("Hello!");
+
+一般來說，可以用var x = {...}的語法，隨意建立JavaScript的物件，但是當物件有一定的格式、屬性有預設值、想重複利用相同結構...等特性的時候，通常會將建立物件的敘述定義成函式，以方便使用，範例如下：
+// 定義水果類別Fruit
+function Fruit(n, c){
+  // 將參數n設為name屬性值
+  this.name = n;
+  // 將參數c設為color屬性值
+  this.color = c;
+}
+
+// 建立2個水果物件
+var apple = new Fruit("蘋果", "red")
+var banana = new Fruit("香蕉", "yellow")
+
+JavaScript內建物件：
+前面範例所呼叫的alert()函式，其實是簡寫的形式，完整寫法是window.alert()，其中window就是Web API（表示在撰寫網頁會用到的API）中所定義的物件
+在Web API中已定義好以下的物件：
+1.window物件：網頁文件所在的瀏覽器視窗物件，透過此物件可顯示像alert()的交談窗，也可開新視窗或關閉視窗等，原則上每個頁次都是不同的window物件，但有些方法影響的是整個瀏覽器視窗，不只是個別的頁次
+對HTML網頁中的JavaScript而言，window是全域物件（Global Object），也就是城市隨時可使用window物件，一般情況下可以省略其名稱，所以可以將window.alert()省略成alert()
+
+2.document物件：代表HTML網頁內容的物件，透過此物件可存取網頁中的元素、屬性、樣式表等或是也可在網頁內容加入其他東西
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script>
+      // 在網頁中寫入新的內容，可以直接添加新的HTML元素
+      document.write('<h1>JavaScript</h1>');
+    </script>
+</head>
+<body>
+  <h2>HTML</h2>
+  <script>
+        // 在網頁中寫入新的內容，可以直接添加新的HTML元素
+        document.write('<h3>CSS</h3>');
+  </script>
+
+  <!-- pre元素可以讓瀏覽器顯示時，保持原有的空白，換行字元的效果 -->
+  <pre>
+    <script>
+        // document.writeln()方法會在寫入的內容最後加上換行字元 
+        document.writeln("To be,");
+        document.writeln(" or not to be,");
+        document.writeln("  that is the question");
+    </script>
+  </pre>
+
+  <!-- 利用onclick事件屬性設定，當按鈕被按下時即用document.write()寫入文字訊息Hello! -->
+  <!-- 另外這邊可以發現原有的內容在按下按鈕後就被覆蓋了，主要是因為程式執行的時機不同，原本script元素中的內容是在網頁載入時執行
+       但現在是按鈕觸發後才執行document.write()，此時整個網頁已經載入顯示完畢，此時document.write()就會先做類似"開新檔案"的動作，再進行寫入，所以原有的內容就會被清除掉 -->
+  <button onclick="document.write('<p>Hello!</p>');">變魔術!</button>
+</body>
+</html>
+
+
+<!-- 在JavaScript中，若想要取得HTML文件內的元素，可以使用getElementById()取得特定的元素物件 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+  <!-- 
+    先宣告一個變數p儲存等等抓到的元素物件，接著利用document.getElementById()方法來抓取id="text"這個條件的所有元素
+    innerHTML屬性，可以取得HTML元素的內容，接著可以對其進行增加、覆蓋原有內容，這邊就是讓p變數原本的元素內容，再加上"<b>Hello!</b>"
+  -->
+  <button onclick="
+            var p = document.getElementById('sometext');
+            // +=：是一個運算子，例如：A += B此語法就相當於A = A + B
+            p.innerHTML+='<b>Hello!</b>';
+          ">變魔術!</button>
+  <p id="sometext"><p>
+</body>
+</html>
+
+<!--
+從上面的例子可以發覺，把2行程式寫在onclick事件屬性中，不管是在閱讀還是編寫都非常不便，因此這邊可以利用自訂函式來簡化onclick的內容
+function myfunc(){
+  ...
+}
+function：定義函式的關鍵字
+myfinc()：函式的名稱，可以自行命名，()是用來列出參數的括號，參數要放進括號內，沒有參數也是要加上
+...：大括號內可放入組成函式內容的JavaScript語法
+一般來說，變數及函式命名的方式可依自己喜好，但還是有以下幾個限制：
+1.名稱可使用文字、數字、底線、$符號，但第1個字元不可使用數字，另外雖然可以用中文名稱，但不太建議使用中文來命名
+2.不可使用JavaScript的保留字(Reserved Word)：在JavaScript以定義或預留一些程式語言本身使用的關鍵字，像是var、function，這些系統使用過的名稱就不能再拿來作為自訂函數的名稱
+
+所以，可以先在script元素中定義函式後，直接在元素中引入函數即可
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script>
+      function myfunc(){
+        var p = document.getElementById('sometext');
+        p.innerHTML+='<b>Hello!</b>';
+      }
+    </script>
+</head>
+<body>
+  <button onclick="myfunc()">變魔術!</button>
+  <p id="sometext"><p>
+</body>
+</html>
+
+<!--
+但假設想讓使用者輸入任何文字後，再加到網頁中，那就需要讀取使用者輸入的值，就可以利用value這個屬性來取得使用者在欄位中輸入的值
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script>
+    function addBook(){
+      // 先分別利用getElementById()方法取得id="list"、id="book"兩個元素物件
+      var list= document.getElementById("list");
+      var book= document.getElementById("book");
+
+      // 因為使用者是在id="book"的input欄位輸入值，所以就要利用value屬性來取得使用者輸入的值，最後再加上清單<li>標籤，並利用innerHTML屬性，將剛剛取得的值加入id="list"的ul元素中
+      // 那這邊利用+=運算子就可以持續加入新項目的清單，並且就項目繼續留著
+      list.innerHTML += "<li>" + book.value + "</li>";
+    }
+    </script>
+</head>
+<body>
+  <p>
+    書名：<input id="book" type="text">
+    <button onclick="addBook()">新增</button>
+  </p>
+  <ul id="list"></ul>
+</body>
+</html>
+
+<!-- 定義函式(function)其他範例 ============================================== -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <script>
+    // 定義一個hello()函式
+    function hello(){
+      document.write("你好");
+    }
+
+    // 呼叫函式
+    // 當定義完函式後，如果要使用函式，就需要進行呼叫，如下
+    hello();
+
+    // 也可以讓使用者自行輸入值，並回傳進函式內，如下
+    var my_name = prompt("請輸入你的名字");
+
+    // 定義一個hello(name)函式
+    function hello(name){
+      document.write("你好" + name);
+    }
+
+    hello(my_name);
+
+    // 但一般來說，函式並不是運行完就可以直接print到畫面上，所以盡量使用return來取代document.write()函數，如下
+    function add(num1, num2){
+      return num1 + num2;
+    }
+    // 後續呼叫函式時再將結果用document.write()函數print到畫面上即可
+    document.write(add(3, 5));
+  </script>
+</body>
+</html>
+
+
+<!-- 物件(object)範例： ======================================================= -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <script>
+    // 
+    // 物件可以拿來存放很多的key（鍵）、value（值）配對的資料，如下
+    var person_1 = {
+      name: "小明",
+      age: 23,
+      is_male: true
+    };
+    // 此時，將person利用document.write()函數print到畫面上時，可以看到結果顯示[object Object]，代表這個person變數是一個物件
+    document.write(person_1);
+
+    // 所以，如果要取得person內某個屬性，如下
+    document.write(person_1.name);
+
+    // 也可以在物件內加入函式，這邊設定函式就不用在給定一個名稱，如下
+    var person_2 = {
+      name: "小明",
+      age: 23,
+      is_male: true,
+      // 這邊的this是代表現在這個函式是誰的，函式在這邊是在person_2這個物件裡面，所以this也就是代表person_2
+      // 這邊已經知道this.name也就代表person_2.name，但因為現在是要令person_2這個物件，同時也要取person_2的屬性，所以就需要用到this
+      print_name: function(){
+        document.write(this.name);
+      }
+    };
+
+    // 此時就可以直接呼叫物件內的函式
+    person_2.print_name();
+
+    // 所以這邊就可以理解成，一般在對各個變數使用函數時，變數就是物件，而使用的函式就是這個物件內建的函式
+    // 如下面例子，phrse就是一個物件，length()就是內建的函式，所以phrse就可以直接調用
+    var phrase = "hello";
+    document.write(phrase.length());
+
+    // 也可以在物件內創建多個物件，如下
+    var movie = {
+      title: "刻字心底的名字",
+      maker: "氧氣電影",
+      duration: 114,
+      // 因為一部電影有多個演員，所以我們就可以利用陣列將各個演員的資料(物件)包進去
+      actors: [
+          {
+            name: "陳昊森",
+            age: 24,
+            is_male: true
+          },
+          {
+            name: "曾敬樺",
+            age: 23,
+            is_male: true
+          }
+      ]
+    }
+
+    // 這個時候我們就可以利用函數將movie這個物件內的各個屬性print到畫面上
+    document.write(movie.actors[0].name);
+  </script>
+</body>
+</html>
+
+
+<!-- if判斷式範例： =================================================== -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <script>
+    // if括號內放的是判斷式是否為ture，是的話就執行if大括號內的內容，否則就執行else大括號內的內容
+    /*
+      1.如果我肚子餓
+          我就去吃飯
+    */
+    var hungry = true;
+    if(hungry){
+      document.write("我就去吃飯");
+    }
+
+    /*
+      2.如果今天下雨
+          我就開車去上班
+        否則
+          我就走路去上班
+    */
+    var rainly = true;
+    if(rainly){
+      document.write("我就開車去上班");
+    }
+    else{
+      document.write("我就走路去上班");
+    }
+
+    /*
+      3.如果你考100分
+          我給你1000元
+        或是 如果你考分
+          我給你500元
+        或是 如果你考分
+          我給你100元
+        否則
+          你給我300元
+    */
+    // 一般來說，多個判斷式，只要符合某個條件判斷式的情況，下面的其餘判斷就不會再執行
+    var score = 100;
+    if(score == 100){
+      document.write("我給你1000元");
+    }
+    else if(score >= 80){
+      document.write("我給你500元");
+    }
+    else if(score >= 60){
+      document.write("我給你100元");
+    }
+    else{
+      document.write("你給我300元");
+    }
+
+    /*
+      4.如果 你考100分 而且 今天下雨
+          我給你1000元
+        否則
+          你給我500元
+    */
+    var score = 100;
+    var rainly = true;
+
+    // "而且"是用&&、"或者"是用||，若是反義的話，則可以在前面加上"!"，如今天沒有下雨，那rainly就可以改為!rainly
+    if(score == 100 && rainly){
+      document.write("我給你1000元");
+    }
+    else{
+      document.write("你給我500元");
+    }
+
+    // 判斷三個數的最大值
+    funciton max_num(num1, num2, num3){
+      if(num1 >= num2 && num1 >= num3){
+        return num1;
+      }
+      else if(num2 >= num1 && num2 >= num3){
+        return num2;
+      }
+      else{
+        num3;
+      }
+    }
+    document.write(max_num(2, 3, 5));
+  </script>
+</body>
+</html>
+
+
+<!-- while迴圈範例： ================================================== -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <script>
+    // while的括號內要寫上條件判斷，只要條件判斷成立就會一直執行大括號內的程式碼
+    /*
+    while(true){
+      code
+    }
+    */
+
+    // 舉一個實例，如下
+    var i = 1;
+    while(i<=3){
+      document.write(i);
+      document.write("<br/>");
+      i=i+1; // 也可以把i=i+1;改成i++;
+    }
+
+    // 但上面的while寫法執行的順序會先進行條件判斷，成立時才會執行大括號內的程式碼
+    // 那也可以利用do來改寫，此時就會變成先執行完程式碼之後再進行while的條件判斷，如下，所以do裏面的程式碼至少會跑一次
+    var i = 4;
+    do{
+      document.write(i);
+      document.write("<br/>");
+      i=i+1; // 也可以把i=i+1;改成i++;
+    }while(i<=3)
+  </script>
+</body>
+</html>
+
+
+<!-- for迴圈範例： ==================================================== -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <script>
+    // 先來看一個while迴圈範例
+    var i = 0
+    while(i<10){
+      document.write(i);
+      document.write("<br/>");
+      i++;
+    }
+
+    // 接著利用for迴圈將上面while迴圈進行改寫
+    // for迴圈內要先置放三個參數，1.供判斷的變數、2.判斷的條件、3.每跑完一次迴圈後要做的事情
+    for(var i = 0; i < 10; i++){
+      document.write(i);
+      document.write("<br/>");
+    }
+
+    // 若今天要一個一個抓出陣列內的所有值，可以利用for迴圈來達成
+    var num_list = [2, 3, 5, 7, 9]
+    for(var i = 0; i < num_list.length; i++){
+      document.write(num_listp[i]);
+      document.write("<br/>");
+    }
+  </script>
+</body>
+</html>
+
+
+<!-- 密碼檢驗程式範例： ================================================= -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <script>
+    /*
+    var password = 123456;
+    var input;
+
+    // 假設使用者輸入錯誤的密碼，那就持續跳出請輸入密碼的視窗
+    while(password!=input){
+      input=prompt("請輸入密碼");
+    }
+
+    // alert() 函式用來彈出對話視窗，其內容可以自己設定
+    alert("登入成功");
+    */
+
+    // 但是如果用上面的程式碼，這樣會變成讓使用者可以無限次的輸入密碼，那遲早會讓有心人試到正確密碼
+    // 所以要加上限制的參數，如限制輸入密碼的次數
+    var password = 123456;
+    var input;
+    var entry_count = 0;
+    var entry_limit = 3;
+    var out_of_limit = false;
+
+    // 假設使用者輸入錯誤的密碼，那就持續跳出請輸入密碼的視窗
+    while(password!=input !out_of_limit){
+      entry_count++;
+      if(entry_count<=entry_limit){
+        input=prompt("請輸入密碼");
+      }
+      else{
+        out_of_limit = true;
+      }
+    }
+
+    if(out_of_limit){
+      alert("超出輸入次數");
+    }
+    else{
+      // alert() 函式用來彈出對話視窗，其內容可以自己設定
+      alert("登入成功");
+    }
+  </script>
+</body>
+</html>
+
+
+<!-- 製作一個問答程式範例 ================================================= -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <script>
+    var questions = [
+      {
+        prompt: "香蕉是什麼顏色？\n(a)紅色(b)綠色(c)黃色"
+        answer: "c"
+      },
+      {
+        prompt: "草莓是什麼顏色？\n(a)紅色(b)綠色(c)黃色"
+        answer: "a"
+      },
+      {
+        prompt: "1公尺等於幾公分？\n(a)100(b)1(c)10"
+        answer: "a"
+      }
+    ]
+    var score = 0;
+
+    for(var i=0; i < questions.length; i++){
+      var input = prompt(questions[i].prompt);
+      if(input == questions[i].answer){
+        score++;
+        alert("答對了！");
+      }
+      else{
+        alert("答錯了！");
+      }
+    }
+
+    alert("總共答對了" + score + "題！");
+  </script>
+</body>
+</html>
+
+
+<!-- 2維陣列範例： ================================================ -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <script>
+    // 下面是一個4行3列的2維陣列
+    var number = [
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9],
+      [0]
+    ]
+
+    // 現在要取第一個陣列內的第一個值，就可以寫兩個中括號來取
+    document.write(number[0][0]);
+
+    // 巢狀迴圈
+    for(var i=0; i<4; i++){
+      for(var j=0; j<3; j++){
+        document.write("i:" + i + ", j:" + j);
+        document.write("<br/>");
+      }
+    }
+
+    // 利用巢狀迴圈把上面的2維陣列print出來
+    for(var i=0; i < number.length; i++){
+      for(var j=0; j < number[i].length; j++){
+        document.write(number[i][j]);
+      }
+      document.write("<br/>");
+    }
+  </script>
+</body>
+</html>
+
+
+<!-- 定義類(Class)範例： ================================================= -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <script>
+    // 如下，下面三隻手機，就要寫了三個物件，那如果更多的話就要設置更多的物件，那這樣程式碼就會很冗長，此時我們可以利用class來創建模板
+    var phone1 = {
+      number = "123",
+      year = 2020,
+      is_waterproof: false,
+      phone_age: function(){
+        return 2021 - this.year;
+      }
+    }
+
+    var phone2 = {
+      number = "456",
+      year = 2018,
+      is_waterproof: false,
+      phone_age: function(){
+        return 2021 - this.year;
+      }
+    }
+
+    var phone3 = {
+      number = "789",
+      year = 2019,
+      is_waterproof: true,
+      phone_age: function(){
+        return 2021 - this.year;
+      }
+    }
+
+    // 一般來說，模板的第一個字母為大寫（只是習慣而已，並沒有規定一定要）
+    class Phone {
+      constructor(number, year, is_waterproof){
+        this.number = number;
+        this.year = year;
+        this.is_waterproof = is_waterproof;
+      }
+      phone_age(){
+        return 2021 - this.year;
+      }
+    }
+
+    // 這樣就可以用一個模板，輸入參數後就產生物件，也讓程式碼更整潔，就不用像上面寫那麼多程式碼就設置了幾個物件而已
+    var phone1 = new Phone("123", 2020, false);
+    document.write(phone1.number);
+    var phone2 = new Phone("456", 2018, false);
+    document.write(phone2.phone_age());
+    var phone3 = new Phone("789", 2019, true);
+    document.write(phone3.is_waterproof);
+  </script>
+</body>
+</html>
+
+
+<!--
+使用window物件控制瀏覽器：
+window物件的屬性和方法很多，因為網頁中的JavaScript是在瀏覽器中執行，其預設就載入全域的window物件，所以在呼叫這些函式時，可以省略window物件名稱
+window.open()：可以開啟網頁，此函式要輸入兩個參數，第一個參數是URL也就是要開啟的網頁網址，第二個參數則是可以指定開啟網頁的方式，例如：預設值為"_blank"表示會開啟新視窗、"_self"表示會在目前頁面開啟
+window.location.href：也是可以開啟網頁，此為屬性值，可以變更目前瀏覽器網頁的網址，將目前的屬性值更改為其他的網址，例如：location.href = "http://google.com"，將目前使用者瀏覽的網頁網址屬性值變更為google首頁
+window.setInterval()：此函式為計時器函式setInterval()，第一個參數是指定要定時執行的函式，第二個參數是隔多久執行一次（單位：毫秒），例如：setInterval(play, 3000);，代表每隔3秒（3000毫秒）呼叫 1 次 play()函式
+window.setTimeout()：setTimeout()此函式與setInterval()一樣都是定時呼叫函式，兩者差異為setTimeout()僅是一次性的呼叫函式，後續並不會持續執行
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+      <h3>本購物網站維護中,請至<a href="http://www.flag.com.tw/shop/">旗標購物網</a>選購！
+      </h3> 
+      <script>
+          // 自動轉跳網址功能，3秒後就從當前網址轉跳至函式內定義的網址
+          setTimeout(function() {
+            // 利用location.href屬性來修改當前瀏覽器網址的屬性值
+            location.href = "http://www.flag.com.tw/shop/";
+          }, 3000);  // 3 秒後執行匿名函式
+      </script>
+    </body>
+</html>
+
+<!--
+雖然setTimeout()只是一次性，但實務上，也有很多人會用setTimeout()做重複定時執行的任務，也就是在定時執行的函式中，再呼叫一次setTimeout()，如下：
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+      <h2 id="mytime"></h2> 
+      <script>
+          // 呼叫 showTime() 函式
+          showTime();
+          
+          function showTime() {
+            // 取得日期物件，Date()是JavaScript內建可用來取得日期、時間的物件
+            var d = new Date();
+            // toLocaleTimeString()此函式是將目前時間轉成字串後輸出，也可以用toTimeString()函式，此函式傳回的時間字串後面會附加時區資訊
+            document.getElementById("mytime").innerHTML= d.toLocaleTimeString();
+            // 1秒後執行 showTime()函式，此意思就是一直重複利用setTimeout特性再次呼叫函式自己，即可達到setInterval()的效果
+            setTimeout(showTime, 1000);
+          }
+      </script>
+    </body>
+</html>
+
+<!-- window物件其他範例： ==================================================== -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <h1 id="header">小明好帥</h1>
+  <script>
+    // 取得html元素
+    // window是一個全域的物件，代表的是整個瀏覽器
+    // 所以實際上document.write()這個函式，也是window底下的物件，所以實際上寫法如下
+    window.document.write("Bill的網頁");
+
+    // 另外再設置變數的時候，實際上這個變數也是window底下的一個物件，如下
+    var a = 123;
+    window.document.write(window.a);
+    // 所以，因為winodw是全域的物件，實際上只要在瀏覽器底下，這些東西也就都在window底下，那就沒必要再把window寫出來，可以省略
+    // 若要比較詳細的參考資料，可以到w3c網頁的javascript部分，找JS Browser BOM的部分
+
+    // 所以實際上document是window的一個屬性，負責拿來處理或是操作HTML檔案內的東西
+    // 當需要取得HYML檔案內的元素時，我們就可以用document底下getElementById()這個函數，就可以利用這個函數取出HTML內特定的ID標籤
+    var h1 = document.getElementById("header");
+
+    // console.log主要可以拿來除錯跟測試的工具，可以幫助把東西印到console裡面
+    // console是瀏覽器中開發者工具內的一個部分，可以到瀏覽器按下F12，console就在element旁邊
+    // 所以當我們開發完HTML就可以利用console來除錯，看看是否可以正常抓到東西並顯示在console裡面，若是有問題就會顯示NULL
+    console.log(h1);
+
+    // 若是想修改HTML檔案內某個ID顯示的文字，可以利用innerText()函數來實現，如下
+    h1.innerText = "小明超帥";
+
+    // 也可以將標籤背景顏色利用JS程式碼直接修改，如下
+    h1.style.backgroundColor = "red";
+
+    /*
+    但在取得HTML標籤的時候要注意一件事情，在利用script標籤src屬性引入JavaScript檔案的那一行，必須要在那些HTML元素下面，不然會搜尋不到
+    另外，也不是只可以對ID做操作而已，getElementById()函數還有很多形式，可以到w3c的網站上，JavaScript部分中，找尋JS HTML DOM下的DOM Document，裡面就有很多的函數可以做使用
+    */
+  </script>
+</body>
+</html>
+
+
+<!-- 
+利用開發人員工具協助除錯，可以利用F12的開發人員工具中，有一個稱為主控台（Console）來進行程式除錯，一般來說，若有錯誤就會在主控台顯示出錯誤訊息
+但有的時候城市的錯誤並非是語法錯誤那麼簡單，有可能是某些程式邏輯有問題，此時就沒辦法利用主控台來尋找錯誤
+JavaScript就有提供一個console.log()來輸出程式執行過程，此時在每個程式語法的下一行加上console.log()，就可以一樣在主控台檢查是否寫的語法可以正常輸出
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script>
+    function addBook(){
+      console.log("開始執行 addBook()...");
+      
+      var list= document.getElementById("list");
+      console.log("目前的清單內容: " + list.innerHTML);
+      
+      var book= document.getElementById("book");
+      console.log("輸入的內容: " + book.value);
+      
+      list.innerHTML += "<li>" + book.value + "</li>";
+      console.log("addBook() 執行結束...");
+    }
+    </script>
+</head>
+<body>
+<p>
+  書名：<input id="book" type="text">
+  <button onclick="addBook()">新增</button>
+</p>
+<ul id="list"></ul>
+</body>
+</html>
+
+
+<!-- event listener(事件監聽器)範例： ================================================ -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <img id="img" src="hotpot_1.jpg" width="300" height="300">
+  <!-- 若要監聽button標籤的按鈕是否有被使用者點擊，可以加上onclick這個屬性 -->
+  <!-- onclick這個屬性的意思是指說當"按我"這個按鈕按下去之後，就會觸發handle_click()這個自行創建的JS函數 -->
+  <button id="btn1" onclick="handle_click_1()">按我</button>
+  <br/>
+  <!-- 那如果要對被按下去的元素做一些操作時，就可以加上this參數(這邊一定要寫this(固定的參數值)，寫其他名稱會沒有效果)，而this代表的是現在按下去的這個元素(也就是這個button標籤) -->
+  <button id="btn2" onclick="handle_click_2(this)">按我</button>
+  <!-- 也可以不在HTNL內增加onclick監聽的屬性，而是直接全部都在JS檔案內完成 -->
+  <button id="btn3">按我</button>
+  <!-- 也可以像css一樣用引入檔案的方式，將javascript語法寫到另一個檔案中，如：script.js，再利用src屬性引入 -->
+  <script>
+    // 創建handle_click_1()這個函數
+    // 因為我們在HTML檔案內加上監聽button的屬性，所以現在要在JS內創建handle_click_1()函數
+    // 等使用者按下HTML內原本設定的"按我"按鈕時，我們就另外跳出一個視窗
+    function handle_click_1(){
+      // alert是跳出一個警告視窗
+      alert("叫你按就按？");
+    }
+
+    // 創建handle_click_2()這個函數
+    // 等使用者按下HTML內原本設定的"按我"按鈕時，我們就將那個按鈕內的文字改成其他的文字或是增加其他屬性，而不是另外跳出一個視窗
+    function handle_click_2(element){
+      // 因為現在我們是要對HTML檔內的某個元素進行操作，所以可以先利用console這個函數來測試傳進來的參數是否顯示為那個元素本身，而不是NULL
+      // console.log(element)
+      element.innerText = "按屁呀～";
+      element.style.color = "red";
+    }
+
+    // 我們可以直接從JS檔案內對HTML的元素進行事件監聽，如下
+    // 先利用document這個物件內的getElementById()這個函數，利用ID來抓到HTML內的按鈕標籤
+    var btn = document.getElementById("btn3");
+    // 接下來我們用addEventListener()這個函數來對元素做監聽，這個函數要傳入兩個參數，1.是要監聽什麼樣的事件、2.觸發第一個參數的事件後要做的事情
+    btn.addEventListener("click", function(){
+      // 可以利用alert()函數跳出一個警告視窗
+      // alert("叫你按就按？");
+
+      // 也可以對元素進行操作，這邊就可以用到this這個屬性來進行物件的選擇
+      this.innerText = "按屁呀～";
+      this.style.color = "red";
+    })
+
+    // 上面都是在監聽按鈕是否有被點擊的這個事件，那也可以監聽其他事件
+    // 例如現在監聽HTML上的hotpot.jpg這張圖片是否使用者的滑鼠有"滑過去"
+    var img = document.getElementById("img");
+    // 接下來我們用addEventListener()這個函數來對元素做監聽，這個函數要傳入兩個參數，1.是要監聽什麼樣的事件、2.觸發第一個參數的事件後要做的事情
+    // 滑鼠滑過的參數值是叫"mouseover"
+    img.addEventListener("mouseover", function(){
+      // 那當使用者滑鼠滑過去時就把圖片改成另一張圖片
+      this.src = "hotpot_2.jpg"
+    })
+    //但上面這樣就只是把圖片改成另一張，不夠動畫的感覺，所以我們可以再新增一個當滑鼠滑出去圖片後的事件
+    img.addEventListener("mouseout", function(){
+      // 那當使用者滑鼠滑出去這張圖片時就改回第一張圖片
+      this.src = "hotpot_1.jpg"
+    })
+
+    /* 
+    上述範例只有用到click、mouseover、mouseout三種事件而已，實際上還有很多的事件可以操作
+    所以可以到w3c的網站上，在HTML的部份中，找尋HTML DOM下的DOM Events，裡面就有很多的事件名稱可以做使用
+    但這邊要注意，事件名稱若是在JS檔案內可以直接使用，但若是在HTML內要使用的話，每個事件名稱前面都要加上"on"
+    */
+  </script>
+</body>
+</html>
+
+
+<!-- 製作簡易部落格範例： =================================================== -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Bill的網頁</title>
+</head>
+<body>
+  <h1>小明的部落格</h1>
+  <p>標題</p>
+  <input type="text" id="title"/>
+  <p>內文</p>
+  <textarea id="content" rows="8"></textarea>
+  <button id="btn">發布</button>
+  <div id="list">
+    <!-- 一般來說，若是要新增部落格的內文，就要用以下寫法，新增一個div區塊，但這樣很麻煩
+         所以我們可以透過JS來達成，當按下發布按鈕後，就自動新增文章區塊 -->
+    <div class="article">
+      <h2>今天天氣真好</h2>
+      <p>今天天氣雖然很好，但早上一出門就踩到狗屎= =</p>
+    </div>
+  </div>
+  <script>
+    var title = document.getElementById("title");
+    var content = document.getElementById("content");
+    var btn = document.getElementById("btn");
+    // 因為我們現在是要使用者輸入完標題以及內容後，按下發布按鈕，接著就在id為list的那層div區塊內新增一個class為article的div文章區塊
+    // 所以要再取得id為list的那層div元素
+    var list = document.getElementById("list");
+
+    // 監聽按鈕是否有被使用者點擊
+    btn.addEventListener("click", function(){
+      // 因為我們需要取得title、content的值，所以可以利用value屬性
+      // 一樣可以先利用console來看是否有抓到元素
+      // console.log(title.value);
+      // console.log(content.value);
+
+      // 接著我們可以透過innerHtml這個函數取得list內的div區塊元素
+      // 一樣可以先利用console來看是否有抓到元素
+      // console.log(list.innerHtml);
+      // 接著我們就可以將原本存在的區塊再加上新增的區塊，然後取代原本的元素，如下
+      list.innerHtml = list.innerHtml + `
+      <div class="article">
+        <h2>${title.value}</h2>
+        <p>${content.value}</p>
+      </div>
+      `;
+
+      /*
+      其中，"``"這個是JS中的模板語法，可以讓我們在JS程式碼中加上HTML的語法
+      這邊要注意一個點，"``"這個模板語法其實也可以將其改成字串形式，也就是利用""將HTML語法包起來，但這會產生幾個問題
+      1.用""包起來的程式碼不能換行，這樣就不好閱讀程式碼
+      2.另外也會有單雙引號的衝突
+      */
+
+      // 接著新增完HTML的區塊後，再將原本使用者輸入的title跟content清空，方便下次直接輸入，使用者體驗就會比較好
+      title.value = "";
+      content.value = "";
+    })
+  </script>
+</body>
+</html>

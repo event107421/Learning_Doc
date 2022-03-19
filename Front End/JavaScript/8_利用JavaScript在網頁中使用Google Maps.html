@@ -1,0 +1,504 @@
+<!--
+Google Maps APIs：指多種不同平台Google Maps的API集合，其中供網頁使用的Web API又分成JavaScript API、Embed API等，以下介紹3套不同的API用法
+Google Maps Embed API：建立用<iframe>嵌入網頁的Google Maps服務，"需要"註冊取得API Key(金鑰)才能使用，呼叫API次數連續90天未超過25000次/日
+Google Static Maps API：建立用<img>嵌入網頁的Google Maps服務，"不需要"註冊取得API Key(金鑰)才能使用，呼叫API次數無限制
+Google Maps JavaScript API：利用JavaScript控制要顯示的地圖，"不需要"註冊取得API Key(金鑰)才能使用，但官方建議申請API Console Key會比較好，呼叫API次數連續90天未超過25000次/日
+但這邊要注意，用法的內容可能會隨時改變，依Google官方為準
+
+申請Google Maps的API Key介紹：
+要申請API Key，請到以下網址：https://developers.google.com/maps/documentation/javascript/
+接著建立一個新專案，因為必須要有專案才能使用Google的API，接著到API管理員點選想啟用的API項目
+建立完API後，將畫面中的API Key複製下來，之後使用Google Maps API時，就可以於API的URL中加入key=xxx的參數設定
+-->
+
+<!--
+使用Google Maps Embed API建立嵌入式地圖：
+若想將某個地區的Google Maps地圖顯示在自己網頁中，只需用瀏覽器連上Google Maps網站，先移到想顯示的地區並調整縮放比例，接下來點左上角的選單鈕，點選"分享或嵌入地圖"
+接著點上面的"嵌入地圖"欄位，此時就可以設定需要的地圖大小，最後複製裡面的<iframe>標籤整串文字
+此方法的優點是方便快速，但缺點是無法隨意修改URL來調整顯示的地區、位置，若是想以較具彈性的方式建立嵌入式的地圖，可使用Google Maps Embed API
+
+Google Maps Embed API需申請API Key並進行啟用，使用時仍是利用iframe元素來導入，src屬性則為API的URL，格式如下：
+<iframe width="寬度" height="高度" src="https://www.google.com/maps/embed/v1/地圖模式?地圖參數&key=API_KEY"></iframe>
+上述語法若未指定寬度、高度，iframe預設為300px寬、150px高；後面的API_KEY則要替換為使用者取得的API KEY字串
+可使用的地圖模式及配合的地圖參數如下：
+1.place：一般表示位置的地圖，需用q參數指定要顯示的位置，位置字串中若有空白（例如英文地名）需改用"+"符號代替，如下：
+  https://www.google.com/maps/embed/v1/place?q=台北101&key=API_KEY
+  https://www.google.com/maps/embed/v1/place?key=API_KEY&q=Cape+San+Diego+Lighthouse,New+Taipei+City,Taiwan
+  place之後的參數沒有一定順序，可以先列出key參數在列出地圖的q參數，只是參數間都要加上"&"符號
+
+2.view：單純檢視地圖，無其他標示，必須用center參數指定中心點經緯度座標，並可加選用參數zoom指定放大比例、以maptype指定地圖類型（satellite衛星圖，預設為roadmap街道圖）
+
+3.directions：顯示路線，此模式至少需用origin、destination參數指定起點、終點，另外可選擇性加上以下參數等：
+  waypoints參數：可以指定中間經過的地點
+  mode參數：可以指定交通方式（walking、bicycling、transit）
+  avoid=highway參數：可以指定要避開高速公路
+
+4.search：搜尋模式，例如搜尋某地區的餐廳、商家等，同樣是利用q參數來指定
+
+5.streetview：街景模式，必須以location指定經緯度，可選擇性加上以下參數：
+  heading參數：可指定街景朝什麼方向，北邊為0度，順時鐘增加角度
+  pitch參數：指定俯仰角，水平為0度，向上為正、向下為負
+  fov參數：指定視野寬度，預設為90度，可指定10~110度
+  以上三個參數都用角度來表示
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style> div {float:left;width:400px} </style>
+  </head>
+  <h2>台北101大樓周邊地圖</h2>
+  <!-- place模式 -->
+  <iframe src="https://www.google.com/maps/embed/v1/place?q=台北101&key=???" 
+          width="300" height="300" style="border:0"></iframe>
+  <!-- view模式 -->
+  <iframe src="https://www.google.com/maps/embed/v1/view?center=25.0339,121.562321&zoom=15&maptype=satellite&key=API_KEY" 
+          width="300" height="300" style="border:0"></iframe>
+  <!-- directions模式 -->
+  <h2>旗旗社區2016年台南一日遊路線</h2>
+  <!-- 地點名稱後面可加上郵遞區號；經過多個地點，可用"|"符號分隔地點 -->
+  <iframe src="https://www.google.com/maps/embed/v1/directions?origin=台南火車站,70449&destination=赤嵌樓&waypoints=安平古堡|億載金城|五妃廟&key=API_KEY"  
+          width="500" height="400" style="border:0"></iframe>
+  <!-- search模式 -->
+  <h2>宜蘭附近所有農場</h2>
+  <iframe src="https://www.google.com/maps/embed/v1/search?q=農場+in+宜蘭&key=API_KEY"  
+          width="500" height="400" style="border:0"></iframe>
+
+  <!-- streetview模式 -->
+  <h2>旗旗社區2016年台南一日遊路線</h2>
+  <div>
+      <iframe src="https://www.google.com/maps/embed/v1/streetview?key=location=22.9972032,120.2024482&heading=20&pitch=10&fov=60&key=API_KEY" 
+              width="400" height="200" frameborder="0" style="border:0"></iframe>
+      <iframe src="https://www.google.com/maps/embed/v1/streetview?location=22.987760,120.159046&heading=40&pitch=5&key=API_KEY"
+              width="400" height="200" frameborder="0" style="border:0"></iframe>
+      <iframe src="https://www.google.com/maps/embed/v1/directions?origin=台南火車站,70449&destination=赤嵌樓&waypoints=安平古堡|億載金城|五妃廟&key=API_KEY"  
+              width="500" height="400" frameborder="0" style="border:0"></iframe>
+  </div>
+</html>
+
+<!--
+使用Google Maps靜態地圖：
+如果不想使用iframe元素或是不想申請API Key，可改用Google Static Maps API，建立以img元素載入網頁的靜態地圖，並將src屬性設為API的URL並加上適當參數，最基本了參數用法如下：
+<img src="https://maps.googleapis.com/maps/api/staticmap?center=台北+101&zoom=16&size=240x240">
+
+固定參數如下：
+center：指定地圖中心的位置，可用地名或經緯度
+zoom：指定地圖的縮放比例
+size：指定地圖的圖片大小，用"寬x高"的方式指定大小
+
+也可適當加上選用參數，調整地圖顯示的內容、樣式，如下：
+format：影像檔類型，預設為PNG，也可設為png32(32位元PNG)、gif、jpg、jpg-baseline(非交錯式jpg)
+maptype：可設為satellite(衛星圖)、hybrid(衛星家地名、路名)、terrain(地形圖)，未設定則預設為roadmap(街道圖)
+scale：指定地圖影像的放大比例，也就是用說畫素來表示size指定的大小，預設為1，例如當size設定為100x100，當scale設定為2時，就會回傳200x200的大小給size，此時圖中的文字就會變較大的字體，因此適合用於需縮放地圖的場合
+visible：指定要出現在地圖上的地標，若使用此參數就可省略zoom參數，因為Google Maps會在指定的地標要出現在地圖上的前提下，自行選擇合適的zoom等級，若要指定多個地標則可用"|"符號來分隔
+若要同時加上多個選用參數，則跟加上固定參數一樣，用"&"符號分隔
+另外，免費的Google Static Maps最大只會傳回640x640大小的地圖，此時，若將scale=2則可取得1280x1280的地圖
+
+在靜態地圖中，可利用style參數指定地圖樣式，設定的格式為style=樣式參數:參數值，可使用的樣式參數如下：
+hue：設定地圖的色調，參數格式為0xRRGGBB(類似於CSS色彩指定方式，但開頭要加0x)
+lightness：指定亮度，可設定-100~100之間的數值，-100為全黑，100為全白
+saturation：指定飽和度，可設定-100~100之間的數值，100表示顏色濃郁，-100則無色彩變成灰階地圖
+若要同時設定多個樣式參數，其間需以"|"符號做分隔
+
+雖然靜態地圖只是單純的影像，不像Google Maps會有按一下就出現紅色標記圖示的互動效果，不過可利用markers參數加上標記圖示，語法格式如下：
+markers=size:大小|color:顏色|label:文數字標記|地點
+size：標記的大小，可設為(由小而大)tiny、small、mid，預設大小為normal(最大)
+color：指定標記的顏色，可使用0xRRGGBB格式或black、blue、brown、gray、green、orange、purple、red、yellow、white等10個預設的顏色名稱
+label：指定出現在標記中的英文字母(大寫)或數字0-9(只能放一個字)，但要注意，若size參數設為tiny或small，會導致標記太小而無法顯示指定的文數字
+地點：可使用地名或經緯度，若想同時為多個地點加上標記，一樣用"|"符號分隔
+若要同時設定多個markers參數，其間需以"|"符號做分隔，例如：markers=size:大小|color:顏色|label:文數字標記|地點1|地點2|...
+若是要為不同的地點設定不同的標記符號樣式，可在API的URL中加上多組"&markers=..."參數，如下：
+<img src="https://maps.googleapis.com/maps/api/staticmap?center=23.5, 121&zoom=7&size=240x240&markers=size:mid|label:W|台西&markers=label:E|台東">
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      /*  載入 Google Maps 地圖當做網頁背景 */
+      body {background-image:
+        /* 設為背景的世界地圖使用style=lightness:50淡化圖面 */
+        url(https://maps.googleapis.com/maps/api/staticmap?center=0,127&zoom=2&size=640x640&style=lightness:50); 
+        background-size:cover;}
+    </style>
+  </head>
+  <body>
+    <h3>選用參數scale=1 vs scale=2</h3>
+    <!-- 用百分比指定寬度，所以瀏覽器視窗較大時，img元素寬度會超過下載的地圖寬度(320px)，使得地圖被放大了 -->
+    <img src="https://maps.googleapis.com/maps/api/staticmap?center=台灣地理中心碑&zoom=14&size=320x320" width="49%">
+    <!-- 這邊使用scale=2取得解析度較高的圖案，所以字體比較不會糊掉 -->
+    <img src="https://maps.googleapis.com/maps/api/staticmap?center=台灣地理中心碑&zoom=14&size=320x320&scale=2" width="49%">
+
+    <h3>自訂地圖樣式</h3>
+    <!-- 這邊設定的style=saturation:80|hue:0xFF00FF，顏色對衛星圖無影響，只有圖中的公路、文字有變成紫色 -->
+    <img src="https://maps.googleapis.com/maps/api/staticmap?center=台灣地理中心碑&visible=富貴角&size=300x460&maptype=hybrid&style=saturation:80|hue:0xFF00FF">
+
+    <h3>在地圖上加上標記</h3>
+    <!-- 台西的marker標記為mid(中等)大小；台東markers標記沒設定所以為正常(normal)大小 -->
+    <img src="https://maps.googleapis.com/maps/api/staticmap?center=23.5, 121&zoom=7&size=240x240&markers=size:mid|label:W|台西&markers=label:E|台東">
+  </body>
+</html>
+
+<!--
+結合AJAX與Google Maps靜態地圖：利用程式讀取數據，並一各測站的濃度等級設定標記顏色，然後在地圖上標記出測站的位置
+但由於HTTP的URL字串長度有一定的上限，為避免加上眾多的markers參數後，地圖的URL字串過長，所以這邊以雲林縣的資料來做示範
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      div {padding:0px 5px;
+           border:1px solid black;      
+           width:fit-content;
+           width:-moz-fit-content}
+      span {font-style:bold; margin:5px}
+      code {font-size:1.2em}
+    </style>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+      // 建立地圖 URL 的前半段，顯示雲林縣的地圖
+      var mapUrl = 'https://maps.googleapis.com/maps/api/staticmap?zoom=10&size=480x320&center=雲林縣';
+      
+      $(function(){              
+          // 用 ajax() 以 JSONP 方式取得資料
+          $.ajax({
+            // 空氣品質即時污染指標網址  
+            url:'http://opendata.epa.gov.tw/webapi/api/rest/datastore/355000000I-000001/?format=json',
+            dataType:'jsonp',
+            // 成功時呼叫自訂函式 onSuccess()
+            success : onSuccess,
+        error  : function(e){
+                console.log('錯誤, 代碼:' + e.status);
+            }
+          });
+      });
+    
+      // $.ajax() 成功時執行的函式 
+      function onSuccess(data){  
+        // 要求成功，但如果沒有資料
+        if (data == null) {
+          // 會顯示以下訊息
+          alert("下載失敗!");
+          return;
+        }
+      
+        // 逐筆處理陣列中的資料
+        $.each(data.result.records, function(index){
+          // 範例程式僅處理雲林縣的資料
+          if(this.County=='雲林縣') {
+            // 開始建立 markers 參數字串，因為是逐筆處理陣列中的資料，所以當讀到屬於雲林縣的資料就串接一個markers參數
+            var markerStr = '&markers=color:'
+            // 取得 PM2.5 濃度值，這邊之所以要用存取陣列元素的語法，而不使用"物件.屬性"的語法，是因為PM2.5屬性名稱含有小數點
+            var pm25 = this["PM2.5"];
+            
+            // 依濃度值的範圍, 指定不同的顏色名稱
+            if(pm25>=71)
+              // 若濃度大於等於 71,  使用紫色 
+              // 顏色名稱後要加分隔符號 |，以便再串接測站名稱及縣市名
+              markerStr += 'purple|';
+            else if(pm25>54)
+              // 若濃度大於 54,  使用紅色
+              markerStr += 'red|'; 
+            else if(pm25>35)
+              // 若濃度大於 35,  使用橘色
+              markerStr += 'orange|';
+            else
+              // 濃度小於等於 35,  使用綠色
+              markerStr += 'green|';
+            
+            // 後面串接測站名稱及縣市名 (標記的位置)，用"測站名稱,縣市名"的格式設定標記的位置
+            markerStr += this.SiteName + ',' + this.County;
+            // 將參數字串附加到地圖 URL 後面
+            mapUrl += markerStr;
+          }
+        }); // END OF $.each() 
+        
+        // 立即顯示地圖
+        $('#pm25').attr('src', mapUrl);
+      }
+    </script>
+</head>
+<body>
+    <!-- img 用來載入 Google Maps 地圖，一開始載入資料時，未設定src屬性，待程式以AJAX取得資料後，才建立地圖URL，並載入地圖 -->
+    <img id="pm25" alt="載入資料中...">  
+      
+    <div>
+        <p>細懸浮微粒PM 2.5濃度指標：</p>
+        <p><span style="color:green">● 低</span>
+        <span style="color:orange">● 中</span>
+        <span style="color:red">● 高</span>
+        <span style="color:purple">● 非常高</span></p>
+    </div>
+</body>
+</html>
+
+<!--
+以Google Maps JavaScript API載入地圖：
+前面介紹的嵌入式和靜態的Google Maps，都是透過調整URL參數來取得不同的內容，而Google Maps JavaScript API則是以JavaScript來取得、控制地圖的內容
+使用Google Maps JavaScript API和使用jQuery一樣，必須先載入API的JavaScript程式，而在網頁中則用div元素顯示地圖，流程如下：
+1.載入API：若有申請API Key，可將Key如下附在URL後面：
+  <script src="http://maps.googleapis.com/maps/api/js?key=...API KEY...&sensor=false"><script>
+
+2.在網頁中建立加入放置地圖的div元素：這邊通常都會先用CSS設定好div的寬、高，Google Maps會將地圖填滿指定的大小，語法如下：
+  <div id="mymap" style="width: 256px; height: 256px;"></div>
+
+3.在JavaScript程式中用google.maps.Map()建立地圖物件，語法如下：
+  new google.maps.Map(document.getElementById("mymap"), {...地圖參數...})，其中，"mymap"是div元素的id
+  這邊的new是JavaScript建立新物件的關鍵字，而google.maps.Map()這個物件需加上2個參數，如下：
+  a.第一個參數是用來放置地圖的div元素：注意此處需使用DOM物件，若是想用jQuery，則需要使用get(0)來取得DOM的物件，語法範例如下：
+    // 使用DOM API取得div元素的DOM物件
+    new google.maps.Map(document.getElementById("mymap"), ...);
+    //使用jQuery取得div元素的DOM物件
+    new google.maps.Map($("#mymap").get(0), ...);
+
+  b.第二個參數則是有關地圖設定的參數物件，API提供的參數相當多，所以以下列出幾個常見的參數：
+    center：此為必要參數，只能使用經緯度物件指定地圖的中心點，設定的語法有兩種，如下：
+      // 使用API中的LatLng物件：緯度在前，經度在後
+      center: new google.maps.LatLng(25.08, 121.24)
+      // 使用API中的LatLngLiteral物件：
+      // 直接建立物件，用lat屬性設定緯度，lng屬性設定經度
+      center: {lat: 25.0479, lng: 121.517080}
+    zoom：指定地圖放大級數，用法與Google Static Maps API中的zoom一樣
+    mapTypeId：顯示地圖種類，地圖種類如下：
+      google.maps.MapTypeId.HYBRID：衛星加街道圖
+      google.maps.MapTypeId.ROADMAP：一般街道地圖
+      google.maps.MapTypeId.SATELLITE：衛星圖
+      google.maps.MapTypeId.TERRAIN：地形圖
+    disableDefaultUI：設為false表示不顯示預設的使用者控制元件，另外也可用下面參數個別元件進行設定
+    mapTypeControl：設為false表示不顯示切換地圖類型的使用者元件
+    scaleControl：設為false表示不顯示放大縮小地圖的使用者控制元件
+    draggable：設為false可讓使用者無法使用滑鼠拖曳的方式改變地圖顯示的位置
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://maps.googleapis.com/maps/api/js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+        $(function(){
+          // 建立地圖物件, 只設定 zoom 和 center
+          new google.maps.Map(document.getElementById("map_1"), {
+             zoom: 13,
+             center: new google.maps.LatLng(25.08,121.24)
+          });
+          
+          // 建立地圖物件並存於變數, 加上其它地圖選項
+          var m2=new google.maps.Map($("#map_2").get(0), {
+             zoom: 12,
+             center: {lat: 35.77, lng: 140.38},
+             // 指定衛星圖並加上街道、地名
+             mapTypeId: google.maps.MapTypeId.HYBRID,
+             // 不顯示地圖種類選擇介面
+             mapTypeControl: false,
+             // 不可拖曳  
+             draggable: false
+          });
+        });
+    </script>
+    <style>  .left {float:left;margin:3px;} </style>
+</head>
+<body>
+  <!-- map_1是使用DOM API取得div元素物件，並只設定必要參數center、zoom，且使用LatLng()建立經緯度物件 -->
+  <div class="left">
+    <h3>桃園機場</h3>
+    <div id="map_1" style="width:400px; height:300px"></div>
+  </div>
+  <!-- map_2是改用jQuery取得div物件，並加上mapTypeId及操作介面的參數設定，且使用LatLngLiteral建立經緯度物件 -->
+  <div class="left">
+    <h3>成田機場</h3>
+    <div id="map_2" style="width:400px; height:300px"></div>
+  </div>
+</body>
+</html>
+
+<!--
+利用Geocoder取得經緯度：
+在嵌入式、靜態地圖，可使用"台北火車站"這樣的中文地名指定地圖中心，但在建立google.maps.Map時的center參數，只能使用以經緯度表示的LatLng或LatLngLiteral物件
+因此Google Maps另外提供了Geocoder服務，讓我們可利用地名來查詢經緯度，而免費的Geocoder查詢服務有每日2500次的限制
+
+Geocoder服務提供地址(地名)與經緯度的對照功能，並以JSON的方式提供查詢結果，不過在程式中不需自己處理AJAX、解析JSON內容，只需利用google.maps.Geocode建好物件
+再利用物件呼叫geocode()方法進行查詢即可，但由於Geocoder是以AJAX的方式查詢，所以要用一個callback函式做為參數，待伺服器傳回結果時，再呼叫它進行處理
+函式第一個參數result即為查詢結果，第二個參數status則為查詢狀態，當確認查詢OK後，再呼叫地圖物件的setCenter()方法設定地圖中心
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://maps.googleapis.com/maps/api/js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+      $(function(){
+        // 建立 Geocoder() 物件
+        var gc = new google.maps.Geocoder();
+        var mymap = new google.maps.Map($('#map').get(0), {
+                  zoom: 15,
+                  center: {lat:25.0479, lng:121.5170}
+        });
+              
+        // 設定查詢按鈕的事件處理函式
+        $('#query').click(function(){
+          // 取得使用者輸入的地址
+          var addr = $('#addr').val();
+          if(addr=='') return;
+          
+          // 用使用者輸入的地址查詢
+          gc.geocode({'address': addr}, function(result, status){
+            // 當查詢狀態確認 OK
+            if(status == google.maps.GeocoderStatus.OK) {
+              // 取得查詢結果第0筆中的經緯度物件
+              var latlng = result[0].geometry.location;
+              // 將查詢結果設為地圖的中心
+              mymap.setCenter(latlng);
+              //顯示經度
+              $('#lat').text(latlng.lat());
+              //顯示緯度
+              $('#lng').text(latlng.lng());
+            }
+          }); 
+        });
+        
+        // 設定輸入欄位按鍵放開的事件處理函式
+        $('#addr').keyup(function(event){
+          // 按查詢鈕或是按下/放開 Enter 鍵 
+          if(event.keyCode == 13)
+            $('#query').click();
+        });
+      });
+    </script>
+</head>
+<body>    
+    <p><input id="addr" value="台北火車站">
+       <button id="query">查詢</button></p>
+    <p>緯度：<span id="lat">25.0479</span> 
+       經度：<span id="lng">121.5170</span></p>
+    <div id="map" style="width:400px; height:300px"></div>
+</body>
+</html>
+
+<!--
+在地圖中加入標記(Marker)：
+若想在地圖中加上標記，可如下建立Marker物件：
+// 建立地圖
+var mymap = new google.maps.Map(...)
+// 建立Marker物件
+var marker = new google.maps.Marker({
+  // 建立標記的位置
+  position: {lat: 25.04, lng: 121.51},
+  // 標記要放的地圖
+  map: mymap,
+  // 滑鼠移到標記上面時顯示的文字
+  title: "台北車站"
+})
+
+這邊要注意，經緯度除了前面用的那種型態之外，還有另一種是WGS84(World Geodetic System, 1984版)，其格式是單純以數字來表示，例如"WGS84Lat":"23,58,30"
+分別代表"度,分,秒"，其中分、秒都是六十進位（1度有60分，1分有60秒），因此要先將WSG84型態的資料換成十進位表示法（23.975），才能將此經緯度用於Google Maps，換算的公式如下：
+lat = 23 + // 度
+      58/60 + // 分
+      30/3600 // 秒
+
+另外，因前面在使用靜態地圖時，可直接利用參數設定標記的顏色，一般來說，其實不同顏色的標記、有文數字的標記，都是直接取用不同的標記圖示來顯示
+若是想變更Marker標記圖示，因Marker物件沒有修改標記顏色的參數，所以在建立Marker的參數物件中，可以用icon屬性指定用來做標記的圖示，參數值為圖檔路徑
+而Google本身也有提供許多圖示可供使用，可至以下網址查看所有圖示圖案：https://kml4earth.appspot.com/icons.html#shapes
+所以可以在Marker物件內新增一行icon參數設定，即會出現變更圖示的效果，語法如下：
+var marker = new google.maps.Marker({
+  ...
+  icon: "http://maps.google.com/mapfiles/kml/shapes/sunny.png"
+})
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      #legend {padding:0px 5px;
+               border:1px solid black;      
+               width:fit-content;
+               width:-moz-fit-content}
+      span {font-style:bold; margin:5px}
+    </style>
+    <script src="http://maps.googleapis.com/maps/api/js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+      // 紫外線資料網址
+      url='http://opendata.epa.gov.tw/ws/Data/UV/?format=json';
+      // 地圖物件
+      var mymap; 
+      var thedata;
+      $(function(){        
+          // 建立地圖
+          mymap = new google.maps.Map($('#uvmap').get(0), {
+                  zoom: 8,
+                  // 以雲林縣為中心建立地圖
+                  center: {lat:23.64, lng:120.20}
+          });
+          
+          // 用 JSONP 取得資料
+          $.ajax({url:url,
+                  dataType:'jsonp',
+                  // 成功時呼叫自訂函式 buildMarkers
+                  success: buildMarkers,
+              error  : function(x){
+                       console.log('錯誤, 代碼:'+x.status);
+                  }
+          });
+      });
+    
+      // AJAX 要求成功時執行的函式 
+      function buildMarkers(data){  
+        if (data == null) {
+             alert("下載失敗!");
+             return;
+          }
+      thedata=data;
+        // 逐筆處理陣列中的資料
+        $.each(data, function(index){
+          // 呼叫自訂函式, 將 "度,分,秒" 格式的經緯度字串
+          // 轉換成經緯度值, 並建立成經緯度物件          
+          var latlng = {lat: convertWGS84StrToFloat(this.WGS84Lat),
+                        lng: convertWGS84StrToFloat(this.WGS84Lon)}
+          // 將 UV 指數轉成整數
+          var uvi = parseInt(this.UVI);
+          // 若 UV 指數大於 9, 就設為 9
+          if (uvi > 9)  uvi = 9;
+          // 若沒資料或非數字, 就設為 0
+          else if(isNaN(uvi)) uvi=0;
+          
+          // 建立 Marker 物件
+          var marker = new google.maps.Marker({
+                // 標記的位置
+                position: latlng,
+                // 標記要放的地圖
+                map: mymap,
+                // 滑鼠移到標記上面時顯示的文字 
+                title: this.SiteName+','+this.County+',紫外線指數'+this.UVI,
+                // 將 UV 指數數值轉回字串
+                label: uvi.toString(),
+                // 更改標記圖示為太陽圖示
+                icon: "http://maps.google.com/mapfiles/kml/shapes/sunny.png"
+          }); 
+        }); 
+      }
+      
+      // 自訂函式解析經緯度字串，將"度,分,秒"格式的經緯度字串轉換成經緯度值
+      function convertWGS84StrToFloat(str){
+        //依逗號分割字串, 轉成字串陣列
+        var arr= str.split(',');
+        
+        return parseFloat(arr[0]) +      // 度
+               parseFloat(arr[1])/60 +   // 分
+               parseFloat(arr[2])/3600;  // 秒
+      }
+    </script>
+</head>
+<body>
+    <h3>紫外線即時監測資料 (with Google Map)</h3>
+    <div id="uvmap" style="width:720px;height:800px"></div>
+</body>
+</html>
